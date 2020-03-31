@@ -49,7 +49,7 @@
     },
     "jest": {
         "setupFiles": [
-            "./jest.js"
+            "./utils/jest.js"
         ]
     },
     "keywords": [],
