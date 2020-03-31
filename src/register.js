@@ -33,7 +33,7 @@ export default class Registration extends React.Component {
     }
     render() {
         return (
-            <div>
+            <div className="registration">
                 {this.state.error && <div className="error">Ooops!</div>}
                 <input
                     name="first"
