@@ -19,7 +19,7 @@ module.exports.registerUser = (first, last, email, psswd) => {
 
 // USER UPDATE //////////////////////
 module.exports.updateUser = (...params) => {
-    const str = params[4] === '' ? params.splice(4) : ', psswd=$5';
+    const str = params[4] === "" ? params.splice(4) : ", psswd=$5";
     const q = `
         UPDATE users
         SET first=$2, last=$3, email=$4 ${str}
@@ -28,15 +28,15 @@ module.exports.updateUser = (...params) => {
     return params[4] === undefined
         ? db.query(q, params)
         : hash(params[4]).then(hashdPsswd => {
-            params[4] = hashdPsswd;
-            return db.query(q, params);
-        });
+              params[4] = hashdPsswd;
+              return db.query(q, params);
+          });
 };
 
 // LOGIN ////////////////////////////
 module.exports.login = (email, psswd) => {
     const q = `
-        SELECT users.id, first, last, email
+        SELECT id, first, last, email
         FROM users
         WHERE email = $1`;
 

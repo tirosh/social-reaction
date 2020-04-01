@@ -13,9 +13,6 @@ const { SESSION_SECRET: sessionSecret } = process.env.SESSION_SECRET
 const bodyParser = require("body-parser");
 app.use(bodyParser.json());
 
-// const csurf = require("csurf");
-// app.use(csurf());
-
 const cookieSession = require("cookie-session");
 app.use(
     cookieSession({
@@ -24,16 +21,19 @@ app.use(
     })
 );
 
+const csurf = require("csurf");
+app.use(csurf());
+app.use(function(req, res, next) {
+    res.cookie("_ctkn", req.csrfToken());
+    next();
+});
+
 const compression = require("compression");
 app.use(compression());
 
-const {
-    logRoute
-    // makeCookiesSafe
-    // ifLoggedIn
-} = require("./utils/middleware.js");
+const { logRoute, makeCookiesSafe } = require("./utils/middleware.js");
 app.use(logRoute);
-// app.use(makeCookiesSafe);
+app.use(makeCookiesSafe);
 
 if (process.env.NODE_ENV != "production") {
     app.use(
@@ -70,6 +70,27 @@ app.post("/register", (req, res) => {
             err.constraint === "users_email_key"
                 ? res.json({ err: "already registered" })
                 : res.json({ err: "try again" });
+        });
+});
+
+// POST /login
+app.post("/login", (req, res) => {
+    const { email, psswd } = req.body;
+    db.login(email, psswd)
+        .then(dbData =>
+            dbData === undefined
+                ? res.json({ err: "not found" })
+                : dbData.rows[0]
+        )
+        .then(user => {
+            Object.assign(req.session, user);
+            console.log("req.session", req.session);
+            res.sendFile(__dirname + "/index.html");
+            res.json({ success: true });
+        })
+        .catch(err => {
+            console.log("error in POST /login:", err);
+            res.json({ err: err });
         });
 });
 

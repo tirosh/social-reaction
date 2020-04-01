@@ -1,5 +1,6 @@
 * {
     box-sizing: border-box;
+    margin: 0;
 }
 
 body {
@@ -7,47 +8,51 @@ body {
     font-size: 20px;
 }
 
-.wrapper {
-    position: absolute;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
+.welcome {
     display: flex;
-    align-items: flex-end;
+    height: 100vh;
 }
 
-.logo {
-    position: fixed;
-    z-index: 1;
-    top: 2em;
-    right: 2em;
-    /* height: 200px; */
+.image,
+.form {
+    width: 50%;
 }
+
 .image {
-    position: absolute;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
+    font-size: 0;
 }
-
 .image img {
     object-fit: cover;
     height: 100%;
     width: 100%;
 }
 
-.registration {
-    position: absolute;
-    left: 2em;
-    /* bottom: 2em; */
+.form {
     display: flex;
     flex-direction: column;
-    padding: 2em;
+    justify-content: space-between;
+    background-color: #a4a989;
+}
+
+.logo {
+    position: fixed;
+    top: 2em;
+    right: 2em;
+}
+
+.headline {
+    font-family: "Nunito", sans-serif;
+    font-size: 4em;
+    margin-right: 200px;
+}
+
+.form div {
+    display: flex;
+    flex-direction: column;
+    padding: 40px;
     /* background-color: #0000008c; */
 }
-.registration input {
+.form input {
     margin-bottom: 1em;
 }
 
@@ -103,7 +108,7 @@ input[type="file"]:active::before {
     background: -webkit-linear-gradient(top, #e3e3e3, #f9f9f9);
 }
 button {
-    background-color: #bf4520;
+    background-color: #7d775d;
 }
 
 input[type="text"] {

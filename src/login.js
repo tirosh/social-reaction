@@ -9,9 +9,7 @@ export default class Registration extends React.Component {
     }
     submit() {
         axios
-            .post("/register", {
-                first: this.state.first,
-                last: this.state.last,
+            .post("/login", {
                 email: this.state.email,
                 psswd: this.state.psswd
             })
@@ -27,7 +25,6 @@ export default class Registration extends React.Component {
             });
     }
     handleChange({ target }) {
-        //this[target.name] = target.value;
         this.setState({
             [target.name]: target.value
         });
@@ -36,16 +33,6 @@ export default class Registration extends React.Component {
         return (
             <div>
                 {this.state.error && <div className="error">Ooops!</div>}
-                <input
-                    name="first"
-                    onChange={e => this.handleChange(e)}
-                    placeholder="first"
-                />
-                <input
-                    name="last"
-                    onChange={e => this.handleChange(e)}
-                    placeholder="last"
-                />
                 <input
                     name="email"
                     onChange={e => this.handleChange(e)}
@@ -56,8 +43,8 @@ export default class Registration extends React.Component {
                     onChange={e => this.handleChange(e)}
                     placeholder="password"
                 />
-                <button onClick={() => this.submit()}>register</button>
-                or <Link to="/login">log in</Link>
+                <button onClick={() => this.submit()}>log in</button>
+                or <Link to="/">register</Link>
             </div>
         );
     }
