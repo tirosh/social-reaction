@@ -1,6 +1,6 @@
-import React from "react";
-import axios from "./net/axios";
-import { Link } from "react-router-dom";
+import React from 'react';
+import axios from './net/axios';
+import { Link } from 'react-router-dom';
 
 export default class Registration extends React.Component {
     constructor(props) {
@@ -9,14 +9,14 @@ export default class Registration extends React.Component {
     }
     submit() {
         axios
-            .post("/login", {
+            .post('/login', {
                 email: this.state.email,
                 psswd: this.state.psswd
             })
             .then(({ data }) => {
-                console.log("data.success", data.success);
+                console.log('data.success', data.success);
                 if (data.success) {
-                    location.replace("/");
+                    location.replace('/');
                 } else {
                     this.setState({
                         error: true
@@ -32,19 +32,24 @@ export default class Registration extends React.Component {
     render() {
         return (
             <div>
-                {this.state.error && <div className="error">Ooops!</div>}
+                {this.state.error && <div className='error'>Ooops!</div>}
                 <input
-                    name="email"
+                    name='email'
                     onChange={e => this.handleChange(e)}
-                    placeholder="email"
+                    placeholder='email'
                 />
                 <input
-                    name="psswd"
+                    name='psswd'
                     onChange={e => this.handleChange(e)}
-                    placeholder="password"
+                    placeholder='password'
                 />
                 <button onClick={() => this.submit()}>log in</button>
-                or <Link to="/">register</Link>
+                <p>
+                    or <Link to='/'>register</Link>
+                </p>
+                <p>
+                    or <Link to='/reset'>reset password</Link>
+                </p>
             </div>
         );
     }

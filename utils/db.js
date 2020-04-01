@@ -1,10 +1,10 @@
-const spicedPg = require("spiced-pg");
+const spicedPg = require('spiced-pg');
 const db = spicedPg(
     process.env.DATABASE_URL ||
-        "postgres:postgres:postgres@localhost:5432/socialnetwork"
+        'postgres:postgres:postgres@localhost:5432/socialnetwork'
 );
 // require bcrypt for hashing passwords
-const { hash, compare } = require("./bc");
+const { hash, compare } = require('./bc');
 
 // USER REGISTER ////////////////////
 module.exports.registerUser = (first, last, email, psswd) => {
@@ -17,14 +17,51 @@ module.exports.registerUser = (first, last, email, psswd) => {
     );
 };
 
+// GET USER /////////////////////////
+module.exports.getUser = email => {
+    const q = `
+        SELECT id, first, last, email
+        FROM users
+        WHERE email = $1`;
+    return db.query(q, [email]);
+};
+
+// SET RESET CODE ///////////////////
+module.exports.setResetCode = (email, code) => {
+    const q = `
+        INSERT INTO password_reset_codes (email, code)
+        VALUES ($1, $2)`;
+    return db.query(q, [email, code]);
+};
+
+// GET RESET CODE ///////////////////
+module.exports.getResetCode = email => {
+    const q = `
+        SELECT code
+        FROM password_reset_codes
+        WHERE email = $1 
+        AND CURRENT_TIMESTAMP - created_at < INTERVAL '10 minutes'
+        ORDER BY created_at DESC
+        LIMIT 1`;
+    return db.query(q, [email]);
+};
+
+// UPDATE PASSWORD //////////////////
+module.exports.updatePsswd = (email, psswd) => {
+    const q = `
+        UPDATE users
+        SET psswd=$2
+        WHERE email=$1`;
+    return hash(psswd).then(hashdPsswd => db.query(q, [email, hashdPsswd]));
+};
+
 // USER UPDATE //////////////////////
 module.exports.updateUser = (...params) => {
-    const str = params[4] === "" ? params.splice(4) : ", psswd=$5";
+    const str = params[4] === '' ? params.splice(4) : ', psswd=$5';
     const q = `
         UPDATE users
         SET first=$2, last=$3, email=$4 ${str}
         WHERE id=$1`;
-
     return params[4] === undefined
         ? db.query(q, params)
         : hash(params[4]).then(hashdPsswd => {
@@ -39,7 +76,6 @@ module.exports.login = (email, psswd) => {
         SELECT id, first, last, email
         FROM users
         WHERE email = $1`;
-
     return getPsswd(email)
         .then(dbData =>
             dbData.rows[0] === undefined

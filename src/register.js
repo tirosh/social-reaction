@@ -1,6 +1,6 @@
-import React from "react";
-import axios from "./net/axios";
-import { Link } from "react-router-dom";
+import React from 'react';
+import axios from './net/axios';
+import { Link } from 'react-router-dom';
 
 export default class Registration extends React.Component {
     constructor(props) {
@@ -9,16 +9,16 @@ export default class Registration extends React.Component {
     }
     submit() {
         axios
-            .post("/register", {
+            .post('/register', {
                 first: this.state.first,
                 last: this.state.last,
                 email: this.state.email,
                 psswd: this.state.psswd
             })
             .then(({ data }) => {
-                console.log("data.success", data.success);
+                console.log('data.success', data.success);
                 if (data.success) {
-                    location.replace("/");
+                    location.replace('/');
                 } else {
                     this.setState({
                         error: true
@@ -35,29 +35,31 @@ export default class Registration extends React.Component {
     render() {
         return (
             <div>
-                {this.state.error && <div className="error">Ooops!</div>}
+                {this.state.error && <div className='error'>Ooops!</div>}
                 <input
-                    name="first"
+                    name='first'
                     onChange={e => this.handleChange(e)}
-                    placeholder="first"
+                    placeholder='first'
                 />
                 <input
-                    name="last"
+                    name='last'
                     onChange={e => this.handleChange(e)}
-                    placeholder="last"
+                    placeholder='last'
                 />
                 <input
-                    name="email"
+                    name='email'
                     onChange={e => this.handleChange(e)}
-                    placeholder="email"
+                    placeholder='email'
                 />
                 <input
-                    name="psswd"
+                    name='psswd'
                     onChange={e => this.handleChange(e)}
-                    placeholder="password"
+                    placeholder='password'
                 />
                 <button onClick={() => this.submit()}>register</button>
-                or <Link to="/login">log in</Link>
+                <p>
+                    or <Link to='/login'>log in</Link>
+                </p>
             </div>
         );
     }
