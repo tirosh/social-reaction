@@ -13,7 +13,7 @@ export default class ResetPassword extends React.Component {
         const step = this.state.step;
         if (step == 'start') {
             return (
-                <div>
+                <>
                     <h1>Reset Password</h1>
                     <h2>
                         Please enter the email address with which you registered
@@ -23,6 +23,7 @@ export default class ResetPassword extends React.Component {
                     )}
                     <input
                         name='email'
+                        key='email'
                         onChange={e => this.handleChange(e)}
                         placeholder='email'
                     />
@@ -33,26 +34,28 @@ export default class ResetPassword extends React.Component {
                     <p>
                         or <Link to='/'>register</Link>
                     </p>
-                </div>
+                </>
             );
         } else if (step == 'verify') {
             return (
-                <div>
+                <>
                     <h1>Reset Password</h1>
                     <h2>
-                        An email was sent to you. Please enter the key here:
+                        An email was sent to you. Please enter the secret here:
                     </h2>
                     {this.state.error && (
                         <div className='error'>{this.state.error}</div>
                     )}
                     <input
-                        name='key'
+                        name='secret'
+                        key='secret'
                         onChange={e => this.handleChange(e)}
                         placeholder='super secret code'
                     />
                     <h2>Enter your new password here:</h2>
                     <input
                         name='psswd'
+                        key='psswd'
                         onChange={e => this.handleChange(e)}
                         placeholder='password'
                     />
@@ -63,18 +66,18 @@ export default class ResetPassword extends React.Component {
                     <p>
                         or <Link to='/'>register</Link>
                     </p>
-                </div>
+                </>
             );
         } else if (step == 'success') {
             return (
-                <div>
+                <>
                     <h1>Reset Password</h1>
                     <h2>It is done.</h2>
                     <p>
                         Please <Link to='/login'>log in</Link> with your new
                         password.
                     </p>
-                </div>
+                </>
             );
         }
     }
@@ -92,7 +95,7 @@ export default class ResetPassword extends React.Component {
     verify() {
         axios
             .post('/reset/verify', {
-                key: this.state.key,
+                secret: this.state.secret,
                 psswd: this.state.psswd
             })
             .then(({ data }) => {

@@ -20,7 +20,7 @@ module.exports.registerUser = (first, last, email, psswd) => {
 // GET USER /////////////////////////
 module.exports.getUser = email => {
     const q = `
-        SELECT id, first, last, email
+        SELECT id, first, last, email, img_url
         FROM users
         WHERE email = $1`;
     return db.query(q, [email]);

@@ -18,9 +18,7 @@ export default class Registration extends React.Component {
                 if (data.success) {
                     location.replace('/');
                 } else {
-                    this.setState({
-                        error: true
-                    });
+                    this.setState({ error: data.err || 'Try again.' });
                 }
             });
     }
@@ -32,14 +30,19 @@ export default class Registration extends React.Component {
     render() {
         return (
             <div>
-                {this.state.error && <div className='error'>Ooops!</div>}
+                {this.state.error && (
+                    <div className='error'>{this.state.error}</div>
+                )}
                 <input
                     name='email'
+                    key='email'
                     onChange={e => this.handleChange(e)}
                     placeholder='email'
                 />
                 <input
                     name='psswd'
+                    type='password'
+                    key='psswd'
                     onChange={e => this.handleChange(e)}
                     placeholder='password'
                 />

@@ -38,21 +38,26 @@ export default class Registration extends React.Component {
                 {this.state.error && <div className='error'>Ooops!</div>}
                 <input
                     name='first'
+                    key='first'
                     onChange={e => this.handleChange(e)}
                     placeholder='first'
                 />
                 <input
                     name='last'
+                    key='last'
                     onChange={e => this.handleChange(e)}
                     placeholder='last'
                 />
                 <input
                     name='email'
+                    key='email'
                     onChange={e => this.handleChange(e)}
                     placeholder='email'
                 />
                 <input
                     name='psswd'
+                    type='password'
+                    key='psswd'
                     onChange={e => this.handleChange(e)}
                     placeholder='password'
                 />

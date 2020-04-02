@@ -23,19 +23,19 @@ app.use(
     })
 );
 
-// const csurf = require("csurf");
-// app.use(csurf());
-// app.use(function(req, res, next) {
-//     res.cookie("_ctkn", req.csrfToken());
-//     next();
-// });
+const csurf = require('csurf');
+app.use(csurf());
+app.use(function(req, res, next) {
+    res.cookie('_ctkn', req.csrfToken());
+    next();
+});
 
 const compression = require('compression');
 app.use(compression());
 
 const { logRoute, makeCookiesSafe } = require('./utils/middleware.js');
 app.use(logRoute);
-// app.use(makeCookiesSafe);
+app.use(makeCookiesSafe);
 
 if (process.env.NODE_ENV != 'production') {
     app.use(
@@ -80,11 +80,12 @@ app.post('/login', (req, res) => {
     const { email, psswd } = req.body;
     db.login(email, psswd)
         .then(dbData =>
-            dbData === undefined ? Promise.reject(`not found`) : dbData.rows[0]
+            dbData === undefined
+                ? Promise.reject(`User not found`)
+                : dbData.rows[0]
         )
         .then(user => {
             Object.assign(req.session, user);
-            // console.log('req.session', req.session);
             res.sendFile(__dirname + '/index.html');
             res.json({ success: true });
         })
@@ -94,27 +95,50 @@ app.post('/login', (req, res) => {
         });
 });
 
-// POST /reset/start /////////////////
+// POST /user
+app.post('/user', (req, res) => {
+    db.getUser(req.session.email)
+        .then(dbData =>
+            dbData === undefined
+                ? Promise.reject(`User not found`)
+                : dbData.rows[0]
+        )
+        .then(user => {
+            Object.assign(req.session, user);
+            console.log('req.session', req.session);
+            const { id, first, last, img_url } = req.session;
+            res.sendFile(__dirname + '/index.html');
+            res.json({ id, first, last, img_url });
+        })
+        .catch(err => {
+            console.log('error in POST /login:', err);
+            res.json({ err: err });
+        });
+});
+
+// POST /reset/start
 app.post('/reset/start', (req, res) => {
     const { email } = req.body;
     db.getUser(email)
         .then(dbData =>
-            typeof dbData.rows[0] == 'undefined'
+            dbData.rows[0] === undefined
                 ? Promise.reject(`Email is not registered.`)
                 : cryptoRandomString({ length: 6 })
         )
         .then(secretCode =>
             db.setResetCode(email, secretCode).then(() => {
-                ses.sendEmail(
-                    'mail@tillgrosch.com',
-                    'Email verification',
-                    `To verify your email address, please enter the following super secret code: ${secretCode}`
-                ).then(resp => {
-                    console.log('email has been sent.', resp);
-                    console.log('secretCode', secretCode);
-                    req.session.email = email;
-                    res.json({ success: true });
-                });
+                // Temporarily disabled to avoid email spam.
+                ////////////////////////////////////////////
+                // ses.sendEmail(
+                //     'mail@tillgrosch.com',
+                //     'Email verification',
+                //     `To verify your email address, please enter the following super secret code: ${secretCode}`
+                // ).then(resp => {
+                console.log('email has been sent.', resp);
+                console.log('secretCode', secretCode);
+                req.session.email = email;
+                res.json({ success: true });
+                // });
             })
         )
         .catch(err => {
@@ -125,11 +149,11 @@ app.post('/reset/start', (req, res) => {
 
 // POST /reset/verify ////////////////
 app.post('/reset/verify', (req, res) => {
-    const { key, psswd } = req.body;
+    const { secret, psswd } = req.body;
     db.getResetCode(req.session.email)
         .then(dbData =>
-            dbData.rows[0].code !== key
-                ? Promise.reject(`You have entered the wrong key.`)
+            dbData.rows[0].code !== secret
+                ? Promise.reject(`You have entered the wrong secret.`)
                 : db
                       .updatePsswd(req.session.email, psswd)
                       .then(() => res.json({ success: true }))
@@ -144,7 +168,6 @@ app.post('/reset/verify', (req, res) => {
 app.get('/logout', (req, res) => {
     req.session = null;
     res.redirect('/welcome');
-    // res.json({ success: true });
 });
 
 // if LOGGED IN: serve index.html, else: redirect to /welcome
