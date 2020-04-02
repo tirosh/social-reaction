@@ -57,10 +57,9 @@ export default class App extends React.Component {
                     imgUrl={this.state.imgUrl}
                     toggleModal={() => this.toggleModal()}
                 />
-                <h2 onClick={() => this.toggleModal()}>Toggle Uploader</h2>
                 {this.state.uploaderVisible && (
                     <Uploader
-                        updateProfile={() => this.updateProfile()}
+                        updateProfile={e => this.updateProfile(e)}
                         toggleModal={() => this.toggleModal()}
                     />
                 )}

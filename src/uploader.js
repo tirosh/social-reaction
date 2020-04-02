@@ -27,20 +27,27 @@ export default class Uploader extends React.Component {
     }
     render() {
         return (
-            <div>
-                {this.state.error && (
-                    <div className='error'>{this.state.error}</div>
-                )}
-                Want to change your image?
-                <input
-                    onChange={e => this.onSelect(e)}
-                    type='file'
-                    name='file'
-                    key='file'
-                    ref='file'
-                    accept='image/*'
-                />
-                <button onClick={() => this.uploadImage()}>submit</button>
+            <div className='modal'>
+                <div>
+                    {this.state.error && (
+                        <div className='error'>{this.state.error}</div>
+                    )}
+                    <h1>Want to change your image?</h1>
+                    <input
+                        onChange={e => this.onSelect(e)}
+                        type='file'
+                        name='file'
+                        key='file'
+                        ref='file'
+                        accept='image/*'
+                    />
+                    <button onClick={() => this.uploadImage()}>submit</button>
+                    {/* <div
+                        className='close-modal'
+                        onClick={this.props.toggleModal()}>
+                        X
+                    </div> */}
+                </div>
             </div>
         );
     }
