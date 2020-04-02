@@ -4,7 +4,7 @@
 }
 
 body {
-    font-family: "Nunito sans", sans-serif;
+    font-family: 'Nunito sans', sans-serif;
     font-size: 20px;
 }
 
@@ -41,7 +41,7 @@ body {
 }
 
 .headline {
-    font-family: "Nunito", sans-serif;
+    font-family: 'Nunito', sans-serif;
     font-size: 4em;
     margin-right: 200px;
 }
@@ -72,24 +72,24 @@ button {
     color: black;
 }
 
-input[name="title"],
-input[name="user"] {
+input[name='title'],
+input[name='user'] {
     width: 135px;
     border-bottom: 1px solid grey;
 }
 
-input[type="file"] {
+input[type='file'] {
     /* margin-bottom: 10px; */
 }
-input[type="file"]::-webkit-file-upload-button {
+input[type='file']::-webkit-file-upload-button {
     visibility: hidden;
 }
-input[type="file"]::before {
+input[type='file']::before {
     margin-bottom: 10px;
 }
-input[type="file"]::before,
+input[type='file']::before,
 button {
-    content: "select file";
+    content: 'select file';
     display: inline-block;
     background-color: #99ecce;
     border: 0;
@@ -101,17 +101,17 @@ button {
     /* box-shadow: 3px 3px 0px 0px hsla(0, 0%, 0%, 0.25); */
     margin-bottom: 0.5em;
 }
-input[type="file"]:hover::before {
+input[type='file']:hover::before {
     border-color: black;
 }
-input[type="file"]:active::before {
+input[type='file']:active::before {
     background: -webkit-linear-gradient(top, #e3e3e3, #f9f9f9);
 }
 button {
     background-color: #7d775d;
 }
 
-input[type="text"] {
+input[type='text'] {
     /* border: 1px solid gray; */
     /* border-radius: 0.15rem; */
     background: transparent;
@@ -136,4 +136,17 @@ textarea {
 
 ::placeholder {
     color: rgb(216, 216, 216);
+}
+
+.user.profile {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    width: 150px;
+    height: 150px;
+}
+.user.profile img {
+    object-fit: cover;
+    height: 100%;
+    width: 100%;
 }

@@ -7,7 +7,7 @@ const db = spicedPg(
 const { hash, compare } = require('./bc');
 
 // USER REGISTER ////////////////////
-module.exports.registerUser = (first, last, email, psswd) => {
+exports.registerUser = (first, last, email, psswd) => {
     const q = `
         INSERT INTO users (first, last, email, psswd)
         VALUES ($1, $2, $3, $4)
@@ -18,7 +18,7 @@ module.exports.registerUser = (first, last, email, psswd) => {
 };
 
 // GET USER /////////////////////////
-module.exports.getUser = email => {
+exports.getUser = email => {
     const q = `
         SELECT id, first, last, email, img_url
         FROM users
@@ -26,16 +26,25 @@ module.exports.getUser = email => {
     return db.query(q, [email]);
 };
 
-// SET RESET CODE ///////////////////
-module.exports.setResetCode = (email, code) => {
+exports.addImage = (id, img_url) => {
+    const q = `
+        UPDATE users
+        SET img_url=$2
+        WHERE id=$1
+        RETURNING img_url`;
+    return db.query(q, [id, img_url]);
+};
+
+// SET RESET PSSWD CODE /////////////
+exports.setResetCode = (email, code) => {
     const q = `
         INSERT INTO password_reset_codes (email, code)
         VALUES ($1, $2)`;
     return db.query(q, [email, code]);
 };
 
-// GET RESET CODE ///////////////////
-module.exports.getResetCode = email => {
+// GET RESET PSSWD CODE /////////////
+exports.getResetCode = email => {
     const q = `
         SELECT code
         FROM password_reset_codes
@@ -47,7 +56,7 @@ module.exports.getResetCode = email => {
 };
 
 // UPDATE PASSWORD //////////////////
-module.exports.updatePsswd = (email, psswd) => {
+exports.updatePsswd = (email, psswd) => {
     const q = `
         UPDATE users
         SET psswd=$2
@@ -56,7 +65,7 @@ module.exports.updatePsswd = (email, psswd) => {
 };
 
 // USER UPDATE //////////////////////
-module.exports.updateUser = (...params) => {
+exports.updateUser = (...params) => {
     const str = params[4] === '' ? params.splice(4) : ', psswd=$5';
     const q = `
         UPDATE users
@@ -71,7 +80,7 @@ module.exports.updateUser = (...params) => {
 };
 
 // LOGIN ////////////////////////////
-module.exports.login = (email, psswd) => {
+exports.login = (email, psswd) => {
     const q = `
         SELECT id, first, last, email
         FROM users

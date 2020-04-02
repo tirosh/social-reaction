@@ -6,7 +6,11 @@
         "node": true
     },
     "plugins": ["react"],
-    "extends": ["eslint:recommended", "plugin:react/recommended"],
+    "extends": [
+        "eslint:recommended",
+        "plugin:react/recommended",
+        "plugin:prettier/recommended"
+    ],
     "parserOptions": {
         "sourceType": "module",
         "ecmaVersion": 2018
