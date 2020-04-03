@@ -35,6 +35,15 @@ exports.setImage = (id, img_url) => {
     return db.query(q, [id, img_url]);
 };
 
+exports.setBio = (id, bio) => {
+    const q = `
+        UPDATE users
+        SET bio=$2
+        WHERE id=$1
+        RETURNING bio`;
+    return db.query(q, [id, bio]);
+};
+
 // SET RESET PSSWD CODE /////////////
 exports.setResetCode = (email, code) => {
     const q = `

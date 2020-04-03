@@ -16,17 +16,17 @@ export default class App extends React.Component {
                 ? this.setState({
                       first: data.first,
                       last: data.last,
-                      imgUrl: data.img_url
+                      imgUrl: data.img_url,
+                      bio: data.bio
                   })
                 : this.setState({ error: data.err || 'Try again.' })
         );
     }
     toggleModal() {
-        console.log('toggle');
         this.setState({ uploaderVisible: !this.state.uploaderVisible });
     }
     updateProfile(profile) {
-        console.log('updateProfile was called with:', profile);
+        console.log('updateProfile with:', profile);
         this.setState(profile);
     }
     render() {
@@ -38,7 +38,7 @@ export default class App extends React.Component {
                 </div>
                 <div
                     onClick={() => this.toggleModal()}
-                    className='user profile'>
+                    className='user profile image small'>
                     <img
                         src={this.state.imgUrl || '/img/lego.svg'}
                         alt={this.state.first}

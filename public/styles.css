@@ -145,14 +145,18 @@ textarea {
     color: rgb(216, 216, 216);
 }
 
-.user.profile {
+.user.profile.image.small {
     position: fixed;
     top: 20px;
     right: 20px;
-    width: 150px;
-    height: 150px;
+    width: 75px;
+    height: 75px;
 }
-.user.profile img {
+.user.profile.image.medium {
+    width: 300px;
+    height: 300px;
+}
+.user img {
     object-fit: cover;
     height: 100%;
     width: 100%;

@@ -5,58 +5,48 @@ export default class BioEditor extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            editingBio: false
+            editBio: false
         };
     }
     handleChange({ target }) {
         this.setState({ bioInput: target.value });
     }
     toggleEditBio() {
-        this.setState({ editingBio: !this.state.editingBio });
+        this.setState({ editBio: !this.state.editBio });
     }
-    uploadBio() {
+    upload() {
         axios
-            .post('/upload/profile/bio', this.bioInput)
+            .post('/upload/profile/bio', { bio: this.state.bioInput })
             .then(({ data }) => {
-                console.log('data.img_url', data.bio);
                 this.props.updateProfile({ bio: data.bio });
-                // this.props.toggleModal();
+                this.setState({ editBio: false });
             })
             .catch(err => this.setState({ error: err || 'Try again.' }));
     }
     render() {
-        const bio = this.state.bio;
-        if (!this.state.editingBio) {
-            return (
-                <>
-                    {bio && <p>{bio}</p>}
-                    {bio ? (
-                        <button onClick={this.handleLogoutClick}>edit</button>
-                    ) : (
-                        <button onClick={() => this.toggleEditBio()}>
-                            add your bio
-                        </button>
-                    )}
-                </>
-            );
-        } else {
-            return (
-                <>
-                    {this.state.error && (
-                        <div className='error'>{this.state.error}</div>
-                    )}
-                    <input
-                        type='textarea'
-                        name='bio'
-                        key='bio'
-                        onChange={e => this.handleChange(e)}
-                        placeholder='Once upon a time...'
-                    />
-                    <button onClick={() => this.save()}>save</button>
-                    <button onClick={() => this.toggleEditBio()}>cancel</button>
-                    <p>{this.state.bioInput}</p>
-                </>
-            );
+        const bio = this.props.bio;
+        {
+            this.state.error && <div className='error'>{this.state.error}</div>;
         }
+        return !this.state.editBio ? (
+            <>
+                {bio && <p>{bio}</p>}
+                <button onClick={() => this.toggleEditBio()}>
+                    {bio ? 'edit' : 'add your bio'}
+                </button>
+            </>
+        ) : (
+            <>
+                <input
+                    type='textarea'
+                    name='bio'
+                    key='bio'
+                    onChange={e => this.handleChange(e)}
+                    placeholder='Once upon a time...'
+                />
+                <button onClick={() => this.upload()}>save</button>
+                <button onClick={() => this.toggleEditBio()}>cancel</button>
+            </>
+        );
     }
 }

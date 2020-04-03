@@ -155,6 +155,21 @@ app.post(
     }
 );
 
+// POST /upload/profile/bio
+app.post('/upload/profile/bio', (req, res) => {
+    console.log('req.body', req.body);
+    if (!req.body.bio) return res.json({ err: 'Write something, or cancel.' });
+    db.setBio(req.session.id, req.body.bio)
+        .then(bio => {
+            // console.log('image', image);
+            res.json(bio.rows[0]);
+        })
+        .catch(err => {
+            console.log(err);
+            res.sendStatus(500);
+        });
+});
+
 // POST /reset/start
 app.post('/reset/start', (req, res) => {
     const { email } = req.body;

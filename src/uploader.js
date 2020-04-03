@@ -13,7 +13,6 @@ export default class Uploader extends React.Component {
         this.file = e.target.files[0];
     }
     uploadImage() {
-        // var self = this;
         var formData = new FormData();
         formData.append('file', this.file);
         axios
@@ -40,11 +39,6 @@ export default class Uploader extends React.Component {
                         accept='image/*'
                     />
                     <button onClick={() => this.uploadImage()}>submit</button>
-                    <div
-                        className='close-modal'
-                        onClick={() => this.props.toggleModal()}>
-                        X
-                    </div>
                 </div>
             </div>
         );
