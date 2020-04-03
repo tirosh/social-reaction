@@ -20,7 +20,7 @@ exports.registerUser = (first, last, email, psswd) => {
 // GET USER /////////////////////////
 exports.getUser = email => {
     const q = `
-        SELECT id, first, last, email, img_url
+        SELECT first, last, email, img_url, bio
         FROM users
         WHERE email = $1`;
     return db.query(q, [email]);
@@ -82,7 +82,7 @@ exports.updateUser = (...params) => {
 // LOGIN ////////////////////////////
 exports.login = (email, psswd) => {
     const q = `
-        SELECT id, first, last, email
+        SELECT id
         FROM users
         WHERE email = $1`;
     return getPsswd(email)

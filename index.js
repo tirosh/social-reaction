@@ -85,9 +85,9 @@ app.get('/welcome', (req, res) => {
 app.post('/register', (req, res) => {
     const { first, last, email, psswd } = req.body;
     db.registerUser(first, last, email, psswd)
-        .then(dbData => dbData.rows[0].id)
-        .then(id => {
-            Object.assign(req.session, { id, first, last, email });
+        .then(dbData => {
+            req.session.id = dbData.rows[0].id;
+            // Object.assign(req.session, { id, first, last, email });
             res.sendFile(__dirname + '/index.html');
             res.json({ success: true });
         })
@@ -102,14 +102,13 @@ app.post('/register', (req, res) => {
 // POST /login
 app.post('/login', (req, res) => {
     const { email, psswd } = req.body;
+    if (!email || !psswd)
+        return res.json({ err: 'You need email and password to login.' });
     db.login(email, psswd)
-        .then(dbData =>
-            dbData === undefined
-                ? Promise.reject(`User not found`)
-                : dbData.rows[0]
-        )
-        .then(user => {
-            Object.assign(req.session, user);
+        .then(dbData => dbData.rows[0].id)
+        .then(id => {
+            req.session.id = id;
+            req.session.email = email;
             res.sendFile(__dirname + '/index.html');
             res.json({ success: true });
         })
@@ -128,14 +127,11 @@ app.post('/user', (req, res) => {
                 : dbData.rows[0]
         )
         .then(user => {
-            Object.assign(req.session, user);
-            // console.log('req.session', req.session);
-            const { first, last, img_url } = req.session;
             res.sendFile(__dirname + '/index.html');
-            res.json({ success: true, first, last, img_url });
+            res.json({ success: true, ...user });
         })
         .catch(err => {
-            console.log('error in POST /login:', err);
+            console.log('error in POST /user:', err);
             res.json({ err: err });
         });
 });

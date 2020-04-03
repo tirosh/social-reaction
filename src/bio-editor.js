@@ -54,6 +54,7 @@ export default class BioEditor extends React.Component {
                     />
                     <button onClick={() => this.save()}>save</button>
                     <button onClick={() => this.toggleEditBio()}>cancel</button>
+                    <p>{this.state.bioInput}</p>
                 </>
             );
         }
