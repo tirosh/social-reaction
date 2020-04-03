@@ -26,7 +26,7 @@ exports.getUser = email => {
     return db.query(q, [email]);
 };
 
-exports.addImage = (id, img_url) => {
+exports.setImage = (id, img_url) => {
     const q = `
         UPDATE users
         SET img_url=$2

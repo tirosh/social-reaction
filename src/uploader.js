@@ -20,15 +20,15 @@ export default class Uploader extends React.Component {
             .post('/upload/profile/image', formData)
             .then(({ data }) => {
                 console.log('data.img_url', data.img_url);
-                this.props.updateProfile(data.img_url);
+                this.props.updateProfile({ imgUrl: data.img_url });
                 this.props.toggleModal();
             })
             .catch(err => this.setState({ error: err || 'Try again.' }));
     }
     render() {
         return (
-            <div className='modal'>
-                <div>
+            <div className='modal' onClick={() => this.props.toggleModal()}>
+                <div onClick={e => e.stopPropagation()}>
                     {this.state.error && (
                         <div className='error'>{this.state.error}</div>
                     )}
@@ -37,16 +37,14 @@ export default class Uploader extends React.Component {
                         onChange={e => this.onSelect(e)}
                         type='file'
                         name='file'
-                        key='file'
-                        ref='file'
                         accept='image/*'
                     />
                     <button onClick={() => this.uploadImage()}>submit</button>
-                    {/* <div
+                    <div
                         className='close-modal'
-                        onClick={this.props.toggleModal()}>
+                        onClick={() => this.props.toggleModal()}>
                         X
-                    </div> */}
+                    </div>
                 </div>
             </div>
         );

@@ -147,7 +147,7 @@ app.post(
     s3.upload,
     (req, res) => {
         let imgUrl = conf.s3Url + req.file.filename;
-        db.addImage(req.session.id, imgUrl)
+        db.setImage(req.session.id, imgUrl)
             .then(image => {
                 // console.log('image', image);
                 res.json(image.rows[0]);
