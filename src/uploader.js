@@ -6,9 +6,6 @@ export default class Uploader extends React.Component {
         super(props);
         this.state = {};
     }
-    componentDidMount() {
-        // console.log('Uploader mounted!');
-    }
     onSelect(e) {
         this.file = e.target.files[0];
     }
@@ -16,7 +13,7 @@ export default class Uploader extends React.Component {
         var formData = new FormData();
         formData.append('file', this.file);
         axios
-            .post('/upload/profile/image', formData)
+            .post('/profile/upload/image', formData)
             .then(({ data }) => {
                 console.log('data.img_url', data.img_url);
                 this.props.updateProfile({ imgUrl: data.img_url });

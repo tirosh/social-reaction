@@ -9,7 +9,7 @@ export default class Registration extends React.Component {
     }
     submit() {
         axios
-            .post('/login', {
+            .post('/auth/login', {
                 email: this.state.email,
                 psswd: this.state.psswd
             })

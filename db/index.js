@@ -4,26 +4,26 @@ const db = spicedPg(
         'postgres:postgres:postgres@localhost:5432/socialnetwork'
 );
 // require bcrypt for hashing passwords
-const { hash, compare } = require('./bc');
+const { hash } = require('../utils/bc');
 
-// USER REGISTER ////////////////////
-exports.registerUser = (first, last, email, psswd) => {
+exports.registerUser = async (first, last, email, hashdPsswd) => {
     const q = `
         INSERT INTO users (first, last, email, psswd)
         VALUES ($1, $2, $3, $4)
         RETURNING id`;
-    return hash(psswd).then(hashdPsswd =>
-        db.query(q, [first, last, email, hashdPsswd])
-    );
+    const dbData = await db.query(q, [first, last, email, hashdPsswd]);
+    return dbData.rows[0].id;
 };
 
-// GET USER /////////////////////////
-exports.getUser = email => {
+exports.getUser = async email => {
     const q = `
         SELECT first, last, email, img_url, bio
         FROM users
         WHERE email = $1`;
-    return db.query(q, [email]);
+    const dbData = await db.query(q, [email]);
+    return dbData.rows.length === 0
+        ? Promise.reject(`${email} could not be found.`)
+        : dbData.rows[0];
 };
 
 exports.setImage = (id, img_url) => {
@@ -44,7 +44,6 @@ exports.setBio = (id, bio) => {
     return db.query(q, [id, bio]);
 };
 
-// SET RESET PSSWD CODE /////////////
 exports.setResetCode = (email, code) => {
     const q = `
         INSERT INTO password_reset_codes (email, code)
@@ -52,7 +51,6 @@ exports.setResetCode = (email, code) => {
     return db.query(q, [email, code]);
 };
 
-// GET RESET PSSWD CODE /////////////
 exports.getResetCode = email => {
     const q = `
         SELECT code
@@ -64,7 +62,6 @@ exports.getResetCode = email => {
     return db.query(q, [email]);
 };
 
-// UPDATE PASSWORD //////////////////
 exports.updatePsswd = (email, psswd) => {
     const q = `
         UPDATE users
@@ -73,7 +70,6 @@ exports.updatePsswd = (email, psswd) => {
     return hash(psswd).then(hashdPsswd => db.query(q, [email, hashdPsswd]));
 };
 
-// USER UPDATE //////////////////////
 exports.updateUser = (...params) => {
     const str = params[4] === '' ? params.splice(4) : ', psswd=$5';
     const q = `
@@ -88,26 +84,18 @@ exports.updateUser = (...params) => {
           });
 };
 
-// LOGIN ////////////////////////////
-exports.login = (email, psswd) => {
-    const q = `
-        SELECT id
-        FROM users
-        WHERE email = $1`;
-    return getPsswd(email)
-        .then(dbData =>
-            dbData.rows[0] === undefined
-                ? Promise.reject(`Email doesn't exist.`)
-                : dbData.rows[0].psswd
-        )
-        .then(hashdPsswd => compare(psswd, hashdPsswd))
-        .then(match =>
-            match ? db.query(q, [email]) : Promise.reject(`Wrong password.`)
-        );
+exports.getId = async email => {
+    const q = `SELECT id FROM users WHERE email = $1`;
+    const dbData = await db.query(q, [email]);
+    return dbData.rows.length === 0
+        ? Promise.reject(`${email} could not be found.`)
+        : dbData.rows[0].id;
 };
 
-// PSSWD ////////////////////////////
-const getPsswd = email => {
+exports.getPsswd = async email => {
     const q = `SELECT psswd FROM users WHERE email = $1`;
-    return db.query(q, [email]);
+    const dbData = await db.query(q, [email]);
+    return dbData.rows.length === 0
+        ? Promise.reject(`${email} could not be found.`)
+        : dbData.rows[0].psswd;
 };

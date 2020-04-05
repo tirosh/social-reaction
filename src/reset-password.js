@@ -83,7 +83,7 @@ export default class ResetPassword extends React.Component {
     }
     reset() {
         axios
-            .post('/reset/start', { email: this.state.email })
+            .post('/auth/password/reset', { email: this.state.email })
             .then(({ data }) => {
                 if (data.success) {
                     this.setState({ step: 'verify' });
@@ -94,7 +94,7 @@ export default class ResetPassword extends React.Component {
     }
     verify() {
         axios
-            .post('/reset/verify', {
+            .post('/auth/password/reset/verify', {
                 secret: this.state.secret,
                 psswd: this.state.psswd
             })

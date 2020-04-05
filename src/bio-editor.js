@@ -16,7 +16,7 @@ export default class BioEditor extends React.Component {
     }
     upload() {
         axios
-            .post('/upload/profile/bio', { bio: this.state.bioInput })
+            .post('/profile/upload/bio', { bio: this.state.bioInput })
             .then(({ data }) => {
                 this.props.updateProfile({ bio: data.bio });
                 this.setState({ editBio: false });
