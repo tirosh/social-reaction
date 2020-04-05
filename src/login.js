@@ -7,20 +7,14 @@ export default class Registration extends React.Component {
         super(props);
         this.state = {};
     }
-    submit() {
-        axios
-            .post('/auth/login', {
-                email: this.state.email,
-                psswd: this.state.psswd
-            })
-            .then(({ data }) => {
-                console.log('data.success', data.success);
-                if (data.success) {
-                    location.replace('/');
-                } else {
-                    this.setState({ error: data.err || 'Try again.' });
-                }
-            });
+    async submit() {
+        const { data } = await axios.post('/auth/login', {
+            email: this.state.email,
+            psswd: this.state.psswd
+        });
+        data.success
+            ? this.setState(location.replace('/'))
+            : this.setState({ error: data.err || 'Try again.' });
     }
     handleChange({ target }) {
         this.setState({

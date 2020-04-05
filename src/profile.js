@@ -2,7 +2,6 @@ import React from 'react';
 import BioEditor from './bio-editor';
 
 export default function Profile({ first, last, imgUrl, bio, updateProfile }) {
-    console.log('bio in Profile:', bio);
     return (
         <>
             <h2>Profile function component</h2>

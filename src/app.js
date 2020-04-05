@@ -39,16 +39,18 @@ export default class App extends React.Component {
         };
     }
     componentDidMount() {
-        axios.get('/profile/user').then(({ data }) =>
-            data.success
-                ? this.setState({
-                      first: data.first,
-                      last: data.last,
-                      imgUrl: data.img_url,
-                      bio: data.bio
-                  })
-                : this.setState({ error: data.err || 'Try again.' })
-        );
+        this.getUser();
+    }
+    async getUser() {
+        const { data } = await axios.get('/profile/user');
+        data.success
+            ? this.setState({
+                  first: data.first,
+                  last: data.last,
+                  imgUrl: data.img_url,
+                  bio: data.bio
+              })
+            : this.setState({ error: data.err || 'Try again.' });
     }
     toggleModal() {
         this.setState({ uploaderVisible: !this.state.uploaderVisible });

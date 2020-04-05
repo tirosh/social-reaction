@@ -12,8 +12,7 @@ const s3 = new aws.S3({
 exports.upload = (req, res, next) => {
     if (!req.file) {
         console.log('Multer did not work.');
-        res.sendStatus(500);
-        return;
+        return res.json({ err: 'Please select a file.' });
     }
     const { filename, mimetype, size, path } = req.file;
 

@@ -14,26 +14,25 @@ export default class BioEditor extends React.Component {
     toggleEditBio() {
         this.setState({ editBio: !this.state.editBio });
     }
-    upload() {
-        axios
-            .post('/profile/upload/bio', { bio: this.state.bioInput })
-            .then(({ data }) => {
-                this.props.updateProfile({ bio: data.bio });
-                this.setState({ editBio: false });
-            })
-            .catch(err => this.setState({ error: err || 'Try again.' }));
+    async upload() {
+        const { data } = await axios.post('/profile/upload/bio', {
+            bio: this.state.bioInput
+        });
+        if (data.err) return this.setState({ error: data.err || 'Try again.' });
+        this.props.updateProfile({ bio: data.bio });
+        this.setState({ editBio: false });
     }
     render() {
         const bio = this.props.bio;
-        {
-            this.state.error && <div className='error'>{this.state.error}</div>;
-        }
         return !this.state.editBio ? (
             <>
                 {bio && <p>{bio}</p>}
                 <button onClick={() => this.toggleEditBio()}>
                     {bio ? 'edit' : 'add your bio'}
                 </button>
+                {this.state.error && (
+                    <div className='error'>{this.state.error}</div>
+                )}
             </>
         ) : (
             <>
@@ -46,6 +45,9 @@ export default class BioEditor extends React.Component {
                 />
                 <button onClick={() => this.upload()}>save</button>
                 <button onClick={() => this.toggleEditBio()}>cancel</button>
+                {this.state.error && (
+                    <div className='error'>{this.state.error}</div>
+                )}
             </>
         );
     }

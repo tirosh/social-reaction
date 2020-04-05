@@ -10,7 +10,6 @@ const { hash, compare } = require('../utils/bc');
 const router = new Router();
 module.exports = router;
 
-// POST /register
 router.post('/register', async (req, res, next) => {
     const { first, last, email, psswd } = req.body;
     if (!first || !last || !email || !psswd)
@@ -31,7 +30,6 @@ router.post('/register', async (req, res, next) => {
     }
 });
 
-// POST /login
 router.post('/login', async (req, res) => {
     const { email, psswd } = req.body;
     if (!email || !psswd)
@@ -50,55 +48,51 @@ router.post('/login', async (req, res) => {
     }
 });
 
-// POST /reset/start
-router.post('/password/reset', (req, res) => {
+router.post('/password/reset', async (req, res) => {
     const { email } = req.body;
-    db.getUser(email)
-        .then(dbData =>
-            dbData.rows[0] === undefined
-                ? Promise.reject(`Email is not registered.`)
-                : cryptoRandomString({ length: 6 })
-        )
-        .then(secretCode =>
-            db.setResetCode(email, secretCode).then(() => {
-                // Temporarily disabled to avoid email spam.
-                ////////////////////////////////////////////
-                // ses.sendEmail(
-                //     'mail@tillgrosch.com',
-                //     'Email verification',
-                //     `To verify your email address, please enter the following super secret code: ${secretCode}`
-                // ).then(resp => {
-                // console.log('email has been sent.', resp);
-                console.log('secretCode', secretCode);
-                req.session.email = email;
-                res.json({ success: true });
-                // });
-            })
-        )
-        .catch(err => {
-            console.log('error in POST /reset/start:', err);
-            res.json({ err: err });
+    if (!email)
+        return res.json({
+            err: `We can't check nothing. Please enter an email address.`
         });
+    try {
+        await db.getUser(email);
+        const secretCode = await cryptoRandomString({ length: 6 });
+        await db.setPsswdResetCode(email, secretCode);
+        // Temporarily disabled to avoid email spam.
+        ////////////////////////////////////////////
+        // const resp = await ses.sendEmail(
+        //     'mail@tillgrosch.com',
+        //     'Email verification',
+        //     `To verify your email address, please enter the following super secret code: ${secretCode}`
+        // );
+        // console.log('email has been sent.', resp);
+        console.log('secretCode', secretCode);
+        req.session.email = email;
+        res.json({ success: true });
+    } catch (err) {
+        console.log('ERROR in POST /password/reset:', err);
+        res.json({ err: err });
+    }
 });
 
-// POST /reset/verify ////////////////
-router.post('/password/reset/verify', (req, res) => {
+router.post('/password/reset/verify', async (req, res) => {
     const { secret, psswd } = req.body;
-    db.getResetCode(req.session.email)
-        .then(dbData =>
-            dbData.rows[0].code !== secret
-                ? Promise.reject(`You have entered the wrong secret.`)
-                : db
-                      .updatePsswd(req.session.email, psswd)
-                      .then(() => res.json({ success: true }))
-        )
-        .catch(err => {
-            console.log('error in POST /reset/verify:', err);
-            res.json({ err: err });
+    if (!secret || !psswd)
+        return res.json({
+            err: 'Please enter the secret and your new password.'
         });
+    try {
+        const code = await db.getPsswdResetCode(req.session.email);
+        if (code !== secret)
+            return res.json({ err: 'You have entered the wrong secret.' });
+        await db.updatePsswd(req.session.email, psswd);
+        res.json({ success: true });
+    } catch (err) {
+        console.log('ERROR in POST /password/reset/verify:', err);
+        res.json({ err: err });
+    }
 });
 
-// GET /logout ///////////////////////
 router.get('/logout', (req, res) => {
     req.session = null;
     res.redirect('/welcome');

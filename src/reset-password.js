@@ -81,32 +81,22 @@ export default class ResetPassword extends React.Component {
             );
         }
     }
-    reset() {
-        axios
-            .post('/auth/password/reset', { email: this.state.email })
-            .then(({ data }) => {
-                if (data.success) {
-                    this.setState({ step: 'verify' });
-                } else {
-                    this.setState({ error: data.err || 'Try again.' });
-                }
-            });
+    async reset() {
+        const { data } = await axios.post('/auth/password/reset', {
+            email: this.state.email
+        });
+        data.success
+            ? this.setState({ step: 'verify', error: null })
+            : this.setState({ error: data.err || 'Try again.' });
     }
-    verify() {
-        axios
-            .post('/auth/password/reset/verify', {
-                secret: this.state.secret,
-                psswd: this.state.psswd
-            })
-            .then(({ data }) => {
-                console.log('hello?', data);
-                if (data.success) {
-                    console.log('data.success', data.success);
-                    this.setState({ step: 'success' });
-                } else if (data.err) {
-                    this.setState({ error: data.err || 'Try again.' });
-                }
-            });
+    async verify() {
+        const { data } = await axios.post('/auth/password/reset/verify', {
+            secret: this.state.secret,
+            psswd: this.state.psswd
+        });
+        data.success
+            ? this.setState({ step: 'success', error: null })
+            : this.setState({ error: data.err || 'Try again.' });
     }
     handleChange({ target }) {
         this.setState({ [target.name]: target.value });

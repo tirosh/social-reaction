@@ -9,17 +9,13 @@ export default class Uploader extends React.Component {
     onSelect(e) {
         this.file = e.target.files[0];
     }
-    uploadImage() {
-        var formData = new FormData();
+    async uploadImage() {
+        const formData = new FormData();
         formData.append('file', this.file);
-        axios
-            .post('/profile/upload/image', formData)
-            .then(({ data }) => {
-                console.log('data.img_url', data.img_url);
-                this.props.updateProfile({ imgUrl: data.img_url });
-                this.props.toggleModal();
-            })
-            .catch(err => this.setState({ error: err || 'Try again.' }));
+        const { data } = await axios.post('/profile/upload/image', formData);
+        if (data.err) return this.setState({ error: data.err || 'Try again.' });
+        this.props.updateProfile({ imgUrl: data.img_url });
+        this.props.toggleModal();
     }
     render() {
         return (

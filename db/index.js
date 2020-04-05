@@ -26,32 +26,34 @@ exports.getUser = async email => {
         : dbData.rows[0];
 };
 
-exports.setImage = (id, img_url) => {
+exports.setImage = async (id, img_url) => {
     const q = `
         UPDATE users
         SET img_url=$2
         WHERE id=$1
         RETURNING img_url`;
-    return db.query(q, [id, img_url]);
+    const dbData = await db.query(q, [id, img_url]);
+    return dbData.rows[0];
 };
 
-exports.setBio = (id, bio) => {
+exports.setBio = async (id, bio) => {
     const q = `
         UPDATE users
         SET bio=$2
         WHERE id=$1
         RETURNING bio`;
-    return db.query(q, [id, bio]);
+    const dbData = await db.query(q, [id, bio]);
+    return dbData.rows[0];
 };
 
-exports.setResetCode = (email, code) => {
+exports.setPsswdResetCode = (email, code) => {
     const q = `
         INSERT INTO password_reset_codes (email, code)
         VALUES ($1, $2)`;
     return db.query(q, [email, code]);
 };
 
-exports.getResetCode = email => {
+exports.getPsswdResetCode = async email => {
     const q = `
         SELECT code
         FROM password_reset_codes
@@ -59,7 +61,10 @@ exports.getResetCode = email => {
         AND CURRENT_TIMESTAMP - created_at < INTERVAL '10 minutes'
         ORDER BY created_at DESC
         LIMIT 1`;
-    return db.query(q, [email]);
+    const dbData = await db.query(q, [email]);
+    return dbData.rows.length === 0
+        ? Promise.reject(`Found no secret.`)
+        : dbData.rows[0].code;
 };
 
 exports.updatePsswd = (email, psswd) => {

@@ -1,4 +1,4 @@
-// ../routes/user.js
+// ../routes/profile.js
 const Router = require('express-promise-router');
 const db = require('../db');
 const conf = require('../config');
@@ -9,7 +9,7 @@ const uidSafe = require('uid-safe');
 const path = require('path');
 const diskStorage = multer.diskStorage({
     destination: function(req, file, callback) {
-        callback(null, __dirname + '/uploads');
+        callback(null, __dirname + '/../uploads');
     },
     filename: function(req, file, callback) {
         uidSafe(24).then(function(uid) {
@@ -33,36 +33,36 @@ router.get('/user', async (req, res) => {
         res.sendFile(__dirname + '/index.html');
         res.json({ success: true, ...user });
     } catch (err) {
-        console.log('ERROR in POST /user:', err);
+        console.log('ERROR in POST /profile/user:', err);
         res.json({ err: err });
     }
 });
 
-// POST /upload/profile/image
-router.post('/upload/image', uploader.single('file'), s3.upload, (req, res) => {
-    let imgUrl = conf.s3Url + req.file.filename;
-    db.setImage(req.session.id, imgUrl)
-        .then(image => {
-            // console.log('image', image);
-            res.json(image.rows[0]);
-        })
-        .catch(err => {
-            console.log(err);
-            res.sendStatus(500);
-        });
-});
+// POST /upload/image
+router.post(
+    '/upload/image',
+    uploader.single('file'),
+    s3.upload,
+    async (req, res) => {
+        const imgUrl = conf.s3Url + req.file.filename;
+        try {
+            const image = await db.setImage(req.session.id, imgUrl);
+            res.json(image);
+        } catch (err) {
+            console.log('ERROR in POST /profile/upload/image:', err);
+            res.json({ err: err });
+        }
+    }
+);
 
-// POST /upload/profile/bio
-router.post('/upload/bio', (req, res) => {
-    console.log('req.body', req.body);
+// POST /upload/bio
+router.post('/upload/bio', async (req, res) => {
     if (!req.body.bio) return res.json({ err: 'Write something, or cancel.' });
-    db.setBio(req.session.id, req.body.bio)
-        .then(bio => {
-            // console.log('image', image);
-            res.json(bio.rows[0]);
-        })
-        .catch(err => {
-            console.log(err);
-            res.sendStatus(500);
-        });
+    try {
+        const bio = await db.setBio(req.session.id, req.body.bio);
+        res.json(bio);
+    } catch (err) {
+        console.log('ERROR in POST /profile/upload/bio:', err);
+        res.json({ err: err });
+    }
 });
