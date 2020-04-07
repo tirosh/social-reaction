@@ -1,10 +1,10 @@
 import React from 'react';
 import { BrowserRouter, Route } from 'react-router-dom';
 import axios from './net/axios';
-import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import Profile from './profile';
 import ProfilePic from './profile-pic';
+import FindPeople from './find-people';
 import OtherProfile from './other-profile';
 import Uploader from './uploader';
 
@@ -95,6 +95,17 @@ export default class App extends React.Component {
                             updateProfile={(feature) =>
                                 this.updateProfile(feature)
                             }
+                        />
+                    )}
+                />
+
+                <Route
+                    path='/users'
+                    render={(props) => (
+                        <FindPeople
+                            key={props.match.url}
+                            match={props.match}
+                            history={props.history}
                         />
                     )}
                 />

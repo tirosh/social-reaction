@@ -15,7 +15,7 @@ exports.registerUser = async (first, last, email, hashdPsswd) => {
     return dbData.rows[0].id;
 };
 
-exports.getUser = async email => {
+exports.getUser = async (email) => {
     const q = `
         SELECT id, first, last, img_url, bio
         FROM users
@@ -26,7 +26,7 @@ exports.getUser = async email => {
         : dbData.rows[0];
 };
 
-exports.getOtherUser = async id => {
+exports.getUserById = async (id) => {
     const q = `
         SELECT id, first, last, img_url, bio
         FROM users
@@ -35,6 +35,19 @@ exports.getOtherUser = async id => {
     return dbData.rows.length === 0
         ? Promise.reject(`${id} could not be found.`)
         : dbData.rows[0];
+};
+
+exports.getUsersByName = async (q) => {
+    const dbData = await db.query(
+        `SELECT id, first, last, img_url 
+        FROM users 
+        WHERE first ILIKE $1 OR last ILIKE $1
+        ORDER BY first`,
+        [q + '%']
+    );
+    return dbData.rows.length === 0
+        ? Promise.reject(`No names found that begin with these letters: ${q}`)
+        : dbData.rows;
 };
 
 exports.setImage = async (id, img_url) => {
@@ -64,7 +77,7 @@ exports.setPsswdResetCode = (email, code) => {
     return db.query(q, [email, code]);
 };
 
-exports.getPsswdResetCode = async email => {
+exports.getPsswdResetCode = async (email) => {
     const q = `
         SELECT code
         FROM password_reset_codes
@@ -83,7 +96,7 @@ exports.updatePsswd = (email, psswd) => {
         UPDATE users
         SET psswd=$2
         WHERE email=$1`;
-    return hash(psswd).then(hashdPsswd => db.query(q, [email, hashdPsswd]));
+    return hash(psswd).then((hashdPsswd) => db.query(q, [email, hashdPsswd]));
 };
 
 exports.updateUser = (...params) => {
@@ -94,13 +107,13 @@ exports.updateUser = (...params) => {
         WHERE id=$1`;
     return params[4] === undefined
         ? db.query(q, params)
-        : hash(params[4]).then(hashdPsswd => {
+        : hash(params[4]).then((hashdPsswd) => {
               params[4] = hashdPsswd;
               return db.query(q, params);
           });
 };
 
-exports.getId = async email => {
+exports.getId = async (email) => {
     const q = `SELECT id FROM users WHERE email = $1`;
     const dbData = await db.query(q, [email]);
     return dbData.rows.length === 0
@@ -108,7 +121,7 @@ exports.getId = async email => {
         : dbData.rows[0].id;
 };
 
-exports.getPsswd = async email => {
+exports.getPsswd = async (email) => {
     const q = `SELECT psswd FROM users WHERE email = $1`;
     const dbData = await db.query(q, [email]);
     return dbData.rows.length === 0

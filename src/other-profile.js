@@ -12,7 +12,7 @@ export default class OtherProfile extends React.Component {
     }
     async getUser(id) {
         const { data } = await axios.get(`/profile/user/${id}`);
-        console.log('data', data);
+        // console.log('data', data);
         data.redirect
             ? this.props.history.push('/')
             : this.setState({
