@@ -8,18 +8,18 @@ const multer = require('multer');
 const uidSafe = require('uid-safe');
 const path = require('path');
 const diskStorage = multer.diskStorage({
-    destination: function(req, file, callback) {
+    destination: function (req, file, callback) {
         callback(null, __dirname + '/../uploads');
     },
-    filename: function(req, file, callback) {
-        uidSafe(24).then(function(uid) {
+    filename: function (req, file, callback) {
+        uidSafe(24).then(function (uid) {
             callback(null, uid + path.extname(file.originalname));
         });
-    }
+    },
 });
 const uploader = multer({
     storage: diskStorage,
-    limits: { fileSize: 2097152 }
+    limits: { fileSize: 2097152 },
 });
 //////////////////////////////////////
 
@@ -38,13 +38,14 @@ router.get('/user', async (req, res) => {
 });
 
 router.get('/user/:id', async (req, res) => {
+    if (parseInt(req.params.id) === req.session.id)
+        return res.json({ redirect: true });
     try {
-        const user = await db.getOtherUser(req.body.id);
-        res.sendFile(__dirname + '/index.html');
+        const user = await db.getOtherUser(req.params.id);
         res.json({ success: true, ...user });
     } catch (err) {
         console.log('ERROR in POST /profile/user/:id:', err);
-        res.json({ err: err });
+        res.json({ redirect: true });
     }
 });
 

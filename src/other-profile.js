@@ -8,22 +8,31 @@ export default class OtherProfile extends React.Component {
         this.state = {};
     }
     componentDidMount() {
-        const id = this.props.match.params.id;
-        axios.get(`/user/${id}.json`).then(data => {
-            if (data.redirect) {
-                // redirect
-                this.props.history.push('/');
-            } else {
-                this.setState(data);
-            }
-        });
+        this.getUser(this.props.match.params.id);
+    }
+    async getUser(id) {
+        const { data } = await axios.get(`/profile/user/${id}`);
+        console.log('data', data);
+        data.redirect
+            ? this.props.history.push('/')
+            : this.setState({
+                  id: data.id,
+                  first: data.first,
+                  last: data.last,
+                  imgUrl: data.img_url,
+                  bio: data.bio,
+              });
     }
     render() {
+        const { first, last, imgUrl, bio } = this.state;
         return (
             <>
-                <h2>Profile function component</h2>
+                <h2>OtherProfile</h2>
                 <div className='user profile image medium'>
-                    <img src={imgUrl || '/img/lego.svg'} alt={first} />
+                    <img
+                        src={imgUrl || '/img/lego.svg'}
+                        alt={`${first} ${last}`}
+                    />
                 </div>
                 <div>
                     <h3>
@@ -31,16 +40,7 @@ export default class OtherProfile extends React.Component {
                     </h3>
                     {bio && <p>{bio}</p>}
                 </div>
-                {this.state.error && (
-                    <div className='error'>{this.state.error}</div>
-                )}
             </>
-
-            // <div>
-            //     <h1>
-            //         {this.state.first} {this.state.last}
-            //     </h1>
-            // </div>
         );
     }
 }

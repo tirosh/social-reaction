@@ -4,6 +4,7 @@ import axios from './net/axios';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import Profile from './profile';
+import ProfilePic from './profile-pic';
 import OtherProfile from './other-profile';
 import Uploader from './uploader';
 
@@ -38,7 +39,7 @@ export default class App extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            uploaderVisible: false
+            uploaderVisible: false,
         };
     }
     componentDidMount() {
@@ -52,7 +53,7 @@ export default class App extends React.Component {
                   first: data.first,
                   last: data.last,
                   imgUrl: data.img_url,
-                  bio: data.bio
+                  bio: data.bio,
               })
             : this.setState({ error: data.err || 'Try again.' });
     }
@@ -67,18 +68,19 @@ export default class App extends React.Component {
         return (
             <BrowserRouter>
                 <Title>Welcome to Immunity</Title>
+
                 <div>
                     <img src='/img/logo.png' alt='Logo' />
                     <a href='/auth/logout'>log out</a>
                 </div>
-                <div
+
+                <ProfilePic
+                    first={this.state.first}
+                    last={this.state.last}
+                    imgUrl={this.state.imgUrl}
                     onClick={() => this.toggleModal()}
-                    className='user profile image small'>
-                    <img
-                        src={this.state.imgUrl || '/img/lego.svg'}
-                        alt={this.state.first}
-                    />
-                </div>
+                />
+
                 <Route
                     exact
                     path='/'
@@ -90,18 +92,27 @@ export default class App extends React.Component {
                             imgUrl={this.state.imgUrl}
                             bio={this.state.bio}
                             // setBio={this.setBio}
-                            updateProfile={feature =>
+                            updateProfile={(feature) =>
                                 this.updateProfile(feature)
                             }
                         />
                     )}
                 />
 
-                <Route path='/user/:id' component={OtherProfile} />
+                <Route
+                    path='/user/:id'
+                    render={(props) => (
+                        <OtherProfile
+                            key={props.match.url}
+                            match={props.match}
+                            history={props.history}
+                        />
+                    )}
+                />
 
                 {this.state.uploaderVisible && (
                     <Uploader
-                        updateProfile={profile => this.updateProfile(profile)}
+                        updateProfile={(profile) => this.updateProfile(profile)}
                         toggleModal={() => this.toggleModal()}
                     />
                 )}
