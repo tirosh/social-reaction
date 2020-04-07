@@ -52,12 +52,16 @@
     "jest": {
         "setupFiles": [
             "./utils/jest.js"
+        ],
+        "setupFilesAfterEnv": [
+            "@testing-library/jest-dom/extend-expect"
         ]
     },
     "keywords": [],
     "author": "",
     "license": "ISC",
     "devDependencies": {
+        "@testing-library/jest-dom": "^5.3.0",
         "eslint-config-prettier": "^6.10.1"
     }
 }

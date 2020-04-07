@@ -26,7 +26,6 @@ const uploader = multer({
 const router = new Router();
 module.exports = router;
 
-// POST /user
 router.get('/user', async (req, res) => {
     try {
         const user = await db.getUser(req.session.email);
@@ -38,7 +37,17 @@ router.get('/user', async (req, res) => {
     }
 });
 
-// POST /upload/image
+router.get('/user/:id', async (req, res) => {
+    try {
+        const user = await db.getOtherUser(req.body.id);
+        res.sendFile(__dirname + '/index.html');
+        res.json({ success: true, ...user });
+    } catch (err) {
+        console.log('ERROR in POST /profile/user/:id:', err);
+        res.json({ err: err });
+    }
+});
+
 router.post(
     '/upload/image',
     uploader.single('file'),
@@ -55,7 +64,6 @@ router.post(
     }
 );
 
-// POST /upload/bio
 router.post('/upload/bio', async (req, res) => {
     if (!req.body.bio) return res.json({ err: 'Write something, or cancel.' });
     try {

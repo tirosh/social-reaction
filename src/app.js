@@ -1,8 +1,11 @@
 import React from 'react';
+import { BrowserRouter, Route } from 'react-router-dom';
 import axios from './net/axios';
-import Profile from './profile';
-import Uploader from './uploader';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import Profile from './profile';
+import OtherProfile from './other-profile';
+import Uploader from './uploader';
 
 // Create a Title component that'll render an <h1> tag with some styles
 const Title = styled.h1`
@@ -45,6 +48,7 @@ export default class App extends React.Component {
         const { data } = await axios.get('/profile/user');
         data.success
             ? this.setState({
+                  id: data.id,
                   first: data.first,
                   last: data.last,
                   imgUrl: data.img_url,
@@ -61,7 +65,7 @@ export default class App extends React.Component {
     }
     render() {
         return (
-            <>
+            <BrowserRouter>
                 <Title>Welcome to Immunity</Title>
                 <div>
                     <img src='/img/logo.png' alt='Logo' />
@@ -75,20 +79,33 @@ export default class App extends React.Component {
                         alt={this.state.first}
                     />
                 </div>
-                <Profile
-                    first={this.state.first}
-                    last={this.state.last}
-                    imgUrl={this.state.imgUrl}
-                    bio={this.state.bio}
-                    updateProfile={profile => this.updateProfile(profile)}
+                <Route
+                    exact
+                    path='/'
+                    render={() => (
+                        <Profile
+                            id={this.state.id}
+                            first={this.state.first}
+                            last={this.state.last}
+                            imgUrl={this.state.imgUrl}
+                            bio={this.state.bio}
+                            // setBio={this.setBio}
+                            updateProfile={feature =>
+                                this.updateProfile(feature)
+                            }
+                        />
+                    )}
                 />
+
+                <Route path='/user/:id' component={OtherProfile} />
+
                 {this.state.uploaderVisible && (
                     <Uploader
                         updateProfile={profile => this.updateProfile(profile)}
                         toggleModal={() => this.toggleModal()}
                     />
                 )}
-            </>
+            </BrowserRouter>
         );
     }
 }

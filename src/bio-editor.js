@@ -36,13 +36,16 @@ export default class BioEditor extends React.Component {
             </>
         ) : (
             <>
-                <input
-                    type='textarea'
-                    name='bio'
-                    key='bio'
-                    onChange={e => this.handleChange(e)}
-                    placeholder='Once upon a time...'
-                />
+                <label>
+                    Bio:
+                    <textarea
+                        name='bio'
+                        key='bio'
+                        placeholder='Once upon a time...'
+                        value={this.state.bioInput || bio}
+                        onChange={e => this.handleChange(e)}
+                    />
+                </label>
                 <button onClick={() => this.upload()}>save</button>
                 <button onClick={() => this.toggleEditBio()}>cancel</button>
                 {this.state.error && (

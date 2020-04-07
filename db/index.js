@@ -17,12 +17,23 @@ exports.registerUser = async (first, last, email, hashdPsswd) => {
 
 exports.getUser = async email => {
     const q = `
-        SELECT first, last, email, img_url, bio
+        SELECT id, first, last, img_url, bio
         FROM users
         WHERE email = $1`;
     const dbData = await db.query(q, [email]);
     return dbData.rows.length === 0
         ? Promise.reject(`${email} could not be found.`)
+        : dbData.rows[0];
+};
+
+exports.getOtherUser = async id => {
+    const q = `
+        SELECT id, first, last, img_url, bio
+        FROM users
+        WHERE id = $1`;
+    const dbData = await db.query(q, [id]);
+    return dbData.rows.length === 0
+        ? Promise.reject(`${id} could not be found.`)
         : dbData.rows[0];
 };
 

@@ -94,6 +94,8 @@ router.post('/password/reset/verify', async (req, res) => {
 });
 
 router.get('/logout', (req, res) => {
+    console.log('GET /logout was called');
+
     req.session = null;
     res.redirect('/welcome');
 });

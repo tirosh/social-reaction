@@ -15,7 +15,8 @@ const {
     errorHandler
 } = require('./utils/middleware');
 const compression = require('compression');
-const mountRoutes = require('./routes');
+const auth = require('./routes/auth');
+const profile = require('./routes/profile');
 
 app.use(express.static('./public'));
 app.use(bodyParser.json());
@@ -46,22 +47,19 @@ if (process.env.NODE_ENV != 'production') {
 
 // if NOT LOGGED IN: serve index.html (stay where you are), else: redirect to /
 app.get('/welcome', (req, res) => {
-    if (!req.session.id) {
-        res.sendFile(__dirname + '/index.html');
-    } else {
-        res.redirect('/');
-    }
+    !req.session.id
+        ? res.sendFile(__dirname + '/index.html')
+        : res.redirect('/');
 });
 
-mountRoutes(app);
+app.use('/auth', auth);
+app.use('/profile', profile);
 
 // if LOGGED IN: serve index.html, else: redirect to /welcome
 app.get('*', (req, res) => {
-    if (req.session.id) {
-        res.sendFile(__dirname + '/index.html');
-    } else {
-        res.redirect('/welcome');
-    }
+    req.session.id
+        ? res.sendFile(__dirname + '/index.html')
+        : res.redirect('/welcome');
 });
 
 app.use(logErrors);
