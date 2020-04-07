@@ -76,15 +76,22 @@ router.get('/user/:id', async (req, res) => {
     }
 });
 
-router.get('/users/:q', async (req, res) => {
-    console.log('req.params', req.params);
+router.get('/users', async (req, res) => {
     try {
-        const people = await db.getUsersByName(req.params.q);
-        // console.log('people', people);
+        const people = await db.getUsersLatest(3);
         res.json({ success: true, people });
     } catch (err) {
         console.log('ERROR in POST /profile/users/:q:', err);
         res.json({ err: err });
     }
-    // res.sendStatus(200);
+});
+
+router.get('/users/:q', async (req, res) => {
+    try {
+        const people = await db.getUsersByName(req.params.q);
+        res.json({ success: true, people });
+    } catch (err) {
+        console.log('ERROR in POST /profile/users/:q:', err);
+        res.json({ err: err });
+    }
 });

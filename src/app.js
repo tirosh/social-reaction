@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Route } from 'react-router-dom';
+import { BrowserRouter, Route, Link } from 'react-router-dom';
 import axios from './net/axios';
 import styled from 'styled-components';
 import Profile from './profile';
@@ -67,12 +67,17 @@ export default class App extends React.Component {
     render() {
         return (
             <BrowserRouter>
-                <Title>Welcome to Immunity</Title>
+                {/* <Title>Welcome to Immunity</Title> */}
 
-                <div>
-                    <img src='/img/logo.png' alt='Logo' />
-                    <a href='/auth/logout'>log out</a>
-                </div>
+                <ul>
+                    {/* <img src='/img/logo.png' alt='Logo' /> */}
+                    <li>
+                        <a href='/auth/logout'>log out</a>
+                    </li>
+                    <li>
+                        <Link to='/users'>Find other users</Link>
+                    </li>
+                </ul>
 
                 <ProfilePic
                     first={this.state.first}

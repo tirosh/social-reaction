@@ -6,7 +6,7 @@ export default function Profile({ first, last, imgUrl, bio, updateProfile }) {
         <>
             <h2>Profile function component</h2>
             <div className='user profile image medium'>
-                <img src={imgUrl || '/img/lego.svg'} alt={first} />
+                <img src={imgUrl || '/img/lego.svg'} alt={`${first} ${last}`} />
             </div>
             <div>
                 <h3>
