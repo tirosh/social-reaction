@@ -9,11 +9,11 @@ import OtherProfile from './other-profile';
 import Uploader from './uploader';
 
 // Create a Title component that'll render an <h1> tag with some styles
-const Title = styled.h1`
-    font-size: 1.5em;
-    text-align: center;
-    color: palevioletred;
-`;
+// const Title = styled.h1`
+//     font-size: 1.5em;
+//     text-align: center;
+//     color: palevioletred;
+// `;
 // // Define our button, but with the use of props.theme this time
 // const Button = styled.button`
 //     font-size: 1em;
@@ -96,7 +96,6 @@ export default class App extends React.Component {
                             last={this.state.last}
                             imgUrl={this.state.imgUrl}
                             bio={this.state.bio}
-                            // setBio={this.setBio}
                             updateProfile={(feature) =>
                                 this.updateProfile(feature)
                             }

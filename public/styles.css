@@ -12,7 +12,7 @@ body {
         rgb(255, 255, 255) 40%,
         rgba(255, 255, 255, 0.2) 100%
     );
-    height: 100vh;
+    height: 100%;
 }
 
 .welcome {
@@ -61,6 +61,7 @@ body {
 }
 .form input {
     margin-bottom: 1em;
+    display: block;
 }
 
 input,

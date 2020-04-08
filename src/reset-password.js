@@ -1,107 +1,82 @@
-import React from 'react';
-import axios from './net/axios';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import axios from './net/axios';
+import { useStatefulFields } from './hooks/useStatefulFields';
 
-export default class ResetPassword extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            step: 'start'
-        };
-    }
-    getCurrentDisplay() {
-        const step = this.state.step;
-        if (step == 'start') {
-            return (
-                <>
-                    <h1>Reset Password</h1>
-                    <h2>
-                        Please enter the email address with which you registered
-                    </h2>
-                    {this.state.error && (
-                        <div className='error'>{this.state.error}</div>
-                    )}
-                    <input
-                        name='email'
-                        key='email'
-                        onChange={e => this.handleChange(e)}
-                        placeholder='email'
-                    />
-                    <button onClick={() => this.reset()}>reset password</button>
-                    <p>
-                        or <Link to='/login'>log in</Link>
-                    </p>
-                    <p>
-                        or <Link to='/'>register</Link>
-                    </p>
-                </>
-            );
-        } else if (step == 'verify') {
-            return (
-                <>
-                    <h1>Reset Password</h1>
-                    <h2>
-                        An email was sent to you. Please enter the secret here:
-                    </h2>
-                    {this.state.error && (
-                        <div className='error'>{this.state.error}</div>
-                    )}
-                    <input
-                        name='secret'
-                        key='secret'
-                        onChange={e => this.handleChange(e)}
-                        placeholder='super secret code'
-                    />
-                    <h2>Enter your new password here:</h2>
-                    <input
-                        name='psswd'
-                        key='psswd'
-                        onChange={e => this.handleChange(e)}
-                        placeholder='password'
-                    />
-                    <button onClick={() => this.verify()}>submit</button>
-                    <p>
-                        or <Link to='/login'>log in</Link>
-                    </p>
-                    <p>
-                        or <Link to='/'>register</Link>
-                    </p>
-                </>
-            );
-        } else if (step == 'success') {
-            return (
-                <>
-                    <h1>Reset Password</h1>
-                    <h2>It is done.</h2>
-                    <p>
-                        Please <Link to='/login'>log in</Link> with your new
-                        password.
-                    </p>
-                </>
-            );
-        }
-    }
-    async reset() {
-        const { data } = await axios.post('/auth/password/reset', {
-            email: this.state.email
-        });
-        data.success
-            ? this.setState({ step: 'verify', error: null })
-            : this.setState({ error: data.err || 'Try again.' });
-    }
-    async verify() {
-        const { data } = await axios.post('/auth/password/reset/verify', {
-            secret: this.state.secret,
-            psswd: this.state.psswd
-        });
-        data.success
-            ? this.setState({ step: 'success', error: null })
-            : this.setState({ error: data.err || 'Try again.' });
-    }
-    handleChange({ target }) {
-        this.setState({ [target.name]: target.value });
-    }
-    render() {
-        return <div>{this.getCurrentDisplay()}</div>;
+export default function ResetPassword() {
+    const [step, setStep] = useState('start');
+    const [error, setError] = useState('');
+    const [values, handleChange] = useStatefulFields();
+
+    const reset = async () => {
+        const { data } = await axios.post('/auth/password/reset', values);
+        setError('');
+        data.success ? setStep('verify') : setError(data.err || 'Try again.');
+    };
+
+    const verify = async () => {
+        const { data } = await axios.post(
+            '/auth/password/reset/verify',
+            values
+        );
+        setError('');
+        data.success ? setStep('success') : setError(data.err || 'Try again.');
+    };
+
+    if (step == 'start') {
+        return (
+            <div>
+                <h1>Reset Password</h1>
+                <h3>
+                    Please enter the email address with which you registered
+                </h3>
+                {error && <div className='error'>{error}</div>}
+                <label>
+                    Email:
+                    <input name='email' type='email' onChange={handleChange} />
+                </label>
+                <button onClick={reset}>reset password</button>
+                <p>
+                    or <Link to='/login'>log in</Link>
+                </p>
+                <p>
+                    or <Link to='/welcome'>register</Link>
+                </p>
+            </div>
+        );
+    } else if (step == 'verify') {
+        return (
+            <div>
+                <h1>Reset Password</h1>
+                <h3>An email was sent to you. Please enter:</h3>
+                {error && <div className='error'>{error}</div>}
+                <label>
+                    Super secret:
+                    <input name='secret' key='secret' onChange={handleChange} />
+                </label>
+                <label>
+                    New password:
+                    <input name='psswd' type='psswd' onChange={handleChange} />
+                </label>
+                <button onClick={verify}>submit</button>
+                <p>
+                    or <Link to='/login'>log in</Link>
+                </p>
+                <p>
+                    or <Link to='/welcome'>register</Link>
+                </p>
+            </div>
+        );
+    } else if (step == 'success') {
+        return (
+            <div>
+                <h1>Reset Password</h1>
+                <h2>It is done.</h2>
+                <p>
+                    Please <Link to='/login'>log in</Link> with your new
+                    password.
+                </p>
+            </div>
+        );
     }
 }
