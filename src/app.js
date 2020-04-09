@@ -9,6 +9,40 @@ import FindPeople from './find-people';
 import OtherProfile from './other-profile';
 import Uploader from './uploader';
 
+// function App() {
+//     const [query, setQuery] = useState('');
+//     const [getData, { data, error }] = useDBdata('/profile/user', { users: [] });
+
+//     return (
+//         <>
+//             <form
+//                 onSubmit={(e) => {
+//                     e.preventDefault();
+//                     getData(`/profile/user/${query}`);
+//                 }}>
+//                 <input
+//                     type='text'
+//                     value={query}
+//                     onChange={(e) => setQuery(e.target.value)}
+//                 />
+//                 <button type='submit'>Search</button>
+//             </form>
+//             {error && <div>Uh, err, something went wrong ...</div>}
+//             <ul>
+//                 {data.users.map((item) => (
+//                     <li key={item.objectID}>
+//                         <a href={item.url}>{item.title}</a>
+//                     </li>
+//                 ))}
+//             </ul>
+//         </>
+//     );
+// }
+
+// export default App;
+
+///////////////////////////////////////////////////////////////////////////////
+
 export default class App extends React.Component {
     constructor(props) {
         super(props);
