@@ -12,7 +12,7 @@ const {
     makeCookiesSafe,
     logErrors,
     clientErrorHandler,
-    errorHandler
+    errorHandler,
 } = require('./utils/middleware');
 const compression = require('compression');
 const auth = require('./routes/auth');
@@ -23,7 +23,7 @@ app.use(bodyParser.json());
 app.use(
     cookieSession({
         secret: sessionSecret,
-        maxAge: 1000 * 60 * 60 * 24 * 14 // ~ 1.2 billion milliseconds = 14 days
+        maxAge: 1000 * 60 * 60 * 24 * 14, // ~ 1.2 billion milliseconds = 14 days
     })
 );
 app.use(csurf());
@@ -38,7 +38,7 @@ if (process.env.NODE_ENV != 'production') {
     app.use(
         '/bundle.js',
         require('http-proxy-middleware')({
-            target: 'http://localhost:8081/'
+            target: 'http://localhost:8081/',
         })
     );
 } else {
@@ -66,6 +66,6 @@ app.use(logErrors);
 app.use(clientErrorHandler);
 app.use(errorHandler);
 
-app.listen(port, function() {
+app.listen(port, function () {
     console.log(`I'm listening on port: ${port}`);
 });

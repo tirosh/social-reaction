@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from '../net/axios';
 
-export const useDBdata = (initUrl, initData) => {
+export const useDBdata = (initUrl = '/', initData = {}) => {
     const [data, setData] = useState(initData);
     const [url, setUrl] = useState(initUrl);
     const [error, setError] = useState(false);
@@ -21,6 +21,5 @@ export const useDBdata = (initUrl, initData) => {
             unmounted = true;
         };
     }, [url]);
-
     return [{ data, error }, setUrl];
 };

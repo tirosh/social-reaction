@@ -1,46 +1,35 @@
-import React from 'react';
-import axios from './net/axios';
+import React, { useEffect } from 'react';
+import { useDBdata } from './hooks/useDBdata';
 
-export default class OtherProfile extends React.Component {
-    constructor(props) {
-        super(props);
+function OtherProfile(props) {
+    const [{ data, error }, getData] = useDBdata(
+        `/profile/user/${props.match.params.id}`
+    );
 
-        this.state = {};
-    }
-    componentDidMount() {
-        this.getUser(this.props.match.params.id);
-    }
-    async getUser(id) {
-        const { data } = await axios.get(`/profile/user/${id}`);
-        // console.log('data', data);
-        data.redirect
-            ? this.props.history.push('/')
-            : this.setState({
-                  id: data.id,
-                  first: data.first,
-                  last: data.last,
-                  imgUrl: data.img_url,
-                  bio: data.bio,
-              });
-    }
-    render() {
-        const { first, last, imgUrl, bio } = this.state;
-        return (
-            <>
-                <h2>OtherProfile</h2>
-                <div className='user profile image medium'>
-                    <img
-                        src={imgUrl || '/img/lego.svg'}
-                        alt={`${first} ${last}`}
-                    />
-                </div>
-                <div>
-                    <h3>
-                        {first} {last}
-                    </h3>
-                    {bio && <p>{bio}</p>}
-                </div>
-            </>
-        );
-    }
+    useEffect(() => {
+        if (data.redirect) props.history.push('/');
+    });
+
+    const { first, last, img_url, bio } = data;
+    return (
+        <>
+            <h2>OtherProfile</h2>
+            {data.err && <div className='error'>{data.err}</div>}
+            {error && <div>Uh, err, something went wrong ...</div>}
+            <div className='user profile image medium'>
+                <img
+                    src={img_url || '/img/lego.svg'}
+                    alt={`${first} ${last}`}
+                />
+            </div>
+            <div>
+                <h3>
+                    {first} {last}
+                </h3>
+                {bio && <p>{bio}</p>}
+            </div>
+        </>
+    );
 }
+
+export default OtherProfile;
