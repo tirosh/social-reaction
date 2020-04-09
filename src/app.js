@@ -1,39 +1,13 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter, Route, Link } from 'react-router-dom';
 import axios from './net/axios';
 import styled from 'styled-components';
+import { useDBdata } from './hooks/useDBdata';
 import Profile from './profile';
 import ProfilePic from './profile-pic';
 import FindPeople from './find-people';
 import OtherProfile from './other-profile';
 import Uploader from './uploader';
-
-// Create a Title component that'll render an <h1> tag with some styles
-// const Title = styled.h1`
-//     font-size: 1.5em;
-//     text-align: center;
-//     color: palevioletred;
-// `;
-// // Define our button, but with the use of props.theme this time
-// const Button = styled.button`
-//     font-size: 1em;
-//     margin: 1em;
-//     padding: 0.25em 1em;
-//     border-radius: 3px;
-//     /* Color the border and text with theme.main */
-//     color: ${props => props.theme.main};
-//     border: 2px solid ${props => props.theme.main};
-// `;
-// // We are passing a default theme for Buttons that arent wrapped in the ThemeProvider
-// Button.defaultProps = {
-//     theme: {
-//         main: 'palevioletred'
-//     }
-// };
-// // Define what props.theme will look like
-// const theme = {
-//     main: 'mediumseagreen'
-// };
 
 export default class App extends React.Component {
     constructor(props) {

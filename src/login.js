@@ -10,15 +10,26 @@ export default function Login() {
     return (
         <div>
             {error && <div className='error'>{error}</div>}
-            <label>
-                Email:
-                <input name='email' type='email' onChange={handleChange} />
-            </label>
-            <label>
-                Email:
-                <input name='psswd' type='password' onChange={handleChange} />
-            </label>
-            <button onClick={submit}>log in</button>
+
+            <form
+                onSubmit={(e) => {
+                    e.preventDefault;
+                    submit;
+                }}>
+                <label>
+                    Email:
+                    <input name='email' type='email' onChange={handleChange} />
+                </label>
+                <label>
+                    Email:
+                    <input
+                        name='psswd'
+                        type='password'
+                        onChange={handleChange}
+                    />
+                </label>
+                <button onClick={submit}>log in</button>
+            </form>
             <p>
                 or <Link to='/welcome'>register</Link>
             </p>
