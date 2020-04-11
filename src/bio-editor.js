@@ -1,57 +1,51 @@
-import React from 'react';
-import axios from './net/axios';
+import React, { useState, useEffect } from 'react';
+import { useDBset } from './hooks/useDB';
 
-export default class BioEditor extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            editBio: false
-        };
-    }
-    handleChange({ target }) {
-        this.setState({ bioInput: target.value });
-    }
-    toggleEditBio() {
-        this.setState({ editBio: !this.state.editBio });
-    }
-    async upload() {
-        const { data } = await axios.post('/profile/upload/bio', {
-            bio: this.state.bioInput
+function BioEditor(props) {
+    const [{ data, error }, setData] = useDBset();
+    const [bioInput, setBioInput] = useState();
+    const [editBio, setEditBio] = useState(false);
+
+    useEffect(() => {
+        if (data.bio) props.updateProfile({ bio: data.bio });
+    }, [data.bio]);
+
+    const submit = () => {
+        setData({
+            url: '/profile/upload/bio',
+            values: { bio: bioInput },
         });
-        if (data.err) return this.setState({ error: data.err || 'Try again.' });
-        this.props.updateProfile({ bio: data.bio });
-        this.setState({ editBio: false });
-    }
-    render() {
-        const bio = this.props.bio;
-        return !this.state.editBio ? (
-            <>
-                {bio && <p>{bio}</p>}
-                <button onClick={() => this.toggleEditBio()}>
-                    {bio ? 'edit' : 'add your bio'}
-                </button>
-                {this.state.error && (
-                    <div className='error'>{this.state.error}</div>
-                )}
-            </>
-        ) : (
-            <>
-                <label>
-                    Bio:
-                    <textarea
-                        name='bio'
-                        key='bio'
-                        placeholder='Once upon a time...'
-                        value={this.state.bioInput || bio}
-                        onChange={e => this.handleChange(e)}
-                    />
-                </label>
-                <button onClick={() => this.upload()}>save</button>
-                <button onClick={() => this.toggleEditBio()}>cancel</button>
-                {this.state.error && (
-                    <div className='error'>{this.state.error}</div>
-                )}
-            </>
-        );
-    }
+        setEditBio(!editBio);
+    };
+
+    const bio = props.bio;
+    return !editBio ? (
+        <>
+            {bio && <p>{bioInput}</p>}
+            <button onClick={() => setEditBio(!editBio)}>
+                {bio ? 'edit' : 'add your bio'}
+            </button>
+        </>
+    ) : (
+        <>
+            <label>
+                Bio:
+                <textarea
+                    name='bio'
+                    key='bio'
+                    placeholder='Once upon a time...'
+                    value={bioInput}
+                    onChange={(e) => setBioInput(e.target.value)}
+                />
+            </label>
+            <button onClick={submit}>save</button>
+            <button onClick={() => setEditBio(!editBio)}>cancel</button>
+            {data.err && <div className='error'>{data.err}</div>}
+            {error && (
+                <div className='error'>Uh, err, something went wrong ...</div>
+            )}
+        </>
+    );
 }
+
+export default BioEditor;

@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { useDBdata } from './hooks/useDBdata';
+import { useDBget } from './hooks/useDB';
 
 function FindPeople() {
     const [query, setQuery] = useState('');
-    const [{ data, error }, getData] = useDBdata('/profile/users/', {
+    const [{ data, error }, getData] = useDBget('/profile/users/', {
         people: [],
     });
 
@@ -17,9 +17,11 @@ function FindPeople() {
             <h1>Find People</h1>
             <h3>Are you looking for someone in particular?</h3>
             <input onChange={handleChange} placeholder='Enter name' />
-            {query === '' && <h3>Or checkout who just joined!</h3>}
+            {!query && <h3>Or checkout who just joined!</h3>}
             {data.err && <div className='error'>{data.err}</div>}
-            {error && <div>Uh, err, something went wrong ...</div>}
+            {error && (
+                <div className='error'>Uh, err, something went wrong ...</div>
+            )}
             {data.people &&
                 data.people.map((user) => {
                     return (

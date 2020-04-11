@@ -55,6 +55,8 @@ app.get('/welcome', (req, res) => {
 app.use('/auth', auth);
 app.use('/profile', profile);
 
+app.post('/bounce', (req, res) => res.sendStatus(200));
+
 // if LOGGED IN: serve index.html, else: redirect to /welcome
 app.get('*', (req, res) => {
     req.session.id

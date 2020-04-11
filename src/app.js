@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { BrowserRouter, Route, Link } from 'react-router-dom';
 import axios from './net/axios';
 import styled from 'styled-components';
-import { useDBdata } from './hooks/useDBdata';
+import { useDBget } from './hooks/useDB';
 import Profile from './profile';
 import ProfilePic from './profile-pic';
 import FindPeople from './find-people';
@@ -11,7 +11,7 @@ import Uploader from './uploader';
 
 // function App() {
 //     const [query, setQuery] = useState('');
-//     const [getData, { data, error }] = useDBdata('/profile/user', { users: [] });
+//     const [getData, { data, error }] = useDBget('/profile/user', { users: [] });
 
 //     return (
 //         <>

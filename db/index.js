@@ -79,7 +79,7 @@ exports.setBio = async (id, bio) => {
         SET bio=$2
         WHERE id=$1
         RETURNING bio`;
-    const dbData = await db.query(q, [id, bio]);
+    const dbData = await db.query(q, [id, bio || '']);
     return dbData.rows[0];
 };
 

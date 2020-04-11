@@ -54,7 +54,6 @@ router.post(
 );
 
 router.post('/upload/bio', async (req, res) => {
-    if (!req.body.bio) return res.json({ err: 'Write something, or cancel.' });
     try {
         const bio = await db.setBio(req.session.id, req.body.bio);
         res.json(bio);

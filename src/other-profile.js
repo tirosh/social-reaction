@@ -1,14 +1,14 @@
 import React, { useEffect } from 'react';
-import { useDBdata } from './hooks/useDBdata';
+import { useDBget } from './hooks/useDB';
 
 function OtherProfile(props) {
-    const [{ data, error }, getData] = useDBdata(
+    const [{ data, error }, getData] = useDBget(
         `/profile/user/${props.match.params.id}`
     );
 
     useEffect(() => {
         if (data.redirect) props.history.push('/');
-    });
+    }, [data]);
 
     const { first, last, img_url, bio } = data;
     return (

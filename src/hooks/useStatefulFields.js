@@ -1,8 +1,8 @@
 // src/hooks/useStatefulFields.js
 import React, { useState } from 'react';
 
-export function useStatefulFields() {
-    const [values, setValues] = useState({});
+export function useStatefulFields(initValues = {}) {
+    const [values, setValues] = useState(initValues);
 
     const handleChange = (e) => {
         setValues({ ...values, [e.target.name]: e.target.value });
