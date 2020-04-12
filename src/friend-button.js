@@ -2,9 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useDBget, useDBset } from './hooks/useDB';
 
 function FriendButton(props) {
-    const [dbGet, getData] = useDBget(
-        `/profile/friend/${props.match.params.id}`
-    );
+    const [dbGet, getData] = useDBget(`/profile/friend/${props.id}`);
     const [dbSet, setData] = useDBset();
     const [btnTxt, setBtnTxt] = useState('');
     const status = {
@@ -15,24 +13,19 @@ function FriendButton(props) {
     };
 
     useEffect(() => {
-        console.log('data', dbGet.data);
-        if (dbGet.data.friend) {
-            if (dbGet.data.friend.status === null) setBtnTxt(status.none);
-            if (dbGet.data.friend.status === true) setBtnTxt(status.cancel);
-            console.log(
-                'dbGet.data.friend.recipient_id',
-                dbGet.data.friend.recipient_id
-            );
-            console.log('props.match.params.id', props.match.params.id);
-            if (dbGet.data.friend.status === false) {
-                if (dbGet.data.friend.recipient_id == props.match.params.id) {
+        let friend = dbGet.data.friend;
+        if (friend) {
+            if (friend.status === null) setBtnTxt(status.none);
+            if (friend.status === true) setBtnTxt(status.cancel);
+            if (friend.status === false) {
+                if (friend.recipient_id == props.id) {
                     setBtnTxt(status.pending);
                 } else {
                     setBtnTxt(status.add);
                 }
             }
         }
-    }, [dbGet.data]);
+    }, [dbGet.data.friend]);
 
     const handleClick = async () => {
         let url = '';
@@ -48,7 +41,7 @@ function FriendButton(props) {
         }
         setData({
             url: url,
-            values: { id: props.match.params.id },
+            values: { id: props.id },
         });
     };
 

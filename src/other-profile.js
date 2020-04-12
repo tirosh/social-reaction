@@ -23,7 +23,7 @@ function OtherProfile(props) {
                     alt={`${first} ${last}`}
                 />
             </div>
-            <FriendButton match={props.match} />
+            <FriendButton id={props.match.params.id} />
             <div>
                 <h3>
                     {first} {last}
