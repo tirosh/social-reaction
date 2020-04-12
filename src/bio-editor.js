@@ -3,8 +3,12 @@ import { useDBset } from './hooks/useDB';
 
 function BioEditor(props) {
     const [{ data, error }, setData] = useDBset();
-    const [bioInput, setBioInput] = useState();
     const [editBio, setEditBio] = useState(false);
+    const [bioInput, setBioInput] = useState();
+
+    useEffect(() => {
+        setBioInput(props.bio);
+    }, [props.bio]);
 
     useEffect(() => {
         if (data.bio) props.updateProfile({ bio: data.bio });
@@ -15,13 +19,14 @@ function BioEditor(props) {
             url: '/profile/upload/bio',
             values: { bio: bioInput },
         });
+        bio = bioInput;
         setEditBio(!editBio);
     };
 
-    const bio = props.bio;
+    let bio = props.bio;
     return !editBio ? (
         <>
-            {bio && <p>{bioInput}</p>}
+            {bio && <p>{bio}</p>}
             <button onClick={() => setEditBio(!editBio)}>
                 {bio ? 'edit' : 'add your bio'}
             </button>

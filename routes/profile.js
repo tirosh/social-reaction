@@ -94,3 +94,43 @@ router.get('/users/:q', async (req, res) => {
         res.json({ err: err });
     }
 });
+
+router.get('/friend/:id', async (req, res) => {
+    try {
+        const friend = await db.getFriend(req.session.id, req.params.id);
+        res.json({ friend });
+    } catch (err) {
+        console.log('ERROR in POST /friend/:id:', err);
+        res.json({ err: err });
+    }
+});
+
+router.post('/request-friend', async (req, res) => {
+    try {
+        const friend = await db.requestFriend(req.session.id, req.body.id);
+        res.json({ friend });
+    } catch (err) {
+        console.log('ERROR in POST /request-friend:', err);
+        res.json({ err: err });
+    }
+});
+
+router.post('/add-friend', async (req, res) => {
+    try {
+        const friend = await db.addFriend(req.session.id, req.body.id);
+        res.json({ friend });
+    } catch (err) {
+        console.log('ERROR in POST /add-friend:', err);
+        res.json({ err: err });
+    }
+});
+
+router.post('/cancel-friend', async (req, res) => {
+    try {
+        const friend = await db.cancelFriend(req.session.id, req.body.id);
+        res.json({ friend });
+    } catch (err) {
+        console.log('ERROR in POST /cancel-friend:', err);
+        res.json({ err: err });
+    }
+});

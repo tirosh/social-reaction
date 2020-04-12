@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDBget } from './hooks/useDB';
+import FriendButton from './friend-button';
 
 function OtherProfile(props) {
     const [{ data, error }, getData] = useDBget(
@@ -22,6 +23,7 @@ function OtherProfile(props) {
                     alt={`${first} ${last}`}
                 />
             </div>
+            <FriendButton match={props.match} />
             <div>
                 <h3>
                     {first} {last}

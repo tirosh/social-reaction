@@ -10,6 +10,8 @@ export const useDBset = (
     const [error, setError] = useState(false);
 
     useEffect(() => {
+        console.log('req.url', req.url);
+        console.log('req.values', req.values);
         let skip = false;
         (async () => {
             setError(false);

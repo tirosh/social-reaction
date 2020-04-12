@@ -15,7 +15,7 @@ export default function Login() {
                 <input name='email' type='email' onChange={handleChange} />
             </label>
             <label>
-                Email:
+                Password:
                 <input name='psswd' type='password' onChange={handleChange} />
             </label>
             <button onClick={submit}>log in</button>

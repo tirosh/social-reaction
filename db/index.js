@@ -141,3 +141,43 @@ exports.getPsswd = async (email) => {
         ? Promise.reject(`${email} could not be found.`)
         : dbData.rows[0].psswd;
 };
+
+exports.getFriend = async (id, friendId) => {
+    const q = `
+        SELECT * FROM friendships 
+        WHERE (recipient_id = $1 AND sender_id = $2)
+        OR (recipient_id = $2 AND sender_id = $1)`;
+    const dbData = await db.query(q, [id, friendId]);
+    if (dbData.rows.length === 0) {
+        dbData.rows.unshift({ status: null });
+    } else {
+        dbData.rows[0].status = dbData.rows[0].accepted;
+    }
+    return dbData.rows[0];
+};
+
+exports.requestFriend = async (id, friendId) => {
+    const q = `
+        INSERT INTO friendships (sender_id, recipient_id)
+        VALUES ($1, $2)`;
+    await db.query(q, [id, friendId]);
+    return { status: false };
+};
+
+exports.addFriend = async (id, friendId) => {
+    const q = `
+        UPDATE friendships
+        SET accepted=true
+        WHERE recipient_id = $1 AND sender_id = $2`;
+    await db.query(q, [id, friendId]);
+    return { status: true };
+};
+
+exports.cancelFriend = async (id, friendId) => {
+    const q = `
+        DELETE FROM friendships
+        WHERE (recipient_id = $1 AND sender_id = $2)
+        OR (recipient_id = $2 AND sender_id = $1)`;
+    await db.query(q, [id, friendId]);
+    return { status: null };
+};
