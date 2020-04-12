@@ -18,40 +18,38 @@ function FriendButton(props) {
         console.log('data', dbGet.data);
         if (dbGet.data.friend) {
             if (dbGet.data.friend.status === null) setBtnTxt(status.none);
-            if (dbGet.data.friend.status === false) setBtnTxt(status.pending);
             if (dbGet.data.friend.status === true) setBtnTxt(status.cancel);
+            console.log(
+                'dbGet.data.friend.recipient_id',
+                dbGet.data.friend.recipient_id
+            );
+            console.log('props.match.params.id', props.match.params.id);
+            if (dbGet.data.friend.status === false) {
+                if (dbGet.data.friend.recipient_id == props.match.params.id) {
+                    setBtnTxt(status.pending);
+                } else {
+                    setBtnTxt(status.add);
+                }
+            }
         }
-
-        // axios request to server to determine
-        // initial relationship of the two users
-        // based on response we get from server
-        // we update btnTxt
     }, [dbGet.data]);
-    // console.log('data', data);
 
-    const handleClick = () => {
+    const handleClick = async () => {
         let url = '';
-        if (btnTxt === status.none) url = '/profile/request-friend';
-        if (btnTxt === status.pending) url = '/profile/cancel-friend';
-        if (btnTxt === status.cancel) url = '/profile/cancel-friend';
-
-        console.log('url', url);
+        if (btnTxt === status.none) {
+            url = '/profile/request-friend';
+            setBtnTxt(status.pending);
+        } else if (btnTxt === status.pending || btnTxt === status.cancel) {
+            url = '/profile/cancel-friend';
+            setBtnTxt(status.none);
+        } else if (btnTxt === status.add) {
+            url = '/profile/add-friend';
+            setBtnTxt(status.cancel);
+        }
         setData({
             url: url,
             values: { id: props.match.params.id },
         });
-
-        /*
-            if btnTxt == 'End Friendship' 
-            then tell server to end friendship
-
-            if btnTxt == 'Accept Friendship'
-            then tell server to begin friendship
-            
-            Clicking on button does two things:
-                1.) make request to server 
-                2.) change what the button says (update btnTxt)
-        */
     };
 
     return <button onClick={handleClick}>{btnTxt}</button>;
