@@ -82,10 +82,7 @@ router.get('/friends-wannabes', async (req, res) => {
             db.getFriends(req.session.id),
             db.getWannabes(req.session.id),
         ]);
-        console.log('friends', friends);
-        console.log('wannabes', wannabes);
-        // res.sendStatus(200);
-        res.json([friends, wannabes]);
+        res.json([...friends, ...wannabes]);
     } catch (err) {
         console.log('ERROR in GET /people/friends-wannabes:', err);
         res.json({ err: err });

@@ -161,7 +161,7 @@ exports.requestFriend = async (id, friendId) => {
         INSERT INTO friendships (sender_id, recipient_id)
         VALUES ($1, $2)`;
     await db.query(q, [id, friendId]);
-    return { status: false };
+    return { status: false, id: friendId };
 };
 
 exports.addFriend = async (id, friendId) => {
@@ -170,7 +170,7 @@ exports.addFriend = async (id, friendId) => {
         SET accepted=true
         WHERE recipient_id = $1 AND sender_id = $2`;
     await db.query(q, [id, friendId]);
-    return { status: true };
+    return { status: true, id: friendId };
 };
 
 exports.cancelFriend = async (id, friendId) => {
@@ -179,7 +179,7 @@ exports.cancelFriend = async (id, friendId) => {
         WHERE (recipient_id = $1 AND sender_id = $2)
         OR (recipient_id = $2 AND sender_id = $1)`;
     await db.query(q, [id, friendId]);
-    return { status: null };
+    return { status: null, id: friendId };
 };
 
 exports.getFriends = async (id) => {
