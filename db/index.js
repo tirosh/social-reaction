@@ -190,7 +190,7 @@ exports.getFriends = async (id) => {
         ON (accepted = true AND recipient_id = $1 AND sender_id = users.id)
         OR (accepted = true AND sender_id = $1 AND recipient_id = users.id)`;
     const dbData = await db.query(q, [id]);
-    return dbData.rows[0];
+    return dbData.rows;
 };
 
 exports.getWannabes = async (id) => {
@@ -200,5 +200,5 @@ exports.getWannabes = async (id) => {
         JOIN users
         ON (accepted = false AND recipient_id = $1 AND sender_id = users.id)`;
     const dbData = await db.query(q, [id]);
-    return dbData.rows[0];
+    return dbData.rows;
 };

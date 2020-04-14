@@ -1,4 +1,5 @@
 // scr/redux/actions.js
+import axios from '../net/axios';
 import { useDBget, useDBset } from '../hooks/useDB';
 
 export function receiveFriendsWannabes() {
@@ -10,9 +11,10 @@ export function receiveFriendsWannabes() {
     //    property whose value is the array of friends and wannabes from the
     //    server
     return axios.get('/people/friends-wannabes').then(({ data }) => {
+        console.log('data', data);
         return {
             type: 'RECEIVE_FRIENDS_WANNABES',
-            someData: data,
+            friendsWannabes: data,
         };
     });
 }
@@ -21,7 +23,7 @@ export function acceptFriendRequest(id) {
     // will make POST request to the server to accept the friendship. The
     // function should return an object with type property and the id of the
     // user whose friendship was accepted.
-    return axios.get('/some-route').then(({ data }) => {
+    return axios.post('/people/add-friend').then(({ data }) => {
         return {
             type: 'ACCEPT_FRIEND_REQUEST',
             someData: data,
@@ -32,7 +34,7 @@ export function acceptFriendRequest(id) {
 export function unfriend(id) {
     // will make POST to the server to end the friendship. It should return an
     // object with type and the id of the user whose friendship was ended.
-    return axios.get('/some-route').then(({ data }) => {
+    return axios.get('/people/cancel-friend').then(({ data }) => {
         return {
             type: 'UNFRIEND',
             someData: data,

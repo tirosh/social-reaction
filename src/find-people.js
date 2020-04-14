@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useDBget } from './hooks/useDB';
+import { Link } from 'react-router-dom';
 
 function FindPeople() {
     const [query, setQuery] = useState('');
@@ -9,7 +10,7 @@ function FindPeople() {
 
     const handleChange = (e) => {
         setQuery(e.target.value);
-        getData(`/profile/users/${e.target.value}`);
+        getData(`/people/users/${e.target.value}`);
     };
 
     return (
@@ -27,7 +28,9 @@ function FindPeople() {
                     return (
                         <div key={user.id}>
                             <p>
-                                {user.first} {user.last}
+                                <Link to={`/user/${user.id}`}>
+                                    {user.first} {user.last}
+                                </Link>
                             </p>
                             <div className='user profile image medium'>
                                 <img

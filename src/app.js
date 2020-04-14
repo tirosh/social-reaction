@@ -8,6 +8,7 @@ import ProfilePic from './profile-pic';
 import FindPeople from './find-people';
 import OtherProfile from './other-profile';
 import Uploader from './uploader';
+import Friends from './friends';
 
 // function App() {
 //     const [query, setQuery] = useState('');
@@ -54,7 +55,7 @@ export default class App extends React.Component {
         this.getUser();
     }
     async getUser() {
-        const { data } = await axios.get('/people/user');
+        const { data } = await axios.get('/profile/user');
         data.success
             ? this.setState({
                   id: data.id,
@@ -129,6 +130,17 @@ export default class App extends React.Component {
                     path='/user/:id'
                     render={(props) => (
                         <OtherProfile
+                            key={props.match.url}
+                            match={props.match}
+                            history={props.history}
+                        />
+                    )}
+                />
+
+                <Route
+                    path='/friends'
+                    render={(props) => (
+                        <Friends
                             key={props.match.url}
                             match={props.match}
                             history={props.history}

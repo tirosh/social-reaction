@@ -4,7 +4,7 @@ import FriendButton from './friend-button';
 
 function OtherProfile(props) {
     const [{ data, error }, getData] = useDBget(
-        `/profile/user/${props.match.params.id}`
+        `/people/user/${props.match.params.id}`
     );
 
     useEffect(() => {

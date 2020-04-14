@@ -3,6 +3,7 @@ export default function reducer(state = {}, action) {
     if (action === 'RECEIVE_FRIENDS_WANNABES') {
         // should clone the global state, and add to it a property called
         // friendsWannabes whose value is the array of friends and wannabes
+        return { ...state, friendsWannabes: action.friendsWannabes };
     }
     if (action === 'ACCEPT_FRIEND_REQUEST') {
         //  should clone the global state, and the clone should have all the
