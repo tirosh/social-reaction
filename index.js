@@ -17,6 +17,7 @@ const {
 const compression = require('compression');
 const auth = require('./routes/auth');
 const profile = require('./routes/profile');
+const people = require('./routes/people');
 
 app.use(express.static('./public'));
 app.use(bodyParser.json());
@@ -54,6 +55,7 @@ app.get('/welcome', (req, res) => {
 
 app.use('/auth', auth);
 app.use('/profile', profile);
+app.use('/people', people);
 
 app.post('/bounce', (req, res) => res.sendStatus(200));
 

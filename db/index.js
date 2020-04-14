@@ -181,3 +181,24 @@ exports.cancelFriend = async (id, friendId) => {
     await db.query(q, [id, friendId]);
     return { status: null };
 };
+
+exports.getFriends = async (id) => {
+    const q = `
+        SELECT users.id, first, last, img_url, accepted
+        FROM friendships
+        JOIN users
+        ON (accepted = true AND recipient_id = $1 AND sender_id = users.id)
+        OR (accepted = true AND sender_id = $1 AND recipient_id = users.id)`;
+    const dbData = await db.query(q, [id]);
+    return dbData.rows[0];
+};
+
+exports.getWannabes = async (id) => {
+    const q = `
+        SELECT users.id, first, last, img_url, accepted
+        FROM friendships
+        JOIN users
+        ON (accepted = false AND recipient_id = $1 AND sender_id = users.id)`;
+    const dbData = await db.query(q, [id]);
+    return dbData.rows[0];
+};

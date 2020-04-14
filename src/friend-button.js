@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useDBget, useDBset } from './hooks/useDB';
 
 function FriendButton(props) {
-    const [dbGet, getData] = useDBget(`/profile/friend/${props.id}`);
+    const [dbGet, getData] = useDBget(`/people/friend/${props.id}`);
     const [dbSet, setData] = useDBset();
     const [btnTxt, setBtnTxt] = useState('');
     const status = {
@@ -30,13 +30,13 @@ function FriendButton(props) {
     const handleClick = async () => {
         let url = '';
         if (btnTxt === status.none) {
-            url = '/profile/request-friend';
+            url = '/people/request-friend';
             setBtnTxt(status.pending);
         } else if (btnTxt === status.pending || btnTxt === status.cancel) {
-            url = '/profile/cancel-friend';
+            url = '/people/cancel-friend';
             setBtnTxt(status.none);
         } else if (btnTxt === status.add) {
-            url = '/profile/add-friend';
+            url = '/people/add-friend';
             setBtnTxt(status.cancel);
         }
         setData({

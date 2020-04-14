@@ -11,7 +11,7 @@ import Uploader from './uploader';
 
 // function App() {
 //     const [query, setQuery] = useState('');
-//     const [getData, { data, error }] = useDBget('/profile/user', { users: [] });
+//     const [getData, { data, error }] = useDBget('/people/user', { users: [] });
 
 //     return (
 //         <>
@@ -54,7 +54,7 @@ export default class App extends React.Component {
         this.getUser();
     }
     async getUser() {
-        const { data } = await axios.get('/profile/user');
+        const { data } = await axios.get('/people/user');
         data.success
             ? this.setState({
                   id: data.id,
@@ -84,6 +84,9 @@ export default class App extends React.Component {
                     </li>
                     <li>
                         <Link to='/users'>Find other users</Link>
+                    </li>
+                    <li>
+                        <Link to='/friends'>Friends</Link>
                     </li>
                 </ul>
 

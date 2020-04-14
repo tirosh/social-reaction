@@ -3,7 +3,7 @@ import { useDBget } from './hooks/useDB';
 
 function FindPeople() {
     const [query, setQuery] = useState('');
-    const [{ data, error }, getData] = useDBget('/profile/users/', {
+    const [{ data, error }, getData] = useDBget('/people/users/', {
         people: [],
     });
 
