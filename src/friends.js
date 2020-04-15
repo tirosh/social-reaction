@@ -1,31 +1,29 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import {
     receiveFriendsWannabes,
     acceptFriendRequest,
     unfriend,
 } from './redux/actions/friendsActions';
-import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
 
-function Friends(props) {
+function Friends() {
     const dispatch = useDispatch();
-    const friendsWannabes = useSelector(
-        (state) => state.friends.friendsWannabes
-    );
-    const [friends, setFriends] = useState([]);
-    const [wannabes, setWannabes] = useState([]);
-
+    const friends = useSelector((state) => {
+        if (state.friends.friendsWannabes)
+            return state.friends.friendsWannabes.filter(
+                (person) => person.accepted
+            );
+    });
+    const wannabes = useSelector((state) => {
+        if (state.friends.friendsWannabes)
+            return state.friends.friendsWannabes.filter(
+                (person) => !person.accepted
+            );
+    });
     useEffect(() => {
         dispatch(receiveFriendsWannabes());
     }, []);
-
-    useEffect(() => {
-        console.log('friendsWannabes', friendsWannabes);
-        if (friendsWannabes) {
-            setFriends(friendsWannabes.filter((person) => person.accepted));
-            setWannabes(friendsWannabes.filter((person) => !person.accepted));
-        }
-    }, [friendsWannabes]);
 
     return (
         <div>
