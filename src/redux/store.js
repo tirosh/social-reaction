@@ -7,5 +7,5 @@ const store = createStore(
     rootReducer,
     composeWithDevTools(applyMiddleware(reduxPromise))
 );
-
+// console.log('store.getState()', store.getState());
 export default store;

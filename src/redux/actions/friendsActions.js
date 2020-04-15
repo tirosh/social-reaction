@@ -8,9 +8,10 @@ import {
 
 export function receiveFriendsWannabes() {
     return axios.get('/people/friends-wannabes').then(({ data }) => {
+        console.log('data', data);
         return {
             type: RECEIVE_FRIENDS_WANNABES,
-            friendsWannabes: data,
+            payload: data,
         };
     });
 }

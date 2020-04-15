@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -9,18 +9,17 @@ import {
 
 function Friends() {
     const dispatch = useDispatch();
-    const friends = useSelector((state) => {
-        if (state.friends.friendsWannabes)
-            return state.friends.friendsWannabes.filter(
-                (person) => person.accepted
-            );
-    });
-    const wannabes = useSelector((state) => {
-        if (state.friends.friendsWannabes)
-            return state.friends.friendsWannabes.filter(
-                (person) => !person.accepted
-            );
-    });
+    const friends = useSelector(
+        (state) =>
+            state.people.friendsWannabes &&
+            state.people.friendsWannabes.filter((person) => person.accepted)
+    );
+    const wannabes = useSelector(
+        (state) =>
+            state.people.friendsWannabes &&
+            state.people.friendsWannabes.filter((person) => !person.accepted)
+    );
+
     useEffect(() => {
         dispatch(receiveFriendsWannabes());
     }, []);

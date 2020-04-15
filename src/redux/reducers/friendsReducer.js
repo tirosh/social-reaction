@@ -9,7 +9,7 @@ const initialState = {};
 
 export default function (state = initialState, action) {
     if (action.type === RECEIVE_FRIENDS_WANNABES) {
-        return { ...state, friendsWannabes: action.friendsWannabes };
+        return { ...state, friendsWannabes: action.payload };
     }
     if (action.type === ACCEPT_FRIEND_REQUEST) {
         console.log('action', action);

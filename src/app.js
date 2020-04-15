@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter, Route, Link } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { getUser } from './redux/actions/userActions';
+
 import { useDBget } from './hooks/useDB';
+
 import Profile from './profile';
 import ProfilePic from './profile-pic';
 import FindPeople from './find-people';
@@ -9,19 +13,28 @@ import Uploader from './uploader';
 import Friends from './friends';
 
 function App() {
-    const [{ data, error }, getData] = useDBget('/profile/user');
+    const dispatch = useDispatch();
+    const user = useSelector((state) => state.user);
+
+    // const [{ data, error }, getData] = useDBget('/profile/user');
     const [uploaderVisible, setuploaderVisible] = useState(false);
-    const [user, setUser] = useState({});
+    // const [user, setUser] = useState({});
 
     useEffect(() => {
-        setUser({
-            id: data.id,
-            first: data.first,
-            last: data.last,
-            bio: data.bio,
-            imgUrl: data.img_url,
-        });
-    }, [data]);
+        dispatch(getUser());
+
+        // setUser({
+        //     id: data.id,
+        //     first: data.first,
+        //     last: data.last,
+        //     bio: data.bio,
+        //     imgUrl: data.img_url,
+        // });
+    }, []);
+
+    useEffect(() => {
+        console.log('user', user);
+    }, [user]);
 
     const toggleModal = () => {
         setuploaderVisible(!uploaderVisible);
@@ -29,7 +42,7 @@ function App() {
 
     const updateProfile = (trait) => {
         console.log('updateProfile with:', trait);
-        setUser({ ...user, trait });
+        // setUser({ ...user, trait });
     };
 
     return (
@@ -53,20 +66,20 @@ function App() {
                 onClick={toggleModal}
             />
 
-            <Route
+            {/* <Route
                 exact
                 path='/'
                 render={() => (
                     <Profile
-                        id={user.id}
-                        first={user.first}
-                        last={user.last}
-                        imgUrl={user.imgUrl}
-                        bio={user.bio}
-                        updateProfile={(trait) => updateProfile(trait)}
+                    id={user.id}
+                    first={user.first}
+                    last={user.last}
+                    imgUrl={user.imgUrl}
+                    bio={user.bio}
+                    updateProfile={(trait) => updateProfile(trait)}
                     />
                 )}
-            />
+            /> */}
 
             <Route
                 path='/users'
