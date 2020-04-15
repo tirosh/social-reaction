@@ -1,6 +1,9 @@
 const express = require('express');
 const app = (exports = express());
 const port = process.env.PORT || 8080;
+const server = require('http').Server(app);
+const io = require('socket.io')(server, { origins: 'localhost:8080' });
+
 const cookieSession = require('cookie-session');
 const csurf = require('csurf');
 const { SESSION_SECRET: sessionSecret } = process.env.SESSION_SECRET
@@ -70,6 +73,22 @@ app.use(logErrors);
 app.use(clientErrorHandler);
 app.use(errorHandler);
 
-app.listen(port, function () {
+server.listen(port, function () {
     console.log(`I'm listening on port: ${port}`);
+});
+
+io.on('connection', function (socket) {
+    console.log(`socket with the id ${socket.id} is now connected`);
+
+    socket.on('disconnect', function () {
+        console.log(`socket with the id ${socket.id} is now disconnected`);
+    });
+
+    socket.on('thanks', function (data) {
+        console.log(data);
+    });
+
+    socket.emit('welcome', {
+        message: 'Welome. It is nice to see you',
+    });
 });

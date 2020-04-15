@@ -1,9 +1,17 @@
-// src/redux/reducer.js
-export default function reducer(state = {}, action) {
-    if (action.type === 'RECEIVE_FRIENDS_WANNABES') {
+// src/reducers/friendsReducer.js
+import {
+    RECEIVE_FRIENDS_WANNABES,
+    ACCEPT_FRIEND_REQUEST,
+    UNFRIEND,
+} from '../types';
+
+const initialState = {};
+
+export default function (state = initialState, action) {
+    if (action.type === RECEIVE_FRIENDS_WANNABES) {
         return { ...state, friendsWannabes: action.friendsWannabes };
     }
-    if (action.type === 'ACCEPT_FRIEND_REQUEST') {
+    if (action.type === ACCEPT_FRIEND_REQUEST) {
         console.log('action', action);
         return {
             ...state,
@@ -12,7 +20,7 @@ export default function reducer(state = {}, action) {
             ),
         };
     }
-    if (action.type === 'UNFRIEND') {
+    if (action.type === UNFRIEND) {
         console.log('action', action);
         return {
             ...state,

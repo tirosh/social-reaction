@@ -3,13 +3,15 @@ import {
     receiveFriendsWannabes,
     acceptFriendRequest,
     unfriend,
-} from './redux/actions';
+} from './redux/actions/friendsActions';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 function Friends(props) {
     const dispatch = useDispatch();
-    const friendsWannabes = useSelector((state) => state.friendsWannabes);
+    const friendsWannabes = useSelector(
+        (state) => state.friends.friendsWannabes
+    );
     const [friends, setFriends] = useState([]);
     const [wannabes, setWannabes] = useState([]);
 
@@ -18,6 +20,7 @@ function Friends(props) {
     }, []);
 
     useEffect(() => {
+        console.log('friendsWannabes', friendsWannabes);
         if (friendsWannabes) {
             setFriends(friendsWannabes.filter((person) => person.accepted));
             setWannabes(friendsWannabes.filter((person) => !person.accepted));
@@ -46,7 +49,7 @@ function Friends(props) {
             )}
             {wannabes && (
                 <>
-                    <hr></hr>
+                    <hr />
                     <ul>
                         {wannabes.map((person) => (
                             <li key={person.id}>
