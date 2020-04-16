@@ -1,18 +1,24 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import BioEditor from './bio-editor';
 
-export default function Profile({ first, last, imgUrl, bio, updateProfile }) {
+export default function Profile({ updateProfile }) {
+    const user = useSelector((state) => state.user && state.user);
+
     return (
         <>
             <h2>Profile function component</h2>
             <div className='user profile image medium'>
-                <img src={imgUrl || '/img/lego.svg'} alt={`${first} ${last}`} />
+                <img
+                    src={user.img_url || '/img/lego.svg'}
+                    alt={`${user.first} ${user.last}`}
+                />
             </div>
             <div>
                 <h3>
-                    {first} {last}
+                    {user.first} {user.last}
                 </h3>
-                <BioEditor bio={bio} updateProfile={updateProfile} />
+                <BioEditor bio={user.bio} updateProfile={updateProfile} />
             </div>
         </>
     );

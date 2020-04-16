@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter, Route, Link } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import { getUser } from './redux/actions/userActions';
 
-import { useDBget } from './hooks/useDB';
+import { useDispatch, useSelector } from 'react-redux';
+import { initUI } from './redux/actions/uiActions';
+import { getUser } from './redux/actions/userActions';
 
 import Profile from './profile';
 import ProfilePic from './profile-pic';
@@ -11,25 +11,19 @@ import FindPeople from './find-people';
 import OtherProfile from './other-profile';
 import Uploader from './uploader';
 import Friends from './friends';
+import Chat from './chat';
 
 function App() {
     const dispatch = useDispatch();
+    const ui = useSelector((state) => state.ui);
     const user = useSelector((state) => state.user);
 
-    // const [{ data, error }, getData] = useDBget('/profile/user');
     const [uploaderVisible, setuploaderVisible] = useState(false);
     // const [user, setUser] = useState({});
 
     useEffect(() => {
+        dispatch(initUI());
         dispatch(getUser());
-
-        // setUser({
-        //     id: data.id,
-        //     first: data.first,
-        //     last: data.last,
-        //     bio: data.bio,
-        //     imgUrl: data.img_url,
-        // });
     }, []);
 
     useEffect(() => {
@@ -59,27 +53,15 @@ function App() {
                 </li>
             </ul>
 
-            <ProfilePic
-                first={user.first}
-                last={user.last}
-                imgUrl={user.imgUrl}
-                onClick={toggleModal}
-            />
+            <ProfilePic onClick={toggleModal} />
 
-            {/* <Route
+            <Route
                 exact
                 path='/'
                 render={() => (
-                    <Profile
-                    id={user.id}
-                    first={user.first}
-                    last={user.last}
-                    imgUrl={user.imgUrl}
-                    bio={user.bio}
-                    updateProfile={(trait) => updateProfile(trait)}
-                    />
+                    <Profile updateProfile={(trait) => updateProfile(trait)} />
                 )}
-            /> */}
+            />
 
             <Route
                 path='/users'
@@ -113,8 +95,8 @@ function App() {
                     />
                 )}
             />
-
-            {uploaderVisible && (
+            <Route path='/chat' render={() => <Chat />} />
+            {ui.uploaderVisible && (
                 <Uploader
                     updateProfile={(trait) => updateProfile(trait)}
                     toggleModal={toggleModal}
