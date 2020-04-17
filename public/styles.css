@@ -146,6 +146,25 @@ textarea {
     color: rgb(216, 216, 216);
 }
 
+.nav {
+    display: flex;
+}
+.nav div {
+    margin: 20px;
+}
+.nav div:first-child {
+    width: 40px;
+    height: 40px;
+    background-color: crimson;
+    display: flex;
+    justify-content:center;
+    align-items: center;
+
+}
+.nav .selected {
+    text-decoration: none;
+}
+
 .user.profile.image.small {
     position: fixed;
     top: 20px;
@@ -179,6 +198,15 @@ textarea {
     justify-content: center;
     align-items: center;
     padding: 20px;
-    background-color: #ffffffdd;
+    background-color: #f70000dd;
     box-shadow: 50px 50px 2px 0px #00000021;
+}
+
+.friends-wannabes {
+    display: flex;
+    flex-direction: column;
+}
+
+.friends-wannabes div {
+    width: 20vh;
 }

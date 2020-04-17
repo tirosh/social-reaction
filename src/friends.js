@@ -8,13 +8,17 @@ import {
 } from './redux/actions/friendsActions';
 
 function FriendsWannabes(props) {
+    const dispatch = useDispatch();
     return (
-        <div className='users'>
+        <div className={props.className}>
             {props.people.map((person) => (
                 <div key={person.id} className='user'>
                     <img src={person.img_url} />
                     <div className='buttons'>
-                        <button onClick={props.clickHandler(person.id)}>
+                        <button
+                            onClick={() =>
+                                dispatch(props.handleClick(person.id))
+                            }>
                             {person.accepted
                                 ? 'End Friendship'
                                 : 'Accept Friend Request'}
@@ -44,22 +48,25 @@ export default function Friends() {
     }, []);
 
     return (
-        <div>
+        <div className='friends-wannabes'>
             {friends && (
                 <FriendsWannabes
+                    className='friends'
                     people={friends}
-                    clickHandler={(person) => dispatch(unfriend(person))}
+                    handleClick={unfriend}
                 />
             )}
+            {friends && wannabes && <hr />}
             {wannabes && (
                 <FriendsWannabes
+                    className='wannabes'
                     people={wannabes}
-                    clickHandler={(person) =>
-                        dispatch(acceptFriendRequest(person))
-                    }
+                    handleClick={acceptFriendRequest}
                 />
             )}
-            {!friends && !wannabes && 'Apparently, you have no friends.'}
+            {!friends &&
+                !wannabes &&
+                'Apparently, you have no friends or wannabes.'}
         </div>
     );
 }

@@ -9,9 +9,9 @@ import Profile from './profile';
 import ProfilePic from './profile-pic';
 import FindPeople from './find-people';
 import OtherProfile from './other-profile';
-import Uploader from './uploader';
 import Friends from './friends';
 import Chat from './chat';
+import Navigation from './components/Navigation';
 
 function App() {
     const dispatch = useDispatch();
@@ -41,17 +41,7 @@ function App() {
 
     return (
         <BrowserRouter>
-            <ul>
-                <li>
-                    <a href='/auth/logout'>log out</a>
-                </li>
-                <li>
-                    <Link to='/users'>Find other users</Link>
-                </li>
-                <li>
-                    <Link to='/friends'>Friends</Link>
-                </li>
-            </ul>
+            <Navigation />
 
             <ProfilePic onClick={toggleModal} />
 
@@ -96,12 +86,6 @@ function App() {
                 )}
             />
             <Route path='/chat' render={() => <Chat />} />
-            {ui.uploaderVisible && (
-                <Uploader
-                    updateProfile={(trait) => updateProfile(trait)}
-                    toggleModal={toggleModal}
-                />
-            )}
         </BrowserRouter>
     );
 }
