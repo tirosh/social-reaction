@@ -1,5 +1,6 @@
 import * as io from 'socket.io-client';
 import { receiveLatestMessages } from './redux/actions/messageActions';
+import { receivePublicMessage } from './redux/actions/messageActions';
 
 export let socket;
 
@@ -10,6 +11,11 @@ export const init = (store) => {
         socket.on('latestMessages', (latestMessages) => {
             console.log('latestMessages', latestMessages);
             store.dispatch(receiveLatestMessages(latestMessages));
+        });
+
+        socket.on('publicMessage', (publicMessage) => {
+            console.log('publicMessage', publicMessage);
+            store.dispatch(receivePublicMessage(publicMessage));
         });
 
         // socket.on(

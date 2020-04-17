@@ -204,16 +204,34 @@ exports.getWannabes = async (id) => {
 };
 
 exports.getLatestMessages = async (num) => {
-    const dbData = await db.query(
-        `SELECT messages.id, msg, messages.created_at, sender_id, first, last, img_url
+    const q = `
+        SELECT messages.id AS msg_id, msg, messages.created_at, sender_id, first, last, img_url
         FROM messages 
         JOIN users
         ON users.id = sender_id
         ORDER BY messages.created_at DESC
-        LIMIT $1`,
-        [num]
-    );
+        LIMIT $1`;
+
+    const dbData = await db.query(q, [num]);
     return dbData.rows.length === 0
         ? Promise.reject(`No messages found.`)
         : dbData.rows;
+};
+
+exports.addPublicMessage = async (sender_id, msg) => {
+    const q = `
+        INSERT INTO messages (sender_id, msg)
+        VALUES ($1, $2)
+        RETURNING id AS msg_id, created_at`;
+    const data = await db.query(q, [sender_id, msg]);
+    // console.log('data.rows', data.rows);
+    return data.rows[0];
+};
+
+exports.addPrivateMessage = async (sender_id, recipient_id, msg) => {
+    const q = `
+        INSERT INTO messages (sender_id, recipient_id, msg)
+        VALUES ($1, $2, $3)`;
+    await db.query(q, [sender_id, recipient_id, msg]);
+    return { sender_id, recipient_id, msg };
 };

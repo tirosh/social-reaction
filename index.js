@@ -94,15 +94,28 @@ io.on('connection', function (socket) {
 
     const id = socket.request.session.id;
     onlineUsers[socket.id] = id;
+    // console.log('onlineUsers', onlineUsers);
 
     db.getLatestMessages(10).then((data) => {
-        // console.log('data', data);
-        io.sockets.emit('chatMessages', data);
-        io.sockets.sockets[socket.id].emit('latestMessages', data);
+        // console.log('getLatestMessages', data);
+        io.sockets.sockets[socket.id].emit('latestMessages', data.reverse());
     });
 
-    socket.on('newChatMsg', (newMsg) => {
-        console.log('This is a message:', newMsg, 'user:', id);
+    socket.on('newPublicMessage', (msg) => {
+        console.log('This is a message:', msg, 'user:', id);
+        Promise.all([db.getUserById(id), db.addPublicMessage(id, msg)]).then(
+            ([{ first, last, img_url }, { msg_id, created_at }]) => {
+                io.sockets.emit('publicMessage', {
+                    msg_id,
+                    msg,
+                    created_at,
+                    sender_id: id,
+                    first,
+                    last,
+                    img_url,
+                });
+            }
+        );
     });
     // /* ... */
     // console.log(`socket with the id ${socket.id} is now connected`);

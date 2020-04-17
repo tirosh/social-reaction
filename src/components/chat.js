@@ -15,7 +15,7 @@ export default function Chat() {
     const keyCheck = (e) => {
         if (e.key === 'Enter') {
             e.preventDefault();
-            socket.emit('newChatMsg', e.target.value);
+            socket.emit('newPublicMessage', e.target.value);
             e.target.value = '';
         }
     };
@@ -26,7 +26,7 @@ export default function Chat() {
             <div className='messages' ref={elemRef}>
                 {messages.public &&
                     messages.public.map((message) => (
-                        <div key={message.id} className='message-container'>
+                        <div key={message.msg_id} className='message-container'>
                             <div className='user-image'>
                                 <Link to={`/user/${message.sender_id}`}>
                                     <img src={message.img_url} />

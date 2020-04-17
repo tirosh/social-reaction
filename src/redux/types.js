@@ -13,3 +13,4 @@ export const UNFRIEND = 'UNFRIEND';
 
 // message actions
 export const RECEIVE_LATEST_MESSAGES = 'RECEIVE_LATEST_MESSAGES';
+export const RECEIVE_PUBLIC_MESSAGE = 'RECEIVE_PUBLIC_MESSAGE';
