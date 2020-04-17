@@ -5,6 +5,7 @@ export const TOGGLE_MODAL = 'TOGGLE_MODAL';
 // user actions
 export const GET_USER = 'GET_USER';
 export const UPLOAD_IMAGE = 'UPLOAD_IMAGE';
+export const UPDATE_BIO = 'UPDATE_BIO';
 
 // friends actions
 export const RECEIVE_FRIENDS_WANNABES = 'RECEIVE_FRIENDS_WANNABES';

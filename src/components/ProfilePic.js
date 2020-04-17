@@ -5,9 +5,9 @@ import { toggleModal } from '../redux/actions/uiActions';
 import { uploadImage } from '../redux/actions/userActions';
 
 export default function ProfilePic() {
+    const dispatch = useDispatch();
     const ui = useSelector((state) => state.ui);
     const user = useSelector((state) => state.user && state.user);
-    const dispatch = useDispatch();
 
     return (
         <>
