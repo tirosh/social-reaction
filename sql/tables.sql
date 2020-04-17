@@ -1,5 +1,6 @@
 -- id, first, last, email, passwd, bio, img
 
+DROP TABLE IF EXISTS messages;
 DROP TABLE IF EXISTS friendships;
 DROP TABLE IF EXISTS password_reset_codes;
 DROP TABLE IF EXISTS users;
@@ -32,6 +33,29 @@ CREATE TABLE friendships
     accepted BOOLEAN DEFAULT false,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+CREATE TABLE messages
+(
+    id SERIAL PRIMARY KEY,
+    sender_id INT NOT NULL REFERENCES users(id),
+    recipient_id INT REFERENCES users(id),
+    msg TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+INSERT INTO messages
+    (sender_id, recipient_id, msg)
+VALUES
+    (1, 2, 'Lorem ipsum, dolor sit amet consectetur adipisicing elit. Eos eveniet quaerat eaque vero beatae at aspernatur iure eius, officiis mollitia facilis inventore repudiandae deleniti earum minima quibusdam aliquid iste, ut fugit labore omnis nihil ullam. '),
+    (2, 1, 'Sint temporibus dignissimos voluptatum facere at quisquam quo magnam, minus iusto sed cum quis praesentium.'),
+    (22, 11, 'Quaerat non id assumenda sit nam excepturi laboriosam odit! Quisquam adipisci voluptatibus asperiores dignissimos, distinctio atque est possimus consequatur, eveniet eos sapiente modi! Labore, nesciunt. Suscipit pariatur debitis et?'),
+    (22, 1, 'Unde laudantium, at placeat eum soluta doloribus sed cupiditate iusto consequuntur, magnam atque enim. Expedita earum nostrum excepturi.'),
+    (1, 11, 'Nulla illum accusamus neque nemo minus perspiciatis iusto reprehenderit deserunt iure sint voluptatibus debitis corrupti modi velit exercitationem consectetur, rerum quis cumque. Delectus molestiae harum sint reprehenderit!'),
+    (11, 1, 'Illo nihil nam dolores fuga quisquam, maiores necessitatibus odio! A laborum veritatis, necessitatibus natus quo iusto, saepe soluta inventore, deserunt odio facilis laudantium modi et odit quos dolorum aperiam!'),
+    (100, 1, 'Vitae neque voluptate labore mollitia aut odit.'),
+    (1, 11, 'Nulla illum accusamus neque nemo minus perspiciatis iusto reprehenderit deserunt iure sint voluptatibus debitis corrupti modi velit exercitationem consectetur, rerum quis cumque. Delectus molestiae harum sint reprehenderit!'),
+    (11, 1, 'Illo nihil nam dolores fuga quisquam, maiores necessitatibus odio! A laborum veritatis, necessitatibus natus quo iusto, saepe soluta inventore, deserunt odio facilis laudantium modi et odit quos dolorum aperiam!'),
+    (100, 1, 'Vitae neque voluptate labore mollitia aut odit.');
 
 INSERT INTO users
     (first, last, email, psswd, img_url, bio)

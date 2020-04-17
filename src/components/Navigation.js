@@ -19,6 +19,11 @@ const Navigation = () => (
             </NavLink>{' '}
         </div>
         <div>
+            <NavLink to='/chat' activeClassName='selected'>
+                chat
+            </NavLink>{' '}
+        </div>
+        <div>
             <a href='/auth/logout'>log out</a>
         </div>
     </div>

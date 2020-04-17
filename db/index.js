@@ -202,3 +202,18 @@ exports.getWannabes = async (id) => {
     const dbData = await db.query(q, [id]);
     return dbData.rows;
 };
+
+exports.getLatestMessages = async (num) => {
+    const dbData = await db.query(
+        `SELECT messages.id, msg, messages.created_at, sender_id, first, last, img_url
+        FROM messages 
+        JOIN users
+        ON users.id = sender_id
+        ORDER BY messages.created_at DESC
+        LIMIT $1`,
+        [num]
+    );
+    return dbData.rows.length === 0
+        ? Promise.reject(`No messages found.`)
+        : dbData.rows;
+};

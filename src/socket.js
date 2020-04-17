@@ -1,5 +1,5 @@
 import * as io from 'socket.io-client';
-// import { chatMessages, chatMessage } from './actions';
+import { receiveLatestMessages } from './redux/actions/messageActions';
 
 export let socket;
 
@@ -7,7 +7,10 @@ export const init = (store) => {
     if (!socket) {
         socket = io.connect();
 
-        // store.dispatch(action from actions)
+        socket.on('latestMessages', (latestMessages) => {
+            console.log('latestMessages', latestMessages);
+            store.dispatch(receiveLatestMessages(latestMessages));
+        });
 
         // socket.on(
         //     'receiveChatMessages',

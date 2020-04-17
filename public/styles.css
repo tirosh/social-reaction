@@ -135,7 +135,7 @@ textarea {
     font: inherit;
     font-size: inherit;
     padding: 0.25rem 0.5rem;
-    margin-bottom: 10px;
+    /* margin-bottom: 10px; */
     border: 0;
     /* border-bottom: 1px solid grey; */
     /* border-top: 1px solid grey; */
@@ -157,9 +157,8 @@ textarea {
     height: 40px;
     background-color: crimson;
     display: flex;
-    justify-content:center;
+    justify-content: center;
     align-items: center;
-
 }
 .nav .selected {
     text-decoration: none;
@@ -204,9 +203,70 @@ textarea {
 
 .friends-wannabes {
     display: flex;
+    border: 1px solid silver;
+}
+
+.friends,
+.wannabes {
+    display: inline-flex;
+}
+.friends-wannabes .user {
+    margin: 20px;
+    display: flex;
     flex-direction: column;
 }
 
-.friends-wannabes div {
-    width: 20vh;
+.friends-wannabes .user img {
+    /* margin: 20px; */
+    height: 200px;
+    width: 200px;
+}
+
+.chat {
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    width: 80vw;
+    margin: 0 auto;
+    box-shadow: 20px 20px 0px 0px #00000021;
+}
+.chat .user-image {
+    min-width: 50px;
+    margin: 0 20px;
+    height: 50px;
+    border-radius: 50px;
+    overflow: hidden;
+    background-color: gray;
+}
+.chat .messages {
+    overflow-y: scroll;
+    max-height: 50vh;
+    box-shadow: inset 0px 18px 0px 0px #00000021;
+}
+.chat .user-image img {
+    object-fit: cover;
+    width: 50px;
+    height: 50px;
+}
+
+.chat .message-container {
+    display: flex;
+    margin: 20px 0;
+}
+
+.chat .message-container:nth-child(2n + 1) {
+    flex-direction: row-reverse;
+    text-align: right;
+}
+
+.chat .message .name {
+    margin-right: 20px;
+    font-weight: bold;
+}
+.chat .message .date {
+    color: grey;
+}
+
+.chat textarea {
+    width: 100%;
 }

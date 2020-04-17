@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter, Route, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { initUI } from './redux/actions/uiActions';
@@ -10,7 +10,7 @@ import ProfilePic from './profile-pic';
 import FindPeople from './find-people';
 import OtherProfile from './other-profile';
 import Friends from './friends';
-import Chat from './chat';
+import Chat from './components/chat';
 import Navigation from './components/Navigation';
 
 function App() {
@@ -40,7 +40,7 @@ function App() {
     };
 
     return (
-        <BrowserRouter>
+        <Router>
             <Navigation />
 
             <ProfilePic onClick={toggleModal} />
@@ -86,7 +86,7 @@ function App() {
                 )}
             />
             <Route path='/chat' render={() => <Chat />} />
-        </BrowserRouter>
+        </Router>
     );
 }
 

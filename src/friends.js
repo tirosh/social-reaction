@@ -7,29 +7,6 @@ import {
     unfriend,
 } from './redux/actions/friendsActions';
 
-function FriendsWannabes(props) {
-    const dispatch = useDispatch();
-    return (
-        <div className={props.className}>
-            {props.people.map((person) => (
-                <div key={person.id} className='user'>
-                    <img src={person.img_url} />
-                    <div className='buttons'>
-                        <button
-                            onClick={() =>
-                                dispatch(props.handleClick(person.id))
-                            }>
-                            {person.accepted
-                                ? 'End Friendship'
-                                : 'Accept Friend Request'}
-                        </button>
-                    </div>
-                </div>
-            ))}
-        </div>
-    );
-}
-
 export default function Friends() {
     const dispatch = useDispatch();
     const friends = useSelector(
@@ -56,7 +33,6 @@ export default function Friends() {
                     handleClick={unfriend}
                 />
             )}
-            {friends && wannabes && <hr />}
             {wannabes && (
                 <FriendsWannabes
                     className='wannabes'
@@ -67,6 +43,35 @@ export default function Friends() {
             {!friends &&
                 !wannabes &&
                 'Apparently, you have no friends or wannabes.'}
+        </div>
+    );
+}
+
+function FriendsWannabes(props) {
+    const dispatch = useDispatch();
+    return (
+        <div className={props.className}>
+            {props.people.map((person) => (
+                <div key={person.id} className='user'>
+                    <p>
+                        {person.first} {person.last}
+                    </p>
+                    <Link to={`/user/${person.id}`}>
+                        <img src={person.img_url} />
+                    </Link>
+
+                    <div className='buttons'>
+                        <button
+                            onClick={() =>
+                                dispatch(props.handleClick(person.id))
+                            }>
+                            {person.accepted
+                                ? 'End Friendship'
+                                : 'Accept Friend Request'}
+                        </button>
+                    </div>
+                </div>
+            ))}
         </div>
     );
 }

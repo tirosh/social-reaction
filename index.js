@@ -2,6 +2,7 @@ const express = require('express');
 const app = (exports = express());
 const port = process.env.PORT || 8080;
 const server = require('http').Server(app);
+const db = require('./db');
 const io = require('socket.io')(server, { origins: 'localhost:8080' });
 
 const { SESSION_SECRET: sessionSecret } = process.env.SESSION_SECRET
@@ -83,6 +84,7 @@ server.listen(port, function () {
     console.log(`I'm listening on port: ${port}`);
 });
 
+let onlineUsers = {};
 io.on('connection', function (socket) {
     console.log(`socket with the id ${socket.id} is now connected`);
 
@@ -91,22 +93,19 @@ io.on('connection', function (socket) {
     }
 
     const id = socket.request.session.id;
+    onlineUsers[socket.id] = id;
 
-    // db.getLastTenMessages().then((data) => {
-    //     console.log('data.rows', data.rows);
-
-    //     io.sockets.emit('receiveChatMessages', data.rows);
-    // });
-
-    socket.on('new chat msg', (newMsg) => {
-        console.log('This message is comming from chat:', newMsg);
+    db.getLatestMessages(10).then((data) => {
+        // console.log('data', data);
+        io.sockets.emit('chatMessages', data);
+        io.sockets.sockets[socket.id].emit('latestMessages', data);
     });
-    /* ... */
-    // console.log(`socket with the id ${socket.id} is now connected`);
 
-    // socket.on('disconnect', function () {
-    //     console.log(`socket with the id ${socket.id} is now disconnected`);
-    // });
+    socket.on('newChatMsg', (newMsg) => {
+        console.log('This is a message:', newMsg, 'user:', id);
+    });
+    // /* ... */
+    // console.log(`socket with the id ${socket.id} is now connected`);
 
     // socket.on('thanks', function (data) {
     //     console.log(data);
@@ -115,4 +114,12 @@ io.on('connection', function (socket) {
     // socket.emit('welcome', {
     //     message: 'Welome. It is nice to see you',
     // });
+    socket.on('disconnect', function () {
+        // runs when a user disconnects - ie logs off or closes browser/tab
+        delete onlineUsers[socket.id]; // remove user from onlineUsers who just left
+        // before we emit userLeft, we need to confirm that the user is really gone
+        // ie if the user had 7 tabs open and they closed only 1, don't fire userLeft because the user hasn't actually left! only fire userLeft when the user closed all 7 tabs!
+        // emit userLeft here
+        console.log(`socket with the id ${socket.id} is now disconnected`);
+    });
 });
