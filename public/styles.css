@@ -15,9 +15,20 @@ body {
     height: 100vh;
 }
 
+.error {
+    color: white;
+    background-color: indianred;
+    border-radius: 500px;
+    text-align: center;
+    padding: 3px 20px;
+    margin: 20px 0;
+}
+
 .welcome {
     display: flex;
-    height: 100%;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
 }
 
 .image,
@@ -35,10 +46,11 @@ body {
 }
 
 .form {
+    width: 340px;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    background-color: #a4a989;
+    background-color: #3775e6;
+    padding: 40px;
 }
 
 .logo {
@@ -49,15 +61,17 @@ body {
 
 .headline {
     font-family: 'Nunito', sans-serif;
-    font-size: 4em;
-    margin-right: 200px;
+    font-size: 2.5em;
+    color: white;
+    font-weight: 500;
+    text-transform: uppercase;
+    margin-bottom: 40px;
 }
 
 .form div {
     display: flex;
     flex-direction: column;
-    padding: 40px;
-    /* background-color: #0000008c; */
+    /* padding: 40px; */
 }
 .form input {
     margin-bottom: 1em;
@@ -116,7 +130,7 @@ input[type='file']:active::before {
     background: -webkit-linear-gradient(top, #e3e3e3, #f9f9f9);
 }
 button {
-    background-color: #7d775d;
+    background-color: #e3e637;
 }
 
 input[type='text'] {
@@ -170,6 +184,7 @@ textarea {
     right: 20px;
     width: 75px;
     height: 75px;
+    cursor: pointer;
 }
 .user.profile.image.medium {
     width: 300px;
@@ -260,11 +275,12 @@ textarea {
 }
 
 .chat .message .name {
-    margin-right: 20px;
+    /* margin-right: 20px; */
     font-weight: bold;
 }
 .chat .message .date {
     color: grey;
+    font-size: 0.8em;
 }
 
 .chat textarea {

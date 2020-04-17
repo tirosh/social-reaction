@@ -7,9 +7,9 @@ export function useAuthSubmit(url, values) {
 
     const submit = async () => {
         const { data } = await axios.post(url, values);
-        data.success
+        return data.success
             ? location.replace('/')
-            : setError({ error: data.err || 'Try again.' });
+            : setError(data.err || 'Try again.');
     };
 
     return [submit, error];

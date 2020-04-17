@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import BioEditor from './bio-editor';
+import BioEditor from './BioEditor';
 
 export default function Profile({ updateProfile }) {
     const user = useSelector((state) => state.user && state.user);

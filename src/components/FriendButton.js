@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useDBget, useDBset } from './hooks/useDB';
+import { useDBget, useDBset } from '../hooks/useDB';
 
 function FriendButton(props) {
     const [dbGet, getData] = useDBget(`/people/friend/${props.id}`);

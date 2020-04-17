@@ -3,7 +3,9 @@ const app = (exports = express());
 const port = process.env.PORT || 8080;
 const server = require('http').Server(app);
 const db = require('./db');
-const io = require('socket.io')(server, { origins: 'localhost:8080' });
+const io = require('socket.io')(server, {
+    origins: 'localhost:8080 192.168.0.123:8080',
+});
 
 const { SESSION_SECRET: sessionSecret } = process.env.SESSION_SECRET
     ? process.env
@@ -97,12 +99,11 @@ io.on('connection', function (socket) {
     // console.log('onlineUsers', onlineUsers);
 
     db.getLatestMessages(10).then((data) => {
-        // console.log('getLatestMessages', data);
         io.sockets.sockets[socket.id].emit('latestMessages', data.reverse());
     });
 
     socket.on('newPublicMessage', (msg) => {
-        console.log('This is a message:', msg, 'user:', id);
+        // console.log('This is a message:', msg, 'user:', id);
         Promise.all([db.getUserById(id), db.addPublicMessage(id, msg)]).then(
             ([{ first, last, img_url }, { msg_id, created_at }]) => {
                 io.sockets.emit('publicMessage', {
@@ -117,8 +118,6 @@ io.on('connection', function (socket) {
             }
         );
     });
-    // /* ... */
-    // console.log(`socket with the id ${socket.id} is now connected`);
 
     // socket.on('thanks', function (data) {
     //     console.log(data);

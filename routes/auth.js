@@ -52,7 +52,7 @@ router.post('/password/reset', async (req, res) => {
     const { email } = req.body;
     if (!email)
         return res.json({
-            err: `We can't check nothing. Please enter an email address.`,
+            err: `We can't check nothing.`,
         });
     try {
         await db.getUser(email);
@@ -79,7 +79,7 @@ router.post('/password/reset/verify', async (req, res) => {
     const { secret, psswd } = req.body;
     if (!secret || !psswd)
         return res.json({
-            err: 'Please enter the secret and your new password.',
+            err: 'Please fill in all fields.',
         });
     try {
         const code = await db.getPsswdResetCode(req.session.email);

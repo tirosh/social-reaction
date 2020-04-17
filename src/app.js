@@ -5,12 +5,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import { initUI } from './redux/actions/uiActions';
 import { getUser } from './redux/actions/userActions';
 
-import Profile from './profile';
-import ProfilePic from './profile-pic';
-import FindPeople from './find-people';
-import OtherProfile from './other-profile';
-import Friends from './friends';
-import Chat from './components/chat';
+import Profile from './components/Profile';
+import ProfilePic from './components/ProfilePic';
+import FindPeople from './components/FindPeople';
+import OtherProfile from './components/OtherProfile';
+import Friends from './components/Friends';
+import Chat from './components/Chat';
 import Navigation from './components/Navigation';
 
 function App() {

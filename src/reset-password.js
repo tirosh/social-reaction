@@ -27,10 +27,10 @@ export default function ResetPassword() {
         return (
             <div>
                 <h1>Reset Password</h1>
+                {error && <div className='error'>{error}</div>}
                 <h3>
                     Please enter the email address with which you registered
                 </h3>
-                {error && <div className='error'>{error}</div>}
                 <label>
                     Email:
                     <input name='email' type='email' onChange={handleChange} />
@@ -48,15 +48,19 @@ export default function ResetPassword() {
         return (
             <div>
                 <h1>Reset Password</h1>
-                <h3>An email was sent to you. Please enter:</h3>
                 {error && <div className='error'>{error}</div>}
+                <h3>An email was sent to you. Please enter:</h3>
                 <label>
                     Super secret:
                     <input name='secret' key='secret' onChange={handleChange} />
                 </label>
                 <label>
                     New password:
-                    <input name='psswd' type='psswd' onChange={handleChange} />
+                    <input
+                        name='psswd'
+                        type='password'
+                        onChange={handleChange}
+                    />
                 </label>
                 <button onClick={verify}>submit</button>
                 <p>

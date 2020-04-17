@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { socket } from '../socket';
@@ -33,13 +33,15 @@ export default function Chat() {
                                 </Link>
                             </div>
                             <div className='message'>
-                                <span className='name'>
-                                    {message.first} {message.last}
-                                </span>
-                                <span className='date'>
-                                    {message.created_at}
-                                </span>
+                                <p className='name'>
+                                    <Link to={`/user/${message.sender_id}`}>
+                                        {message.first} {message.last}
+                                    </Link>
+                                </p>
                                 <p>{message.msg}</p>
+                                <p className='date'>
+                                    {formatDate(message.created_at)}
+                                </p>
                             </div>
                             {/* <div className='buttons'>
                                 <button
@@ -64,4 +66,15 @@ export default function Chat() {
                 onKeyDown={keyCheck}></textarea>
         </div>
     );
+}
+
+function formatDate(ISOstring) {
+    return new Intl.DateTimeFormat('en-US', {
+        weekday: 'short',
+        day: 'numeric',
+        hour: 'numeric',
+        dayPeriod: 'short',
+        minute: 'numeric',
+        hour12: false,
+    }).format(new Date(ISOstring));
 }

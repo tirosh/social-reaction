@@ -15,7 +15,7 @@ const Navigation = () => (
         </div>
         <div>
             <NavLink to='/users' activeClassName='selected'>
-                users
+                find people
             </NavLink>{' '}
         </div>
         <div>

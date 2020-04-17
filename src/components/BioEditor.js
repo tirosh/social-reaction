@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useDBset } from './hooks/useDB';
+import { useDBset } from '../hooks/useDB';
 
 function BioEditor(props) {
     const [{ data, error }, setData] = useDBset();

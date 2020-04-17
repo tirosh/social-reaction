@@ -1,8 +1,8 @@
 // profilepic.js
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { toggleModal } from './redux/actions/uiActions';
-import { uploadImage } from './redux/actions/userActions';
+import { toggleModal } from '../redux/actions/uiActions';
+import { uploadImage } from '../redux/actions/userActions';
 
 export default function ProfilePic() {
     const ui = useSelector((state) => state.ui);

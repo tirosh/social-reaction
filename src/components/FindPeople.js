@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { useDBget } from './hooks/useDB';
+import { useDBget } from '../hooks/useDB';
 import { Link } from 'react-router-dom';
 
-function FindPeople() {
+export default function FindPeople() {
     const [query, setQuery] = useState('');
     const [{ data, error }, getData] = useDBget('/people/users/', {
         people: [],
@@ -44,5 +44,3 @@ function FindPeople() {
         </div>
     );
 }
-
-export default FindPeople;

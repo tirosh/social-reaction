@@ -5,7 +5,7 @@ import {
     receiveFriendsWannabes,
     acceptFriendRequest,
     unfriend,
-} from './redux/actions/friendsActions';
+} from '../redux/actions/friendsActions';
 
 export default function Friends() {
     const dispatch = useDispatch();

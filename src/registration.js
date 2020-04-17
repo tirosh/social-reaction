@@ -10,36 +10,26 @@ export default function Registration() {
     return (
         <div>
             {error && <div className='error'>{error}</div>}
-            <form
-                onSubmit={(e) => {
-                    e.preventDefault;
-                    submit;
-                }}>
-                <label>
-                    First:
-                    <input name='first' onChange={handleChange} />
-                </label>
-                <label>
-                    Last:
-                    <input name='last' onChange={handleChange} />
-                </label>
-                <label>
-                    Email:
-                    <input name='email' type='email' onChange={handleChange} />
-                </label>
-                <label>
-                    Password:
-                    <input
-                        name='psswd'
-                        type='password'
-                        onChange={handleChange}
-                    />
-                </label>
-                <button onClick={submit}>register</button>
-                <p>
-                    or <Link to='/login'>log in</Link>
-                </p>
-            </form>
+            <label>
+                First:
+                <input name='first' onChange={handleChange} />
+            </label>
+            <label>
+                Last:
+                <input name='last' onChange={handleChange} />
+            </label>
+            <label>
+                Email:
+                <input name='email' type='email' onChange={handleChange} />
+            </label>
+            <label>
+                Password:
+                <input name='psswd' type='password' onChange={handleChange} />
+            </label>
+            <button onClick={submit}>register</button>
+            <p>
+                or <Link to='/login'>log in</Link>
+            </p>
         </div>
     );
 }

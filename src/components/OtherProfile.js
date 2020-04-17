@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
-import { useDBget } from './hooks/useDB';
-import FriendButton from './friend-button';
+import { useDBget } from '../hooks/useDB';
+import FriendButton from './FriendButton';
 
 function OtherProfile(props) {
     const [{ data, error }, getData] = useDBget(
