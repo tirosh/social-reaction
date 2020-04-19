@@ -43,11 +43,11 @@ function App() {
     return (
         <Router>
             <div className='app component'>
-                <div className='tag'>
+                <div className='app tag'>
                     <span>App Component</span>
                 </div>
-                <Navigation />
-                <div className='content'>
+                <div className='app content'>
+                    <Navigation />
                     <ProfilePic onClick={toggleModal} />
 
                     <Route
@@ -93,8 +93,8 @@ function App() {
                         )}
                     />
                     <Route path='/chat' render={() => <Chat />} />
+                    <Footer />
                 </div>
-                <Footer />
             </div>
         </Router>
     );

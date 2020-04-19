@@ -3,10 +3,10 @@ import { NavLink } from 'react-router-dom';
 
 const Navigation = () => (
     <div className='nav component'>
-        <div className='tag'>
+        <div className='nav tag'>
             <span>Navigation Component</span>
         </div>
-        <div className='content'>
+        <div className='nav content'>
             <div>
                 <NavLink to='/' activeClassName='selected'>
                     S

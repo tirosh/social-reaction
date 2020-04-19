@@ -12,10 +12,10 @@ export default function ProfilePic() {
     return (
         <>
             <div className='profile-pic component'>
-                <div className='tag'>
+                <div className='profile-pic tag'>
                     <span>ProfilePic Component</span>
                 </div>
-                <div className='content'>
+                <div className='profile-pic content'>
                     <img
                         src={user.img_url || '/img/lego.svg'}
                         alt={`${user.first} ${user.last}`}
@@ -45,10 +45,10 @@ function Uploader() {
             <div
                 className='uploader component'
                 onClick={(e) => e.stopPropagation()}>
-                <div className='tag'>
+                <div className='uploader tag'>
                     <span>Uploader Component</span>
                 </div>
-                <div className='content'>
+                <div className='uploader content'>
                     {/* {this.state.error && (
                         <div className='error'>{this.state.error}</div>
                     )} */}

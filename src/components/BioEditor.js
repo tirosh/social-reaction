@@ -19,10 +19,10 @@ function BioEditor() {
 
     return (
         <div className='bio-editor component'>
-            <div className='tag'>
+            <div className='bio-editor tag'>
                 <span>BioEditor Component</span>
             </div>
-            <div className='content'>
+            <div className='bio-editor content'>
                 {!editBio ? (
                     <>
                         {bio && <p>{bio}</p>}
