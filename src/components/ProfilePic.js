@@ -11,12 +11,17 @@ export default function ProfilePic() {
 
     return (
         <>
-            <div className='user profile image small'>
-                <img
-                    src={user.img_url || '/img/lego.svg'}
-                    alt={`${user.first} ${user.last}`}
-                    onClick={() => dispatch(toggleModal())}
-                />
+            <div className='profile-pic component'>
+                <div className='tag'>
+                    <span>ProfilePic Component</span>
+                </div>
+                <div className='content'>
+                    <img
+                        src={user.img_url || '/img/lego.svg'}
+                        alt={`${user.first} ${user.last}`}
+                        onClick={() => dispatch(toggleModal())}
+                    />
+                </div>
             </div>
             {ui.uploaderVisible && <Uploader />}
         </>
@@ -35,21 +40,27 @@ function Uploader() {
         dispatch(uploadImage(file));
         dispatch(toggleModal());
     }
-
     return (
         <div className='modal' onClick={() => dispatch(toggleModal())}>
-            <div onClick={(e) => e.stopPropagation()}>
-                {/* {this.state.error && (
-                    <div className='error'>{this.state.error}</div>
-                )} */}
-                <h1>Want to change your image?</h1>
-                <input
-                    onChange={(e) => select(e)}
-                    type='file'
-                    name='file'
-                    accept='image/*'
-                />
-                <button onClick={submit}>submit</button>
+            <div
+                className='uploader component'
+                onClick={(e) => e.stopPropagation()}>
+                <div className='tag'>
+                    <span>Uploader Component</span>
+                </div>
+                <div className='content'>
+                    {/* {this.state.error && (
+                        <div className='error'>{this.state.error}</div>
+                    )} */}
+                    <h1>Want to change your image?</h1>
+                    <input
+                        onChange={(e) => select(e)}
+                        type='file'
+                        name='file'
+                        accept='image/*'
+                    />
+                    <button onClick={submit}>submit</button>
+                </div>
             </div>
         </div>
     );
