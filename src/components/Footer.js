@@ -5,7 +5,7 @@ export default function Footer() {
     return (
         <div className='footer component'>
             <div className='tag'>
-                <span>Footer Component</span>
+                <span>Footer</span>
             </div>
             <div className='content'>Footer...</div>
         </div>

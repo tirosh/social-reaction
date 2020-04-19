@@ -2,6 +2,7 @@
 import axios from '../../net/axios';
 import {
     RECEIVE_FRIENDS_WANNABES,
+    REQUEST_FRIEND,
     ACCEPT_FRIEND_REQUEST,
     UNFRIEND,
 } from '../types';
@@ -16,12 +17,22 @@ export function receiveFriendsWannabes() {
     });
 }
 
+export function requestFriend(id) {
+    return axios.post('/people/request-friend', { id }).then(({ data }) => {
+        console.log('data in requestFriend', data);
+        return {
+            type: REQUEST_FRIEND,
+            id: data,
+        };
+    });
+}
+
 export function acceptFriendRequest(id) {
     return axios.post('/people/add-friend', { id }).then(({ data }) => {
         console.log('data in acceptFriendRequest', data);
         return {
             type: ACCEPT_FRIEND_REQUEST,
-            id: data.friend.id,
+            id: data,
         };
     });
 }
@@ -31,7 +42,7 @@ export function unfriend(id) {
         console.log(', data in unfriend', data);
         return {
             type: UNFRIEND,
-            id: data.friend.id,
+            id: data,
         };
     });
 }

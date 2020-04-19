@@ -10,7 +10,7 @@ export default function Login() {
     return (
         <div className='login component'>
             <div className='tag'>
-                <span>Login Component</span>
+                <span>Login</span>
             </div>
             <div className='content'>
                 {error && <div className='error'>{error}</div>}

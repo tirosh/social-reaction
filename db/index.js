@@ -26,37 +26,46 @@ exports.getUser = async (email) => {
         : dbData.rows[0];
 };
 
-exports.getUserById = async (id) => {
+exports.getUserById = async (id, friendId) => {
     const q = `
-        SELECT id, first, last, img_url, bio
-        FROM users
-        WHERE id = $1`;
-    const dbData = await db.query(q, [id]);
+        SELECT users.id, first, last, img_url, bio, sender_id, recipient_id, accepted  
+        FROM users 
+        LEFT JOIN friendships 
+        ON (recipient_id = $1 AND sender_id = users.id)
+        OR (recipient_id = users.id AND sender_id = $1)
+        WHERE users.id = $2`;
+    const dbData = await db.query(q, [id, friendId]);
     return dbData.rows.length === 0
         ? Promise.reject(`${id} could not be found.`)
         : dbData.rows[0];
 };
 
-exports.getUsersByName = async (q) => {
+exports.getUsersByName = async (id, q) => {
     const dbData = await db.query(
-        `SELECT id, first, last, img_url 
+        `SELECT users.id, first, last, img_url, bio, sender_id, recipient_id, accepted  
         FROM users 
-        WHERE first ILIKE $1 OR last ILIKE $1
+        LEFT JOIN friendships 
+        ON (recipient_id = $1 AND sender_id = users.id)
+        OR (recipient_id = users.id AND sender_id = $1)
+        WHERE first ILIKE $2 OR last ILIKE $2
         ORDER BY first`,
-        [q + '%']
+        [id, q + '%']
     );
     return dbData.rows.length === 0
         ? Promise.reject(`No names found that begin with these letters: ${q}`)
         : dbData.rows;
 };
 
-exports.getUsersLatest = async (num) => {
+exports.getUsersLatest = async (id, num) => {
     const dbData = await db.query(
-        `SELECT id, first, last, img_url 
+        `SELECT users.id, first, last, img_url, bio, sender_id, recipient_id, accepted  
         FROM users 
+        LEFT JOIN friendships 
+        ON (recipient_id = $1 AND sender_id = users.id)
+        OR (recipient_id = users.id AND sender_id = $1)
         ORDER BY id DESC
-        LIMIT $1`,
-        [num]
+        LIMIT $2`,
+        [id, num]
     );
     return dbData.rows.length === 0
         ? Promise.reject(`No names found that begin with these letters: ${q}`)
@@ -160,8 +169,7 @@ exports.requestFriend = async (id, friendId) => {
     const q = `
         INSERT INTO friendships (sender_id, recipient_id)
         VALUES ($1, $2)`;
-    await db.query(q, [id, friendId]);
-    return { status: false, id: friendId };
+    return await db.query(q, [id, friendId]);
 };
 
 exports.addFriend = async (id, friendId) => {
@@ -169,8 +177,7 @@ exports.addFriend = async (id, friendId) => {
         UPDATE friendships
         SET accepted=true
         WHERE recipient_id = $1 AND sender_id = $2`;
-    await db.query(q, [id, friendId]);
-    return { status: true, id: friendId };
+    return await db.query(q, [id, friendId]);
 };
 
 exports.cancelFriend = async (id, friendId) => {
@@ -178,8 +185,7 @@ exports.cancelFriend = async (id, friendId) => {
         DELETE FROM friendships
         WHERE (recipient_id = $1 AND sender_id = $2)
         OR (recipient_id = $2 AND sender_id = $1)`;
-    await db.query(q, [id, friendId]);
-    return { status: null, id: friendId };
+    return await db.query(q, [id, friendId]);
 };
 
 exports.getFriends = async (id) => {
@@ -199,6 +205,18 @@ exports.getWannabes = async (id) => {
         FROM friendships
         JOIN users
         ON (accepted = false AND recipient_id = $1 AND sender_id = users.id)`;
+    const dbData = await db.query(q, [id]);
+    return dbData.rows;
+};
+
+exports.getFriendsWannabes = async (id) => {
+    const q = `
+        SELECT users.id, first, last, img_url, bio, sender_id, recipient_id, accepted
+        FROM friendships
+        JOIN users
+        ON (accepted = true AND recipient_id = $1 AND sender_id = users.id)
+        OR (accepted = true AND sender_id = $1 AND recipient_id = users.id)
+        OR (accepted = false AND recipient_id = $1 AND sender_id = users.id)`;
     const dbData = await db.query(q, [id]);
     return dbData.rows;
 };

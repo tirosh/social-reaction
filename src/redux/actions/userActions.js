@@ -1,34 +1,33 @@
+// src/redux/actions/userActions.js
 import axios from '../../net/axios';
-import { GET_USER, UPLOAD_IMAGE, UPDATE_BIO } from '../types';
+import { GET_USER_BY_ID, GET_USERS_LATEST, GET_USERS_BY_NAME } from '../types';
 
-export function getUser() {
-    return axios.get('/profile/user').then(({ data }) => {
-        // console.log('getUser', data);
+export function getUserById(id) {
+    return axios.get(`/people/user/${id}`).then(({ data }) => {
+        console.log('getUser(id)', data);
         return {
-            type: GET_USER,
+            type: GET_USER_BY_ID,
             payload: data,
         };
     });
 }
 
-export function uploadImage(file) {
-    const formData = new FormData();
-    formData.append('file', file);
-    return axios.post('/profile/upload/image', formData).then(({ data }) => {
-        // console.log('uploadImage', data);
+export function getUsersLatest() {
+    return axios.get('/people/users').then(({ data }) => {
+        console.log('getUsersLatest', data);
         return {
-            type: UPLOAD_IMAGE,
-            payload: data,
+            type: GET_USERS_LATEST,
+            payload: data.users,
         };
     });
 }
 
-export function updateBio(bio) {
-    return axios.post('/profile/upload/bio', { bio: bio }).then(({ data }) => {
-        // console.log('updateBio', data);
+export function getUsersByName(name) {
+    return axios.get(`/people/users/${name}`).then(({ data }) => {
+        console.log('getUsersByName', data);
         return {
-            type: UPDATE_BIO,
-            payload: data,
+            type: GET_USERS_BY_NAME,
+            payload: data.users,
         };
     });
 }

@@ -2,23 +2,23 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { toggleModal } from '../redux/actions/uiActions';
-import { uploadImage } from '../redux/actions/userActions';
+import { uploadImage } from '../redux/actions/profileActions';
 
 export default function ProfilePic() {
     const dispatch = useDispatch();
     const ui = useSelector((state) => state.ui);
-    const user = useSelector((state) => state.user && state.user);
+    const profile = useSelector((state) => state.profile && state.profile);
 
     return (
         <>
             <div className='profile-pic component'>
                 <div className='profile-pic tag'>
-                    <span>ProfilePic Component</span>
+                    <span>ProfilePic</span>
                 </div>
                 <div className='profile-pic content'>
                     <img
-                        src={user.img_url || '/img/lego.svg'}
-                        alt={`${user.first} ${user.last}`}
+                        src={profile.img_url || '/img/lego.svg'}
+                        alt={`${profile.first} ${profile.last}`}
                         onClick={() => dispatch(toggleModal())}
                     />
                 </div>
@@ -46,7 +46,7 @@ function Uploader() {
                 className='uploader component'
                 onClick={(e) => e.stopPropagation()}>
                 <div className='uploader tag'>
-                    <span>Uploader Component</span>
+                    <span>Uploader</span>
                 </div>
                 <div className='uploader content'>
                     {/* {this.state.error && (

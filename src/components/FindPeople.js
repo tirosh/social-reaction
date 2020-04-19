@@ -1,16 +1,22 @@
-import React, { useState } from 'react';
-import { useDBget } from '../hooks/useDB';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { getUsersLatest, getUsersByName } from '../redux/actions/userActions';
 
 export default function FindPeople() {
+    const dispatch = useDispatch();
     const [query, setQuery] = useState('');
-    const [{ data, error }, getData] = useDBget('/people/users/', {
-        people: [],
-    });
+    const foundUsers = useSelector(
+        (state) => state.users.foundUsers && state.users.foundUsers
+    );
+
+    useEffect(() => {
+        dispatch(getUsersLatest());
+    }, []);
 
     const handleChange = (e) => {
         setQuery(e.target.value);
-        getData(`/people/users/${e.target.value}`);
+        dispatch(getUsersByName(e.target.value));
     };
 
     return (
@@ -19,12 +25,12 @@ export default function FindPeople() {
             <h3>Are you looking for someone in particular?</h3>
             <input onChange={handleChange} placeholder='Enter name' />
             {!query && <h3>Or checkout who just joined!</h3>}
-            {data.err && <div className='error'>{data.err}</div>}
-            {error && (
+            {/* {data.err && <div className='error'>{data.err}</div>} */}
+            {/* {error && (
                 <div className='error'>Uh, err, something went wrong ...</div>
-            )}
-            {data.people &&
-                data.people.map((user) => {
+            )} */}
+            {foundUsers &&
+                foundUsers.map((user) => {
                     return (
                         <div key={user.id}>
                             <p>

@@ -1,37 +1,28 @@
 import React, { useEffect } from 'react';
-import { useDBget } from '../hooks/useDB';
-import FriendButton from './FriendButton';
+import { useDispatch, useSelector } from 'react-redux';
+import { getUserById } from '../redux/actions/userActions';
+import User from './User';
 
-function OtherProfile(props) {
-    const [{ data, error }, getData] = useDBget(
-        `/people/user/${props.match.params.id}`
+export default function OtherProfile(props) {
+    const dispatch = useDispatch();
+    const profile = useSelector((state) => state.profile && state.profile);
+    const user = useSelector(
+        (state) => state.users.currentUser && state.users.currentUser
     );
 
     useEffect(() => {
-        if (data.redirect) props.history.push('/');
-    }, [data]);
+        dispatch(getUserById(props.match.params.id));
+    }, []);
 
-    const { first, last, img_url, bio } = data;
+    useEffect(() => {
+        console.log('user :', user);
+        if (user && user.id === profile.id) props.history.push('/');
+    }, [user]);
+
     return (
         <>
             <h2>OtherProfile</h2>
-            {data.err && <div className='error'>{data.err}</div>}
-            {error && <div>Uh, err, something went wrong ...</div>}
-            <div className='user profile image medium'>
-                <img
-                    src={img_url || '/img/lego.svg'}
-                    alt={`${first} ${last}`}
-                />
-            </div>
-            <FriendButton id={props.match.params.id} />
-            <div>
-                <h3>
-                    {first} {last}
-                </h3>
-                {bio && <p>{bio}</p>}
-            </div>
+            {user && <User user={user} className='user component medium' />}
         </>
     );
 }
-
-export default OtherProfile;

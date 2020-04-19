@@ -4,7 +4,7 @@ import { NavLink } from 'react-router-dom';
 const Navigation = () => (
     <div className='nav component'>
         <div className='nav tag'>
-            <span>Navigation Component</span>
+            <span>Navigation</span>
         </div>
         <div className='nav content'>
             <div>

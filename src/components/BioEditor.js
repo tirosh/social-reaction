@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { updateBio } from '../redux/actions/userActions';
+import { updateBio } from '../redux/actions/profileActions';
 
 function BioEditor() {
     const dispatch = useDispatch();
-    const bio = useSelector((state) => state.user.bio && state.user.bio);
+    const bio = useSelector((state) => state.profile.bio && state.profile.bio);
     const [editBio, setEditBio] = useState(false);
     const [bioInput, setBioInput] = useState();
 
@@ -20,7 +20,7 @@ function BioEditor() {
     return (
         <div className='bio-editor component'>
             <div className='bio-editor tag'>
-                <span>BioEditor Component</span>
+                <span>BioEditor</span>
             </div>
             <div className='bio-editor content'>
                 {!editBio ? (

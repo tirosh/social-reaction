@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { initUI } from './redux/actions/uiActions';
-import { getUser } from './redux/actions/userActions';
+import { getProfile } from './redux/actions/profileActions';
 
 import Profile from './components/Profile';
 import ProfilePic from './components/ProfilePic';
@@ -17,19 +17,18 @@ import Footer from './components/Footer';
 function App() {
     const dispatch = useDispatch();
     const ui = useSelector((state) => state.ui);
-    const user = useSelector((state) => state.user);
+    const profile = useSelector((state) => state.profile);
 
     const [uploaderVisible, setuploaderVisible] = useState(false);
-    // const [user, setUser] = useState({});
 
     useEffect(() => {
         dispatch(initUI());
-        dispatch(getUser());
+        dispatch(getProfile());
     }, []);
 
     useEffect(() => {
-        console.log('user', user);
-    }, [user]);
+        console.log('profile', profile);
+    }, [profile]);
 
     const toggleModal = () => {
         setuploaderVisible(!uploaderVisible);
@@ -37,14 +36,14 @@ function App() {
 
     const updateProfile = (trait) => {
         console.log('updateProfile with:', trait);
-        // setUser({ ...user, trait });
+        // setprofile({ ...profile, trait });
     };
 
     return (
         <Router>
             <div className='app component'>
                 <div className='app tag'>
-                    <span>App Component</span>
+                    <span>App</span>
                 </div>
                 <div className='app content'>
                     <Navigation />

@@ -1,9 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { useDBget, useDBset } from '../hooks/useDB';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+    requestFriend,
+    acceptFriendRequest,
+    unfriend,
+} from '../redux/actions/friendsActions';
 
-function FriendButton(props) {
-    const [dbGet, getData] = useDBget(`/people/friend/${props.id}`);
-    const [dbSet, setData] = useDBset();
+export default function FriendButton(props) {
+    const dispatch = useDispatch();
+    const profile = useSelector((state) => state.profile && state.profile);
+
     const [btnTxt, setBtnTxt] = useState('');
     const status = {
         none: 'Send Friend Request',
@@ -13,39 +19,46 @@ function FriendButton(props) {
     };
 
     useEffect(() => {
-        let friend = dbGet.data.friend;
-        if (friend) {
-            if (friend.status === null) setBtnTxt(status.none);
-            if (friend.status === true) setBtnTxt(status.cancel);
-            if (friend.status === false) {
-                if (friend.recipient_id == props.id) {
+        if (props.user) {
+            if (props.user.accepted === null) {
+                setBtnTxt(status.none);
+            } else if (props.user.accepted === true) {
+                setBtnTxt(status.cancel);
+            } else if (props.user.accepted === false) {
+                if (props.user.sender_id === profile.id) {
                     setBtnTxt(status.pending);
                 } else {
                     setBtnTxt(status.add);
                 }
             }
         }
-    }, [dbGet.data.friend]);
+    }, [props.user]);
 
     const handleClick = async () => {
-        let url = '';
         if (btnTxt === status.none) {
-            url = '/people/request-friend';
+            dispatch(requestFriend(props.user.id));
             setBtnTxt(status.pending);
         } else if (btnTxt === status.pending || btnTxt === status.cancel) {
-            url = '/people/cancel-friend';
+            dispatch(unfriend(props.user.id));
             setBtnTxt(status.none);
         } else if (btnTxt === status.add) {
-            url = '/people/add-friend';
+            dispatch(acceptFriendRequest(props.user.id));
             setBtnTxt(status.cancel);
         }
-        setData({
-            url: url,
-            values: { id: props.id },
-        });
     };
 
-    return <button onClick={handleClick}>{btnTxt}</button>;
+    return (
+        <>
+            {props.user != 0 && (
+                <div className='friend-button component'>
+                    <div className='friend-button tag'>
+                        <span>FriendButton</span>
+                    </div>
+                    <div className='friend-button content'>
+                        <button onClick={handleClick}>{btnTxt}</button>
+                    </div>
+                </div>
+            )}
+        </>
+    );
 }
-
-export default FriendButton;
