@@ -85,9 +85,9 @@ input[type='text'] {
 }
 
 textarea {
-    flex-grow: 1;
+    /* flex-grow: 1; */
     resize: none;
-    width: 280px;
+    /* width: 280px; */
     font: inherit;
     font-size: inherit;
     padding: 0.25rem 0.5rem;
@@ -99,7 +99,7 @@ textarea {
 }
 
 ::placeholder {
-    color: rgb(216, 216, 216);
+    color: hsl(0, 0%, 50%);
 }
 
 /************************************************************/
@@ -265,12 +265,19 @@ main {
 }
 .profile.content div:last-child {
     flex-grow: 1;
-    align-self: flex-end;
+    /* align-self: flex-end; */
 }
 
 .bio-editor.content {
-    /* display: flex; */
-    /* flex-direction: column; */
+    display: flex;
+    flex-direction: column;
+    /* display: block; */
+}
+.bio-editor.content textarea {
+    margin-bottom: 20px;
+}
+.bio-editor.content .buttons button:first-child {
+    margin-right: 20px;
 }
 
 .user.profile.image.medium {
@@ -321,6 +328,55 @@ main {
     flex-wrap: wrap;
 }
 
+.friend-button.content {
+    padding: 15px;
+}
+
+.find-people.component {
+    flex-grow: 1;
+}
+.find-people.content h3,
+.find-people.content input {
+    margin-bottom: 20px;
+}
+.find-people.content .people {
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.chat-group.component {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+.chat-group.content {
+    display: flex;
+    flex-direction: column;
+}
+.chat-group.content .messages-container {
+    overflow-y: scroll;
+    max-height: 50vh;
+}
+.message-container.component {
+    display: flex;
+    flex-direction: column;
+}
+.message-container.content {
+    display: flex;
+}
+.message-container:nth-child(2n + 1) .content {
+    flex-direction: row-reverse;
+    text-align: right;
+}
+.message.component {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+.message .content {
+}
+
 .user.component.medium {
     display: flex;
     flex-direction: column;
@@ -336,20 +392,7 @@ main {
     flex-direction: column;
 }
 
-.friend-button.content {
-    padding: 15px;
-}
-
-.find-people.component {
-    /* padding: 20px; */
-}
-.find-people.content .people {
-    padding: 0;
-    display: flex;
-    flex-wrap: wrap;
-}
-
-.chat {
+/* .chat-group {
     display: flex;
     flex-direction: column;
     background-color: white;
@@ -357,7 +400,7 @@ main {
     margin: 0 auto;
     box-shadow: 20px 20px 0px 0px #00000021;
 }
-.chat .user-image {
+.chat-group .user-image {
     min-width: 50px;
     margin: 0 20px;
     height: 50px;
@@ -365,39 +408,39 @@ main {
     overflow: hidden;
     background-color: gray;
 }
-.chat .messages {
+.chat-group .messages {
     overflow-y: scroll;
     max-height: 50vh;
     box-shadow: inset 0px 18px 0px 0px #00000021;
 }
-.chat .user-image img {
+.chat-group .user-image img {
     object-fit: cover;
     width: 50px;
     height: 50px;
 }
 
-.chat .message-container {
+.chat-group .message-container {
     display: flex;
     margin: 20px 0;
 }
 
-.chat .message-container:nth-child(2n + 1) {
+.chat-group .message-container:nth-child(2n + 1) {
     flex-direction: row-reverse;
     text-align: right;
 }
 
-.chat .message .name {
-    /* margin-right: 20px; */
+.chat-group .message .name {
+    margin-right: 20px;
     font-weight: bold;
 }
-.chat .message .date {
+.chat-group .message .date {
     color: grey;
     font-size: 0.8em;
 }
 
-.chat textarea {
+.chat-group textarea {
     width: 100%;
-}
+} */
 
 /************************************************************/
 .error {

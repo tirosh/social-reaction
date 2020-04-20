@@ -10,7 +10,7 @@ import ProfilePic from './components/ProfilePic';
 import FindPeople from './components/FindPeople';
 import OtherProfile from './components/OtherProfile';
 import Friends from './components/Friends';
-import Chat from './components/Chat';
+import ChatGroup from './components/ChatGroup';
 import Navigation from './components/Navigation';
 import Footer from './components/Footer';
 
@@ -91,7 +91,7 @@ function App() {
                             />
                         )}
                     />
-                    <Route path='/chat' render={() => <Chat />} />
+                    <Route path='/chat' render={() => <ChatGroup />} />
                     <Footer />
                 </div>
             </div>

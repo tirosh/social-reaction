@@ -32,24 +32,19 @@ function BioEditor() {
                     </>
                 ) : (
                     <>
-                        <label>
-                            Bio:
-                            <textarea
-                                name='bio'
-                                key='bio'
-                                placeholder='Once upon a time...'
-                                value={bioInput}
-                                onChange={(e) => setBioInput(e.target.value)}
-                            />
-                        </label>
-                        <button onClick={submit}>save</button>
-                        <button onClick={() => setEditBio(!editBio)}>
-                            cancel
-                        </button>
-                        {/* {data.err && <div className='error'>{data.err}</div>}
-            {error && (
-                <div className='error'>Uh, err, something went wrong ...</div>
-            )} */}
+                        <textarea
+                            name='bio'
+                            key='bio'
+                            placeholder='Once upon a time...'
+                            value={bioInput}
+                            onChange={(e) => setBioInput(e.target.value)}
+                        />
+                        <div className='buttons'>
+                            <button onClick={submit}>save</button>
+                            <button onClick={() => setEditBio(!editBio)}>
+                                cancel
+                            </button>
+                        </div>
                     </>
                 )}
             </div>

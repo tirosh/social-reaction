@@ -28,7 +28,15 @@ exports.getUser = async (email) => {
 
 exports.getUserById = async (id, friendId) => {
     const q = `
-        SELECT users.id, first, last, img_url, bio, sender_id, recipient_id, accepted  
+        SELECT 
+            users.id, 
+            first, 
+            last, 
+            img_url, 
+            bio, 
+            sender_id AS frnd_sender_id, 
+            recipient_id AS frnd_recipient_id, 
+            accepted  
         FROM users 
         LEFT JOIN friendships 
         ON (recipient_id = $1 AND sender_id = users.id)
@@ -42,7 +50,15 @@ exports.getUserById = async (id, friendId) => {
 
 exports.getUsersByName = async (id, q) => {
     const dbData = await db.query(
-        `SELECT users.id, first, last, img_url, bio, sender_id, recipient_id, accepted  
+        `SELECT 
+            users.id, 
+            first, 
+            last, 
+            img_url, 
+            bio, 
+            sender_id AS frnd_sender_id, 
+            recipient_id AS frnd_recipient_id, 
+            accepted  
         FROM users 
         LEFT JOIN friendships 
         ON (recipient_id = $1 AND sender_id = users.id)
@@ -58,7 +74,15 @@ exports.getUsersByName = async (id, q) => {
 
 exports.getUsersLatest = async (id, num) => {
     const dbData = await db.query(
-        `SELECT users.id, first, last, img_url, bio, sender_id, recipient_id, accepted  
+        `SELECT 
+            users.id, 
+            first, 
+            last, 
+            img_url, 
+            bio, 
+            sender_id AS frnd_sender_id, 
+            recipient_id AS frnd_recipient_id, 
+            accepted  
         FROM users 
         LEFT JOIN friendships 
         ON (recipient_id = $1 AND sender_id = users.id)
@@ -211,7 +235,15 @@ exports.getWannabes = async (id) => {
 
 exports.getFriendsWannabes = async (id) => {
     const q = `
-        SELECT users.id, first, last, img_url, bio, sender_id, recipient_id, accepted
+        SELECT 
+            users.id, 
+            first, 
+            last, 
+            img_url, 
+            bio, 
+            sender_id AS frnd_sender_id, 
+            recipient_id AS frnd_recipient_id, 
+            accepted
         FROM friendships
         JOIN users
         ON (accepted = true AND recipient_id = $1 AND sender_id = users.id)
@@ -221,16 +253,30 @@ exports.getFriendsWannabes = async (id) => {
     return dbData.rows;
 };
 
-exports.getLatestMessages = async (num) => {
+exports.getLatestMessages = async (id, num) => {
     const q = `
-        SELECT messages.id AS msg_id, msg, messages.created_at, sender_id, first, last, img_url
+        SELECT 
+            messages.id AS msg_id, 
+            messages.msg, 
+            messages.created_at, 
+            messages.sender_id AS msg_sender_id, 
+            users.first, 
+            users.last, 
+            users.img_url, 
+            users.bio, 
+            friendships.sender_id AS frnd_sender_id, 
+            friendships.recipient_id AS frnd_recipient_id, 
+            friendships.accepted
         FROM messages 
         JOIN users
-        ON users.id = sender_id
+        ON users.id = messages.sender_id
+        LEFT OUTER JOIN friendships 
+        ON (friendships.recipient_id = $1 AND friendships.sender_id = users.id)
+        OR (friendships.recipient_id = users.id AND friendships.sender_id = $1)
         ORDER BY messages.created_at DESC
-        LIMIT $1`;
+        LIMIT $2`;
 
-    const dbData = await db.query(q, [num]);
+    const dbData = await db.query(q, [id, num]);
     return dbData.rows.length === 0
         ? Promise.reject(`No messages found.`)
         : dbData.rows;

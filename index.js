@@ -98,7 +98,25 @@ io.on('connection', function (socket) {
     onlineUsers[socket.id] = id;
     // console.log('onlineUsers', onlineUsers);
 
-    db.getLatestMessages(10).then((data) => {
+    db.getLatestMessages(id, 10).then((data) => {
+        data = data.map((item) => {
+            return {
+                id: item.msg_id,
+                msg: item.msg,
+                created_at: item.created_at,
+                sender: {
+                    id: item.msg_sender_id,
+                    first: item.first,
+                    last: item.last,
+                    img_url: item.img_url,
+                    bio: item.bio,
+                    frnd_sender_id: item.frnd_sender_id,
+                    frnd_recipient_id: item.frnd_recipient_id,
+                    accepted: item.accepted,
+                },
+            };
+        });
+        // console.log('data[0] :', data[0]);
         io.sockets.sockets[socket.id].emit('latestMessages', data.reverse());
     });
 

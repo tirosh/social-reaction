@@ -25,7 +25,7 @@ export default function FriendButton(props) {
             } else if (props.user.accepted === true) {
                 setBtnTxt(status.cancel);
             } else if (props.user.accepted === false) {
-                if (props.user.sender_id === profile.id) {
+                if (props.user.frnd_sender_id === profile.id) {
                     setBtnTxt(status.pending);
                 } else {
                     setBtnTxt(status.add);

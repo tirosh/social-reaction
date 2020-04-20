@@ -17,7 +17,9 @@ export default function User(props) {
                         <img src={props.user.img_url} />
                     </div>
                 </Link>
-                <FriendButton user={props.user} />
+                {props.button === 'FriendButton' && (
+                    <FriendButton user={props.user} />
+                )}
             </div>
         </div>
     );
