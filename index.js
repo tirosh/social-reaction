@@ -1,7 +1,7 @@
 const express = require('express');
 const app = (exports = express());
 const port = process.env.PORT || 8080;
-const server = require('https').Server(app);
+const server = require('http').Server(app);
 const db = require('./db');
 const io = require('socket.io')(server, {
     origins:
@@ -97,8 +97,8 @@ io.on('connection', function (socket) {
 
     const id = socket.request.session.id;
     // console.log('filter online users :', Object.values(onlineUsers));
-    // console.log('onlineUsers', onlineUsers);
     onlineUsers[socket.id] = id;
+    console.log('onlineUsers', onlineUsers);
 
     // io.sockets.emit('onlineusers', onlineUsers);
 
