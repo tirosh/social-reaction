@@ -1,11 +1,11 @@
 const express = require('express');
 const app = (exports = express());
 const port = process.env.PORT || 8080;
-const server = require('http').Server(app);
+const server = require('https').Server(app);
 const db = require('./db');
 const io = require('socket.io')(server, {
     origins:
-        'localhost:8080 192.168.0.123:8080 https://social-reaction.herokuapp.com/:*',
+        'localhost:8080 192.168.0.123:8080 social-reaction.herokuapp.com:*',
 });
 
 const { SESSION_SECRET: sessionSecret } = process.env.SESSION_SECRET
