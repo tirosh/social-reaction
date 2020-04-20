@@ -96,8 +96,8 @@ io.on('connection', function (socket) {
     }
 
     const id = socket.request.session.id;
-    console.log('filter online users :', Object.values(onlineUsers));
-    console.log('onlineUsers', onlineUsers);
+    // console.log('filter online users :', Object.values(onlineUsers));
+    // console.log('onlineUsers', onlineUsers);
     onlineUsers[socket.id] = id;
 
     // io.sockets.emit('onlineusers', onlineUsers);
