@@ -95,8 +95,11 @@ io.on('connection', function (socket) {
     }
 
     const id = socket.request.session.id;
-    onlineUsers[socket.id] = id;
+    console.log('filter online users :', Object.values(onlineUsers));
     console.log('onlineUsers', onlineUsers);
+    onlineUsers[socket.id] = id;
+
+    // io.sockets.emit('onlineusers', onlineUsers);
 
     db.getLatestMessages(10).then((data) => {
         data = data.map((item) => ({
