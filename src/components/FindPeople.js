@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { getUsersLatest, getUsersByName } from '../redux/actions/userActions';
+import User from './User';
 
 export default function FindPeople() {
     const dispatch = useDispatch();
@@ -20,33 +21,26 @@ export default function FindPeople() {
     };
 
     return (
-        <div>
-            <h1>Find People</h1>
-            <h3>Are you looking for someone in particular?</h3>
-            <input onChange={handleChange} placeholder='Enter name' />
-            {!query && <h3>Or checkout who just joined!</h3>}
-            {/* {data.err && <div className='error'>{data.err}</div>} */}
-            {/* {error && (
-                <div className='error'>Uh, err, something went wrong ...</div>
-            )} */}
-            {foundUsers &&
-                foundUsers.map((user) => {
-                    return (
-                        <div key={user.id}>
-                            <p>
-                                <Link to={`/user/${user.id}`}>
-                                    {user.first} {user.last}
-                                </Link>
-                            </p>
-                            <div className='user profile image medium'>
-                                <img
-                                    src={user.img_url || '/img/lego.svg'}
-                                    alt={`${user.first} ${user.last}`}
-                                />
-                            </div>
-                        </div>
-                    );
-                })}
+        <div className='find-people component'>
+            <div className='find-people tag'>
+                <span>FindPeople</span>
+            </div>
+            <div className='find-people content'>
+                <h1>Find People</h1>
+                <h3>Are you looking for someone in particular?</h3>
+                <input onChange={handleChange} placeholder='Enter name' />
+                {!query && <h3>Or checkout who just joined!</h3>}
+                <div className='people'>
+                    {foundUsers &&
+                        foundUsers.map((person) => (
+                            <User
+                                user={person}
+                                key={person.id}
+                                className='user component medium'
+                            />
+                        ))}
+                </div>
+            </div>
         </div>
     );
 }
