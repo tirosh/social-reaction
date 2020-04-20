@@ -16,6 +16,7 @@ export default function ChatGroup() {
 
     const keyCheck = (e) => {
         if (e.key === 'Enter') {
+            console.log('e.target.value :', e.target.value);
             e.preventDefault();
             socket.emit('newPublicMessage', e.target.value);
             e.target.value = '';
@@ -59,7 +60,7 @@ function MessageContainer({ msg }) {
                 <User
                     user={msg.sender}
                     key={msg.sender.id}
-                    className='user component medium'
+                    className='user component small'
                 />
                 <Message msg={msg} />
             </div>
@@ -74,13 +75,13 @@ function Message({ msg }) {
                 <span>Message</span>
             </div>
             <div className='message content'>
-                <p className='message sender'>
-                    <Link to={`/user/${msg.sender.id}`}>
+                <div>
+                    <span className='message sender'>
                         {msg.sender.first} {msg.sender.last}
-                    </Link>
-                </p>
+                    </span>
+                    <span className='date'>{formatDate(msg.created_at)}</span>
+                </div>
                 <p>{msg.msg}</p>
-                <p className='date'>{formatDate(msg.created_at)}</p>
             </div>
         </div>
     );

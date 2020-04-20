@@ -6,7 +6,11 @@ module.exports = router;
 
 router.get('/user/:id', async (req, res) => {
     try {
-        const user = await db.getUserById(req.session.id, req.params.id);
+        let [user, friendStatus] = await Promise.all([
+            db.getUserById(req.params.id),
+            db.getFriendStatus(req.session.id, req.params.id),
+        ]);
+        user = friendStatus ? { ...user, ...friendStatus } : user;
         res.json({ user });
     } catch (err) {
         console.log('ERROR in GET /people/user/:id:', err);
@@ -35,15 +39,15 @@ router.get('/users/:q', async (req, res) => {
     }
 });
 
-router.get('/friend/:id', async (req, res) => {
-    try {
-        const friend = await db.getFriend(req.session.id, req.params.id);
-        res.json({ friend });
-    } catch (err) {
-        console.log('ERROR in GET /people/friend/:id:', err);
-        res.json({ err: err });
-    }
-});
+// router.get('/friend/:id', async (req, res) => {
+//     try {
+//         const friend = await db.getFriend(req.session.id, req.params.id);
+//         res.json({ friend });
+//     } catch (err) {
+//         console.log('ERROR in GET /people/friend/:id:', err);
+//         res.json({ err: err });
+//     }
+// });
 
 router.post('/request-friend', async (req, res) => {
     try {

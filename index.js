@@ -96,44 +96,40 @@ io.on('connection', function (socket) {
 
     const id = socket.request.session.id;
     onlineUsers[socket.id] = id;
-    // console.log('onlineUsers', onlineUsers);
+    console.log('onlineUsers', onlineUsers);
 
-    db.getLatestMessages(id, 10).then((data) => {
-        data = data.map((item) => {
-            return {
-                id: item.msg_id,
-                msg: item.msg,
-                created_at: item.created_at,
-                sender: {
-                    id: item.msg_sender_id,
-                    first: item.first,
-                    last: item.last,
-                    img_url: item.img_url,
-                    bio: item.bio,
-                    frnd_sender_id: item.frnd_sender_id,
-                    frnd_recipient_id: item.frnd_recipient_id,
-                    accepted: item.accepted,
-                },
-            };
-        });
-        // console.log('data[0] :', data[0]);
+    db.getLatestMessages(10).then((data) => {
+        data = data.map((item) => ({
+            id: item.msg_id,
+            msg: item.msg,
+            created_at: item.created_at,
+            sender: {
+                id: item.sender_id,
+                first: item.first,
+                last: item.last,
+                img_url: item.img_url,
+                bio: item.bio,
+            },
+        }));
         io.sockets.sockets[socket.id].emit('latestMessages', data.reverse());
     });
 
     socket.on('newPublicMessage', (msg) => {
         // console.log('This is a message:', msg, 'user:', id);
-        Promise.all([db.getUserById(id), db.addPublicMessage(id, msg)]).then(
-            ([{ first, last, img_url }, { msg_id, created_at }]) => {
+        Promise.all([db.addPublicMessage(id, msg), db.getUserById(id)]).then(
+            ([{ msg_id, created_at }, { first, last, img_url, bio }]) =>
                 io.sockets.emit('publicMessage', {
-                    msg_id,
-                    msg,
-                    created_at,
-                    sender_id: id,
-                    first,
-                    last,
-                    img_url,
-                });
-            }
+                    id: msg_id,
+                    msg: msg,
+                    created_at: created_at,
+                    sender: {
+                        id: id,
+                        first: first,
+                        last: last,
+                        img_url: img_url,
+                        bio: bio,
+                    },
+                })
         );
     });
 

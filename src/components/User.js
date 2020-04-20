@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import FriendButton from './FriendButton';
 
-export default function User({ className, user, bio, button }) {
+export default function User({ className, user, name, bio, button }) {
     return (
         <div className={className}>
             <div className='user tag'>
@@ -10,12 +10,13 @@ export default function User({ className, user, bio, button }) {
             </div>
             <div className='user content'>
                 <div>
-                    <p>
-                        {user.first} {user.last}
-                    </p>
+                    <p>{name && `${user.first} ${user.last}`}</p>
                     <Link to={`/user/${user.id}`}>
                         <div className='image'>
-                            <img src={user.img_url} />
+                            <img
+                                src={user.img_url || '/img/lego.svg'}
+                                alt={`${user.first} ${user.last}`}
+                            />
                         </div>
                     </Link>
                 </div>

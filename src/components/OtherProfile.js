@@ -1,9 +1,13 @@
 import React, { useEffect } from 'react';
+import { useHistory, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { getUserById } from '../redux/actions/userActions';
 import User from './User';
 
-export default function OtherProfile(props) {
+export default function OtherProfile() {
+    let params = useParams();
+    let history = useHistory();
+
     const dispatch = useDispatch();
     const profile = useSelector((state) => state.profile && state.profile);
     const user = useSelector(
@@ -11,12 +15,12 @@ export default function OtherProfile(props) {
     );
 
     useEffect(() => {
-        dispatch(getUserById(props.match.params.id));
+        dispatch(getUserById(params.id));
     }, []);
 
     useEffect(() => {
         if (user && profile) {
-            if (user.id === profile.id) props.history.push('/');
+            if (user.id === profile.id) history.replace('/');
         }
     }, [user, profile]);
 

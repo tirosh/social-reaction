@@ -23,10 +23,7 @@ export default function Profile({ updateProfile }) {
                     <h3>
                         {profile.first} {profile.last}
                     </h3>
-                    <BioEditor
-                        bio={profile.bio}
-                        updateProfile={updateProfile}
-                    />
+                    <BioEditor />
                 </div>
             </div>
         </div>

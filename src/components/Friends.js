@@ -67,6 +67,7 @@ function FriendsWannabes(props) {
                                 key={person.id}
                                 className='user component medium'
                                 button={'FriendButton'}
+                                name={true}
                             />
                         ))}
                     </div>

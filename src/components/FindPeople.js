@@ -38,6 +38,7 @@ export default function FindPeople() {
                                 key={person.id}
                                 className='user component medium'
                                 button={'FriendButton'}
+                                name={true}
                             />
                         ))}
                 </div>

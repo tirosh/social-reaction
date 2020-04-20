@@ -16,11 +16,13 @@ export default function ProfilePic() {
                     <span>ProfilePic</span>
                 </div>
                 <div className='profile-pic content'>
-                    <img
-                        src={profile.img_url || '/img/lego.svg'}
-                        alt={`${profile.first} ${profile.last}`}
-                        onClick={() => dispatch(toggleModal())}
-                    />
+                    <div className='image'>
+                        <img
+                            src={profile.img_url || '/img/lego.svg'}
+                            alt={`${profile.first} ${profile.last}`}
+                            onClick={() => dispatch(toggleModal())}
+                        />
+                    </div>
                 </div>
             </div>
             {ui.uploaderVisible && <Uploader />}

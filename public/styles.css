@@ -4,7 +4,8 @@
 }
 
 body {
-    font-family: 'Nunito sans', sans-serif;
+    font-family: 'Nunito', sans-serif;
+    letter-spacing: 0.01em;
     font-size: 20px;
     background: linear-gradient(
         to bottom,
@@ -13,6 +14,11 @@ body {
         rgba(255, 255, 255, 0.2) 100%
     );
     min-height: 100vh;
+}
+
+a,
+a:visited {
+    color: blue;
 }
 
 input,
@@ -85,16 +91,11 @@ input[type='text'] {
 }
 
 textarea {
-    /* flex-grow: 1; */
     resize: none;
-    /* width: 280px; */
     font: inherit;
-    font-size: inherit;
+    font-size: 0.8em;
     padding: 0.25rem 0.5rem;
-    /* margin-bottom: 10px; */
     border: 0;
-    /* border-bottom: 1px solid grey; */
-    /* border-top: 1px solid grey; */
     background-color: #f1f1f1;
 }
 
@@ -132,27 +133,57 @@ textarea {
 
 .component:nth-of-type(1),
 .component:nth-of-type(1n + 6) {
-    background-color: hsla(0, 0%, 0%, 0.2);
+    background-color: hsla(0, 0%, 100%, 0.25);
 }
 .component:nth-of-type(2),
 .component:nth-of-type(2n + 6) {
-    background-color: hsla(177, 80%, 50%, 0.5);
+    /* background-color: hsla(0, 80%, 50%, 0.5); */
+    background: linear-gradient(
+        to bottom,
+        hsla(0, 50%, 50%, 0.5) 0%,
+        hsla(0, 80%, 50%, 0.5) 40%,
+        hsla(0, 80%, 50%, 0.5) 100%
+    );
 }
 .component:nth-of-type(3),
 .component:nth-of-type(3n + 6) {
-    background-color: hsla(56, 80%, 50%, 0.5);
+    /* background-color: hsla(56, 80%, 50%, 0.5); */
+    background: linear-gradient(
+        to bottom,
+        hsla(56, 50%, 50%, 0.5) 0%,
+        hsla(56, 80%, 50%, 0.5) 40%,
+        hsla(56, 80%, 50%, 0.5) 100%
+    );
 }
 .component:nth-of-type(4),
 .component:nth-of-type(4n + 6) {
-    background-color: hsla(0, 80%, 50%, 0.5);
+    /* background-color: hsla(177, 80%, 50%, 0.5); */
+    background: linear-gradient(
+        to bottom,
+        hsla(177, 50%, 50%, 0.5) 0%,
+        hsla(177, 80%, 50%, 0.5) 40%,
+        hsla(177, 80%, 50%, 0.5) 100%
+    );
 }
 .component:nth-of-type(5),
 .component:nth-of-type(5n + 6) {
-    background-color: hsla(305, 80%, 50%, 0.5);
+    /* background-color: hsla(305, 80%, 50%, 0.5); */
+    background: linear-gradient(
+        to bottom,
+        hsla(323, 50%, 50%, 0.5) 0%,
+        hsla(323, 80%, 50%, 0.5) 40%,
+        hsla(323, 80%, 50%, 0.5) 100%
+    );
 }
 .component:nth-of-type(6),
 .component:nth-of-type(6n + 6) {
-    background-color: hsla(236, 80%, 50%, 0.5);
+    /* background-color: hsla(236, 80%, 50%, 0.5); */
+    background: linear-gradient(
+        to bottom,
+        hsla(236, 50%, 50%, 0.5) 0%,
+        hsla(236, 80%, 50%, 0.5) 40%,
+        hsla(236, 80%, 50%, 0.5) 100%
+    );
 }
 /************************************************************/
 main {
@@ -185,7 +216,13 @@ main {
 /************************/
 .welcome.component {
     width: 340px;
-    background-color: hsla(219, 78%, 56%, 0.8);
+    /* background-color: hsla(219, 78%, 56%, 0.8); */
+    background: linear-gradient(
+        to bottom,
+        hsla(219, 50%, 56%, 0.8) 0%,
+        hsla(219, 78%, 56%, 0.8) 40%,
+        hsla(219, 78%, 56%, 0.8) 100%
+    );
     margin: auto;
 }
 .welcome .content {
@@ -231,21 +268,33 @@ main {
 }
 .nav.content {
     flex-wrap: wrap;
+    justify-content: space-between;
     align-items: center;
 }
-.nav.content div {
-    margin-right: 20px;
-    background-color: hsla(0, 0%, 100%, 0.9);
-    padding: 6px 20px;
-    height: 40px;
+.nav.links {
+    display: flex;
 }
-.nav.content div:first-child {
-    width: 40px;
+.nav.links > a {
+    margin-right: 20px;
+    background-color: hsla(0, 0%, 100%, 0.75);
+    padding: 6px 20px;
+    /* height: 40px; */
+    box-shadow: 0px 5px 10px 0px #00000021;
+}
+.nav.content > div:first-child {
+    width: 50px;
     height: 40px;
     background-color: crimson;
     display: flex;
     justify-content: center;
     align-items: center;
+    box-shadow: 0px 5px 10px 0px #00000021;
+}
+.nav.content > div:first-child a,
+.nav.content > div:first-child a {
+    color: white;
+    font-size: 1.6em;
+    font-weight: bold;
 }
 .nav .selected {
     text-decoration: none;
@@ -253,26 +302,18 @@ main {
 
 /************************/
 .profile-pic.component {
-    position: fixed;
-    width: 75px;
-    height: 75px;
-    top: 20px;
-    right: 20px;
     cursor: pointer;
 }
 .profile-pic.tag {
     position: absolute;
 }
 .profile-pic.content {
-    width: 75px;
-    height: 75px;
     padding: 0;
     margin: 0;
 }
-.profile-pic.content img {
-    object-fit: cover;
-    height: 100%;
-    width: 100%;
+.profile-pic .image {
+    width: 70px;
+    height: 40px;
 }
 
 /************************/
@@ -329,11 +370,17 @@ main {
     display: flex;
     justify-content: center;
     align-items: center;
+    background-color: hsla(0, 0%, 100%, 0.5);
 }
 
 /************************/
 .uploader.component {
-    background-color: hsla(244, 80%, 50%, 0.85);
+    background: linear-gradient(
+        to bottom,
+        hsla(0, 50%, 50%, 0.8) 0%,
+        hsla(0, 80%, 50%, 0.8) 40%,
+        hsla(0, 80%, 50%, 0.8) 100%
+    );
     box-shadow: 20px 20px 0 0px #00000021;
 }
 .uploader.content {
@@ -383,10 +430,15 @@ main {
 }
 .chat-group.content {
     flex-direction: column;
+    padding: 5px 0px 20px 0px;
+}
+.chat-group.content h1 {
+    padding: 0 20px;
 }
 .chat-group.content .messages-container {
     overflow-y: scroll;
     max-height: 50vh;
+    box-shadow: inset 0px 10px 10px 0px #00000026;
 }
 
 /************************/
@@ -403,14 +455,29 @@ main {
 .message.component {
     flex-grow: 1;
 }
-/* .message-container:nth-child(2n + 1) .message .content, */
-.message .content {
+.message.content {
     flex-direction: column;
+    font-size: 0.8em;
+}
+.message.content > div {
+    margin-bottom: 10px;
+}
+.message.sender,
+.message .date {
+    padding: 0 20px 5px 0;
+    border-bottom: 1px solid black;
+}
+.message.sender {
+    font-weight: bold;
 }
 
 /************************/
-.user.component {
+.user.component.medium {
     justify-content: space-between;
+}
+.user.small .image {
+    width: 75px;
+    height: 75px;
 }
 .user.medium .image {
     width: 150px;
@@ -440,8 +507,17 @@ main {
         font-size: 20px;
     }
     .nav.content {
+        display: flex;
         flex-direction: column;
         align-items: flex-start;
+    }
+    .nav.links {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+    }
+    .profile-pic.component {
+        display: none;
     }
     .find-people.content .people,
     .message-container.content,
@@ -455,7 +531,8 @@ main {
     }
     .user.medium .image {
         width: 100%;
-        height: fit-content;
+        /* height: fit-content; */
+        max-height: 80vw;
     }
     .user.large .image {
         width: 300px;

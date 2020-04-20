@@ -26,26 +26,28 @@ exports.getUser = async (email) => {
         : dbData.rows[0];
 };
 
-exports.getUserById = async (id, friendId) => {
+exports.getUserById = async (id) => {
     const q = `
-        SELECT 
-            users.id, 
-            first, 
-            last, 
-            img_url, 
-            bio, 
-            sender_id AS frnd_sender_id, 
-            recipient_id AS frnd_recipient_id, 
-            accepted  
+        SELECT id, first, last, img_url, bio
         FROM users 
-        LEFT JOIN friendships 
-        ON (recipient_id = $1 AND sender_id = users.id)
-        OR (recipient_id = users.id AND sender_id = $1)
-        WHERE users.id = $2`;
-    const dbData = await db.query(q, [id, friendId]);
+        WHERE users.id = $1`;
+    const dbData = await db.query(q, [id]);
     return dbData.rows.length === 0
         ? Promise.reject(`${id} could not be found.`)
         : dbData.rows[0];
+};
+
+exports.getFriendStatus = async (id, friendId) => {
+    const q = `
+            SELECT 
+                sender_id AS frnd_sender_id, 
+                recipient_id AS frnd_recipient_id, 
+                accepted  
+            FROM friendships 
+            WHERE (recipient_id = $1 AND sender_id = $2)
+            OR (recipient_id = $2 AND sender_id = $1)`;
+    const dbData = await db.query(q, [id, friendId]);
+    return dbData.rows[0];
 };
 
 exports.getUsersByName = async (id, q) => {
@@ -175,19 +177,19 @@ exports.getPsswd = async (email) => {
         : dbData.rows[0].psswd;
 };
 
-exports.getFriend = async (id, friendId) => {
-    const q = `
-        SELECT * FROM friendships 
-        WHERE (recipient_id = $1 AND sender_id = $2)
-        OR (recipient_id = $2 AND sender_id = $1)`;
-    const dbData = await db.query(q, [id, friendId]);
-    if (dbData.rows.length === 0) {
-        dbData.rows.unshift({ status: null });
-    } else {
-        dbData.rows[0].status = dbData.rows[0].accepted;
-    }
-    return dbData.rows[0];
-};
+// exports.getFriend = async (id, friendId) => {
+//     const q = `
+//         SELECT * FROM friendships
+//         WHERE (recipient_id = $1 AND sender_id = $2)
+//         OR (recipient_id = $2 AND sender_id = $1)`;
+//     const dbData = await db.query(q, [id, friendId]);
+//     if (dbData.rows.length === 0) {
+//         dbData.rows.unshift({ status: null });
+//     } else {
+//         dbData.rows[0].status = dbData.rows[0].accepted;
+//     }
+//     return dbData.rows[0];
+// };
 
 exports.requestFriend = async (id, friendId) => {
     const q = `
@@ -253,30 +255,24 @@ exports.getFriendsWannabes = async (id) => {
     return dbData.rows;
 };
 
-exports.getLatestMessages = async (id, num) => {
+exports.getLatestMessages = async (num) => {
     const q = `
         SELECT 
             messages.id AS msg_id, 
             messages.msg, 
             messages.created_at, 
-            messages.sender_id AS msg_sender_id, 
+            messages.sender_id, 
             users.first, 
             users.last, 
             users.img_url, 
-            users.bio, 
-            friendships.sender_id AS frnd_sender_id, 
-            friendships.recipient_id AS frnd_recipient_id, 
-            friendships.accepted
+            users.bio  
         FROM messages 
         JOIN users
         ON users.id = messages.sender_id
-        LEFT OUTER JOIN friendships 
-        ON (friendships.recipient_id = $1 AND friendships.sender_id = users.id)
-        OR (friendships.recipient_id = users.id AND friendships.sender_id = $1)
         ORDER BY messages.created_at DESC
-        LIMIT $2`;
+        LIMIT $1`;
 
-    const dbData = await db.query(q, [id, num]);
+    const dbData = await db.query(q, [num]);
     return dbData.rows.length === 0
         ? Promise.reject(`No messages found.`)
         : dbData.rows;
