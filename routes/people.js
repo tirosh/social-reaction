@@ -5,11 +5,9 @@ const router = new Router();
 module.exports = router;
 
 router.get('/user/:id', async (req, res) => {
-    if (parseInt(req.params.id) === req.session.id)
-        return res.json({ redirect: true });
     try {
         const user = await db.getUserById(req.session.id, req.params.id);
-        res.json({ success: true, ...user });
+        res.json({ user });
     } catch (err) {
         console.log('ERROR in GET /people/user/:id:', err);
         res.json({ redirect: true });

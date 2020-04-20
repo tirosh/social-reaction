@@ -15,14 +15,27 @@ export default function OtherProfile(props) {
     }, []);
 
     useEffect(() => {
-        console.log('user :', user);
-        if (user && user.id === profile.id) props.history.push('/');
-    }, [user]);
+        if (user && profile) {
+            if (user.id === profile.id) props.history.push('/');
+        }
+    }, [user, profile]);
 
     return (
-        <>
-            <h2>OtherProfile</h2>
-            {user && <User user={user} className='user component medium' />}
-        </>
+        <div className='other-profile component'>
+            <div className='other-profile tag'>
+                <span>OtherProfile</span>
+            </div>
+            <div className='other-profile content'>
+                <h2>Other Profile</h2>
+                {user && (
+                    <User
+                        user={user}
+                        className='user component large'
+                        bio={true}
+                        button={'FriendButton'}
+                    />
+                )}
+            </div>
+        </div>
     );
 }

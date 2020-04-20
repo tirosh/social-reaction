@@ -7,7 +7,7 @@ export function getUserById(id) {
         console.log('getUser(id)', data);
         return {
             type: GET_USER_BY_ID,
-            payload: data,
+            payload: data.user,
         };
     });
 }
