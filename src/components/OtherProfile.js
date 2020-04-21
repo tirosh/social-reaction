@@ -37,6 +37,7 @@ export default function OtherProfile() {
                         className='user component large'
                         bio={true}
                         button={'FriendButton'}
+                        name={true}
                     />
                 )}
             </div>
