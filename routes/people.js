@@ -10,7 +10,14 @@ router.get('/user/:id', async (req, res) => {
             db.getUserById(req.params.id),
             db.getFriendStatus(req.session.id, req.params.id),
         ]);
-        user = friendStatus ? { ...user, ...friendStatus } : user;
+        user = friendStatus
+            ? { ...user, ...friendStatus }
+            : {
+                  ...user,
+                  frnd_sender_id: null,
+                  frnd_recipient_id: null,
+                  accepted: null,
+              };
         res.json({ user });
     } catch (err) {
         console.log('ERROR in GET /people/user/:id:', err);
