@@ -10,6 +10,7 @@ const initialState = {};
 
 export default function (state = initialState, action) {
     if (action.type === RECEIVE_FRIENDS_WANNABES) {
+        console.log('action', action);
         return { ...state, friendsWannabes: action.payload };
     }
     if (action.type === REQUEST_FRIEND) {

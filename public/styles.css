@@ -398,8 +398,7 @@ main {
 .friends-wannabes.component.friends {
     /* display: flex; */
 }
-.friends-wannabes.component .content {
-}
+.friends-wannabes.component .content {flex-wrap: wrap;justify-content: space-between;}
 
 /************************/
 .friend-button.content {
@@ -531,8 +530,7 @@ main {
     }
     .user.medium .image {
         width: 100%;
-        /* height: fit-content; */
-        max-height: 80vw;
+        height: 50vw;
     }
     .user.large .image {
         width: 300px;

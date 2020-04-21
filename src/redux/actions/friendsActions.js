@@ -22,7 +22,7 @@ export function requestFriend(id) {
         console.log('data in requestFriend', data);
         return {
             type: REQUEST_FRIEND,
-            id: data,
+            payload: data,
         };
     });
 }
@@ -32,7 +32,7 @@ export function acceptFriendRequest(id) {
         console.log('data in acceptFriendRequest', data);
         return {
             type: ACCEPT_FRIEND_REQUEST,
-            id: data,
+            payload: data,
         };
     });
 }
@@ -42,7 +42,7 @@ export function unfriend(id) {
         console.log(', data in unfriend', data);
         return {
             type: UNFRIEND,
-            id: data,
+            payload: data,
         };
     });
 }
