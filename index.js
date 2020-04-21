@@ -88,19 +88,29 @@ server.listen(port, function () {
 });
 
 let onlineUsers = {};
+let onlineUsersIds = [];
 io.on('connection', function (socket) {
     console.log(`socket with the id ${socket.id} is now connected`);
 
-    if (!socket.request.session.id) {
-        return socket.disconnect(true);
-    }
+    if (!socket.request.session.id) return socket.disconnect(true);
 
     const id = socket.request.session.id;
-    // console.log('filter online users :', Object.values(onlineUsers));
-    onlineUsers[socket.id] = id;
-    console.log('onlineUsers', onlineUsers);
 
-    // io.sockets.emit('onlineusers', onlineUsers);
+    if (Object.values(onlineUsers).filter((n) => n === id).length === 0) {
+        db.getUserById(id).then((user) => {
+            console.log('userJoined :', user);
+            io.sockets.sockets[socket.id].broadcast.emit('userJoined', user);
+        });
+    }
+
+    onlineUsers[socket.id] = id;
+    onlineUsersIds = [...new Set(Object.values(onlineUsers))];
+    // console.log('onlineUsersIds :', onlineUsersIds);
+    db.getOnlineUsersByIds(onlineUsersIds).then((users) => {
+        // console.log('getOnlineUsersByIds :', users);
+        io.sockets.sockets[socket.id].emit('onlineUsers', users);
+    });
+    console.log('onlineUsers', onlineUsers);
 
     db.getLatestMessages(10).then((data) => {
         data = data.map((item) => ({
@@ -147,6 +157,16 @@ io.on('connection', function (socket) {
     socket.on('disconnect', function () {
         // runs when a user disconnects - ie logs off or closes browser/tab
         delete onlineUsers[socket.id]; // remove user from onlineUsers who just left
+        if (Object.values(onlineUsers).filter((n) => n === id).length === 0) {
+            onlineUsersIds = [...new Set(Object.values(onlineUsers))];
+            db.getOnlineUsersByIds(onlineUsersIds).then((users) => {
+                console.log('leftUsers :', users);
+                io.sockets.emit('userLeft', users);
+            });
+        }
+
+        console.log('userLeft', id);
+
         // before we emit userLeft, we need to confirm that the user is really gone
         // ie if the user had 7 tabs open and they closed only 1, don't fire userLeft because the user hasn't actually left! only fire userLeft when the user closed all 7 tabs!
         // emit userLeft here

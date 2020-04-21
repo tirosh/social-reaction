@@ -98,6 +98,19 @@ exports.getUsersLatest = async (id, num) => {
         : dbData.rows;
 };
 
+exports.getOnlineUsersByIds = async (ids) => {
+    const dbData = await db.query(
+        `SELECT users.id, first, last, img_url, bio
+        FROM users 
+        WHERE id = ANY($1);
+        `,
+        [ids]
+    );
+    return dbData.rows.length === 0
+        ? Promise.reject(`No names found that begin with these letters: ${q}`)
+        : dbData.rows;
+};
+
 exports.setImage = async (id, img_url) => {
     const q = `
         UPDATE users

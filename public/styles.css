@@ -398,7 +398,10 @@ main {
 .friends-wannabes.component.friends {
     /* display: flex; */
 }
-.friends-wannabes.component .content {flex-wrap: wrap;justify-content: space-between;}
+.friends-wannabes.component .content {
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
 
 /************************/
 .friend-button.content {
@@ -489,7 +492,10 @@ main {
 .user .content {
     flex-direction: column;
 }
-
+/************************/
+.footer h3 {
+    padding: 0 20px;
+}
 /************************************************************/
 .error {
     color: white;

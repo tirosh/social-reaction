@@ -1,6 +1,13 @@
 import * as io from 'socket.io-client';
-import { receiveLatestMessages } from './redux/actions/messageActions';
-import { receivePublicMessage } from './redux/actions/messageActions';
+import {
+    receiveLatestMessages,
+    receivePublicMessage,
+} from './redux/actions/messageActions';
+import {
+    receiveOnlineUsers,
+    receiveUserJoined,
+    receiveUserLeft,
+} from './redux/actions/userActions';
 
 export let socket;
 
@@ -18,18 +25,19 @@ export const init = (store) => {
             store.dispatch(receivePublicMessage(publicMessage));
         });
 
-        // socket.on(
-        //     'receiveChatMessages',
-        //     msgs => store.dispatch(
-        //         chatMessages(msgs)
-        //     )
-        // );
+        socket.on('onlineUsers', (onlineUsers) => {
+            console.log('onlineUsers', onlineUsers);
+            store.dispatch(receiveOnlineUsers(onlineUsers));
+        });
 
-        // socket.on(
-        //     'chatMessage',
-        //     msg => store.dispatch(
-        //         chatMessage(msg)
-        //     )
-        // );
+        socket.on('userJoined', (userJoined) => {
+            console.log('userJoined', userJoined);
+            store.dispatch(receiveUserJoined(userJoined));
+        });
+
+        socket.on('userLeft', (users) => {
+            console.log('userLeft', users);
+            store.dispatch(receiveUserLeft(users));
+        });
     }
 };
