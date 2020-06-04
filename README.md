@@ -5,7 +5,7 @@ Social Reaction is a social network and single page application created with Rea
 # Demo
 
 [https://social-reaction.herokuapp.com/](https://social-reaction.herokuapp.com/)
-![solcial-reaction snapshot](public/snapshot.jpg)
+![solcial-reaction snapshot](public/snapshot.png)
 
 # Cause
 
