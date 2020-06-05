@@ -1,15 +1,11 @@
 # solcial-reaction
 
-Social Reaction is a social network and single page application created with React.
+Social Reaction is a social network and single page application created with React. Users can log in, tell a little about themselves and make friends with other users. It includes: registration, validation, log-in, profile search, instant chat and more. One of the things I focused on during the implementation was making the component structure of React visible.
 
 # Demo
 
 [https://social-reaction.herokuapp.com/](https://social-reaction.herokuapp.com/)
 ![solcial-reaction snapshot](public/snapshot.png)
-
-# Cause
-
-Social Reaction is a social network and single page application created with React. Users can log in, tell a little about themselves and make friends with other users. It includes: registration, validation, log-in, profile search, instant chat and more. One of the things I focused on during the implementation was making the component structure of React visible.
 
 # Key Features
 
